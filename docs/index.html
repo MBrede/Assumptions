@@ -4,27 +4,27 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Versuchsplanung</title>
-  <meta name="description" content="Seminar zu Versuchsplanung im Wintersemester 2020" />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <title>Robustheit und Voraussetzungstests</title>
+  <meta name="description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Versuchsplanung" />
+  <meta property="og:title" content="Robustheit und Voraussetzungstests" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Seminar zu Versuchsplanung im Wintersemester 2020" />
+  <meta property="og:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Versuchsplanung" />
+  <meta name="twitter:title" content="Robustheit und Voraussetzungstests" />
   
-  <meta name="twitter:description" content="Seminar zu Versuchsplanung im Wintersemester 2020" />
+  <meta name="twitter:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
   
 
-<meta name="author" content="Max Brede und Maren Hinck" />
+<meta name="author" content="Max Brede und Johannes Andres" />
 
 
-<meta name="date" content="2021-01-24" />
+<meta name="date" content="2021-10-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@
   
 
 <link rel="next" href="lehrplan.html"/>
-<script src="libs/header-attrs-2.5/header-attrs.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,23 +51,76 @@
 
 
 
-<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.2/htmlwidgets.js"></script>
-<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.16/datatables.js"></script>
-<link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
-<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
-<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
-<script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -83,7 +136,7 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">Versuchsplanung <br> WiSe 20</a></li>
+<li><a href="./">Robustheit und Voraussetzungstests</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Vorwort</a></li>
@@ -91,96 +144,17 @@
 <ul>
 <li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html#semesterplan"><i class="fa fa-check"></i>Semesterplan</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="warum-wissenschaftliche-psychologie.html"><a href="warum-wissenschaftliche-psychologie.html"><i class="fa fa-check"></i>Warum wissenschaftliche Psychologie?</a>
+<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html"><i class="fa fa-check"></i>Programmieren in R</a>
 <ul>
-<li class="chapter" data-level="" data-path="warum-wissenschaftliche-psychologie.html"><a href="warum-wissenschaftliche-psychologie.html#organisatorisches"><i class="fa fa-check"></i>Organisatorisches</a></li>
-<li class="chapter" data-level="" data-path="warum-wissenschaftliche-psychologie.html"><a href="warum-wissenschaftliche-psychologie.html#alltagspsychologie-und-ihre-fehler"><i class="fa fa-check"></i>Alltagspsychologie und ihre Fehler</a></li>
-<li class="chapter" data-level="" data-path="warum-wissenschaftliche-psychologie.html"><a href="warum-wissenschaftliche-psychologie.html#wissenschaftliche-psychologie"><i class="fa fa-check"></i>Wissenschaftliche Psychologie</a></li>
+<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#funktionen"><i class="fa fa-check"></i>Funktionen</a></li>
+<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#geschachtelte-funktionen"><i class="fa fa-check"></i>Geschachtelte Funktionen</a></li>
+<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#optionale-argumente-und-if-statements"><i class="fa fa-check"></i>Optionale Argumente und if-Statements</a></li>
+<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#zufallswerte"><i class="fa fa-check"></i>Zufallswerte</a></li>
+<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#schleifen"><i class="fa fa-check"></i>Schleifen</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="hypothesen.html"><a href="hypothesen.html"><i class="fa fa-check"></i>Hypothesen</a>
-<ul>
-<li class="chapter" data-level="" data-path="hypothesen.html"><a href="hypothesen.html#organisatorisches-1"><i class="fa fa-check"></i>Organisatorisches</a></li>
-<li class="chapter" data-level="" data-path="hypothesen.html"><a href="hypothesen.html#wiederholung"><i class="fa fa-check"></i>Wiederholung</a></li>
-<li class="chapter" data-level="" data-path="hypothesen.html"><a href="hypothesen.html#hypothesen-1"><i class="fa fa-check"></i>Hypothesen</a></li>
-<li class="chapter" data-level="" data-path="hypothesen.html"><a href="hypothesen.html#ausblick"><i class="fa fa-check"></i>Ausblick</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="experimentelles-vorgehen-und-kausalschlüsse.html"><a href="experimentelles-vorgehen-und-kausalschlüsse.html"><i class="fa fa-check"></i>Experimentelles Vorgehen und Kausalschlüsse</a>
-<ul>
-<li class="chapter" data-level="" data-path="experimentelles-vorgehen-und-kausalschlüsse.html"><a href="experimentelles-vorgehen-und-kausalschlüsse.html#organisatorisches-2"><i class="fa fa-check"></i>Organisatorisches</a></li>
-<li class="chapter" data-level="" data-path="experimentelles-vorgehen-und-kausalschlüsse.html"><a href="experimentelles-vorgehen-und-kausalschlüsse.html#wiederholung-1"><i class="fa fa-check"></i>Wiederholung</a></li>
-<li class="chapter" data-level="" data-path="experimentelles-vorgehen-und-kausalschlüsse.html"><a href="experimentelles-vorgehen-und-kausalschlüsse.html#grundidee-des-experimentierens"><i class="fa fa-check"></i>Grundidee des Experimentierens</a></li>
-<li class="chapter" data-level="" data-path="experimentelles-vorgehen-und-kausalschlüsse.html"><a href="experimentelles-vorgehen-und-kausalschlüsse.html#typen-von-studien-experimenten"><i class="fa fa-check"></i>Typen von Studien / Experimenten</a></li>
-<li class="chapter" data-level="" data-path="experimentelles-vorgehen-und-kausalschlüsse.html"><a href="experimentelles-vorgehen-und-kausalschlüsse.html#fallbeispiele"><i class="fa fa-check"></i>Fallbeispiele</a></li>
-<li class="chapter" data-level="" data-path="experimentelles-vorgehen-und-kausalschlüsse.html"><a href="experimentelles-vorgehen-und-kausalschlüsse.html#ausblick-1"><i class="fa fa-check"></i>Ausblick</a></li>
-<li class="chapter" data-level="" data-path="experimentelles-vorgehen-und-kausalschlüsse.html"><a href="experimentelles-vorgehen-und-kausalschlüsse.html#anhang"><i class="fa fa-check"></i>Anhang</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="literaturrecherche.html"><a href="literaturrecherche.html"><i class="fa fa-check"></i>Literaturrecherche</a>
-<ul>
-<li class="chapter" data-level="" data-path="literaturrecherche.html"><a href="literaturrecherche.html#organisatorisches-3"><i class="fa fa-check"></i>Organisatorisches</a></li>
-<li class="chapter" data-level="" data-path="literaturrecherche.html"><a href="literaturrecherche.html#wiederholung-2"><i class="fa fa-check"></i>Wiederholung</a></li>
-<li class="chapter" data-level="" data-path="literaturrecherche.html"><a href="literaturrecherche.html#literaturrecherche-1"><i class="fa fa-check"></i>Literaturrecherche</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="operationalisieren-und-messen.html"><a href="operationalisieren-und-messen.html"><i class="fa fa-check"></i>Operationalisieren und Messen</a>
-<ul>
-<li class="chapter" data-level="" data-path="operationalisieren-und-messen.html"><a href="operationalisieren-und-messen.html#organisatorisches-4"><i class="fa fa-check"></i>Organisatorisches</a></li>
-<li class="chapter" data-level="" data-path="operationalisieren-und-messen.html"><a href="operationalisieren-und-messen.html#wiederholung-3"><i class="fa fa-check"></i>Wiederholung</a></li>
-<li class="chapter" data-level="" data-path="operationalisieren-und-messen.html"><a href="operationalisieren-und-messen.html#operationalisierung"><i class="fa fa-check"></i>Operationalisierung</a></li>
-<li class="chapter" data-level="" data-path="operationalisieren-und-messen.html"><a href="operationalisieren-und-messen.html#güte-von-operationalisierungen"><i class="fa fa-check"></i>Güte von Operationalisierungen</a></li>
-<li class="chapter" data-level="" data-path="operationalisieren-und-messen.html"><a href="operationalisieren-und-messen.html#operationalisierungsmethoden"><i class="fa fa-check"></i>Operationalisierungsmethoden</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="experimentelle-versuchspläne.html"><a href="experimentelle-versuchspläne.html"><i class="fa fa-check"></i>Experimentelle Versuchspläne</a>
-<ul>
-<li class="chapter" data-level="" data-path="experimentelle-versuchspläne.html"><a href="experimentelle-versuchspläne.html#organisatorisches-5"><i class="fa fa-check"></i>Organisatorisches</a></li>
-<li class="chapter" data-level="" data-path="experimentelle-versuchspläne.html"><a href="experimentelle-versuchspläne.html#wiederholung-4"><i class="fa fa-check"></i>Wiederholung</a></li>
-<li class="chapter" data-level="" data-path="experimentelle-versuchspläne.html"><a href="experimentelle-versuchspläne.html#versuchspläne"><i class="fa fa-check"></i>Versuchspläne</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="störvariablen.html"><a href="störvariablen.html"><i class="fa fa-check"></i>Störvariablen</a>
-<ul>
-<li class="chapter" data-level="" data-path="störvariablen.html"><a href="störvariablen.html#organisatorisches-6"><i class="fa fa-check"></i>Organisatorisches</a></li>
-<li class="chapter" data-level="" data-path="störvariablen.html"><a href="störvariablen.html#wiederholung-5"><i class="fa fa-check"></i>Wiederholung</a></li>
-<li class="chapter" data-level="" data-path="störvariablen.html"><a href="störvariablen.html#varianz---freund-und-feind"><i class="fa fa-check"></i>Varianz - Freund und Feind</a></li>
-<li class="chapter" data-level="" data-path="störvariablen.html"><a href="störvariablen.html#störvariablen-1"><i class="fa fa-check"></i>Störvariablen</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="nicht-experimentelle-versuchspläne.html"><a href="nicht-experimentelle-versuchspläne.html"><i class="fa fa-check"></i>nicht-experimentelle Versuchspläne</a>
-<ul>
-<li class="chapter" data-level="" data-path="nicht-experimentelle-versuchspläne.html"><a href="nicht-experimentelle-versuchspläne.html#organisatorisches-7"><i class="fa fa-check"></i>Organisatorisches</a></li>
-<li class="chapter" data-level="" data-path="nicht-experimentelle-versuchspläne.html"><a href="nicht-experimentelle-versuchspläne.html#wiederholung-6"><i class="fa fa-check"></i>Wiederholung</a></li>
-<li class="chapter" data-level="" data-path="nicht-experimentelle-versuchspläne.html"><a href="nicht-experimentelle-versuchspläne.html#quasiexperimentelle-designs"><i class="fa fa-check"></i>Quasiexperimentelle Designs</a></li>
-<li class="chapter" data-level="" data-path="nicht-experimentelle-versuchspläne.html"><a href="nicht-experimentelle-versuchspläne.html#ex-post-facto-studien"><i class="fa fa-check"></i>Ex-post-Facto-Studien</a></li>
-<li class="chapter" data-level="" data-path="nicht-experimentelle-versuchspläne.html"><a href="nicht-experimentelle-versuchspläne.html#nicht-experimentelle-untersuchungen"><i class="fa fa-check"></i>Nicht-experimentelle Untersuchungen</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="material-und-stichprobe.html"><a href="material-und-stichprobe.html"><i class="fa fa-check"></i>Material und Stichprobe</a>
-<ul>
-<li class="chapter" data-level="" data-path="material-und-stichprobe.html"><a href="material-und-stichprobe.html#organisatorisches-8"><i class="fa fa-check"></i>Organisatorisches</a></li>
-<li class="chapter" data-level="" data-path="material-und-stichprobe.html"><a href="material-und-stichprobe.html#wiederholung-7"><i class="fa fa-check"></i>Wiederholung</a></li>
-<li class="chapter" data-level="" data-path="material-und-stichprobe.html"><a href="material-und-stichprobe.html#stichprobe"><i class="fa fa-check"></i>Stichprobe</a></li>
-<li class="chapter" data-level="" data-path="material-und-stichprobe.html"><a href="material-und-stichprobe.html#material"><i class="fa fa-check"></i>Material</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="auswertung-darstellung-und-interpretation.html"><a href="auswertung-darstellung-und-interpretation.html"><i class="fa fa-check"></i>Auswertung, Darstellung und Interpretation</a>
-<ul>
-<li class="chapter" data-level="" data-path="auswertung-darstellung-und-interpretation.html"><a href="auswertung-darstellung-und-interpretation.html#organisatorisches-9"><i class="fa fa-check"></i>Organisatorisches</a></li>
-<li class="chapter" data-level="" data-path="auswertung-darstellung-und-interpretation.html"><a href="auswertung-darstellung-und-interpretation.html#wiederholung-8"><i class="fa fa-check"></i>Wiederholung</a></li>
-<li class="chapter" data-level="" data-path="auswertung-darstellung-und-interpretation.html"><a href="auswertung-darstellung-und-interpretation.html#prinzip-des-hypothesentestens"><i class="fa fa-check"></i>Prinzip des Hypothesentestens</a></li>
-<li class="chapter" data-level="" data-path="auswertung-darstellung-und-interpretation.html"><a href="auswertung-darstellung-und-interpretation.html#statistische-hypothesen"><i class="fa fa-check"></i>Statistische Hypothesen</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="ethische-probleme-im-versuch.html"><a href="ethische-probleme-im-versuch.html"><i class="fa fa-check"></i>Ethische Probleme im Versuch</a>
-<ul>
-<li class="chapter" data-level="" data-path="ethische-probleme-im-versuch.html"><a href="ethische-probleme-im-versuch.html#organisatorisches-10"><i class="fa fa-check"></i>Organisatorisches</a></li>
-<li class="chapter" data-level="" data-path="ethische-probleme-im-versuch.html"><a href="ethische-probleme-im-versuch.html#wiederholung-9"><i class="fa fa-check"></i>Wiederholung</a></li>
-<li class="chapter" data-level="" data-path="ethische-probleme-im-versuch.html"><a href="ethische-probleme-im-versuch.html#ethische-grundsätze"><i class="fa fa-check"></i>Ethische Grundsätze</a></li>
-<li class="chapter" data-level="" data-path="ethische-probleme-im-versuch.html"><a href="ethische-probleme-im-versuch.html#videobeispiele"><i class="fa fa-check"></i>Videobeispiele</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="publikationsprozess.html"><a href="publikationsprozess.html"><i class="fa fa-check"></i>Publikationsprozess</a>
-<ul>
-<li class="chapter" data-level="" data-path="publikationsprozess.html"><a href="publikationsprozess.html#organisatorisches-11"><i class="fa fa-check"></i>Organisatorisches</a></li>
-<li class="chapter" data-level="" data-path="publikationsprozess.html"><a href="publikationsprozess.html#wiederholung-10"><i class="fa fa-check"></i>Wiederholung</a></li>
-<li class="chapter" data-level="" data-path="publikationsprozess.html"><a href="publikationsprozess.html#publikationen"><i class="fa fa-check"></i>Publikationen</a></li>
-<li class="chapter" data-level="" data-path="publikationsprozess.html"><a href="publikationsprozess.html#gliederung-einer-publikation"><i class="fa fa-check"></i>Gliederung einer Publikation</a></li>
-<li class="chapter" data-level="" data-path="publikationsprozess.html"><a href="publikationsprozess.html#ethik-im-wissenschaftsbetrieb"><i class="fa fa-check"></i>Ethik im Wissenschaftsbetrieb</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="literatur-3.html"><a href="literatur-3.html"><i class="fa fa-check"></i>Literatur</a></li>
+<li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
 <li class="divider"></li>
-<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a></li>
+<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></li>
 
 </ul>
 
@@ -191,7 +165,7 @@
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Versuchsplanung</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Robustheit und Voraussetzungstests</a>
           </h1>
         </div>
 
@@ -200,16 +174,16 @@
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">Versuchsplanung</h1>
-<p class="author"><em>Max Brede und Maren Hinck</em></p>
-<p class="date"><em>2021-01-24</em></p>
+<h1 class="title">Robustheit und Voraussetzungstests</h1>
+<p class="author"><em>Max Brede und Johannes Andres</em></p>
+<p class="date" style="margin-top: 1.5em;"><em>2021-10-05</em></p>
 </div>
 <div id="vorwort" class="section level1">
 <h1>Vorwort</h1>
-<p>Dieses mit <code>bookdown</code> erstellte Dokument ist das über das Wintersemester 2020 hinweg wachsende Skript zum Seminar “PSY_B_4: Versuchsplanung” der CAU zu Kiel.</p>
+<p>Dieses mit <code>bookdown</code> erstellte Dokument ist das Skript zum Seminar “psyM9-1: Psychologische Forschungsmethoden. Projektseminar I” und “PSY_B_20_e-1: Forschungsorientierte Vertiefung: Forschungsmethoden” der CAU zu Kiel.</p>
 <footer>
 <div style="font-size: 75%; display: flex; align-items: center; justify-content: center;style="padding-top: 50px;">
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" style="padding-right: 10px;"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a></li><p> Dieses Skript steht, wo nicht anders angegeben, unter der <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"> CC BY-SA 4.0-Lizenz</a>.</p>
+ <p xmlns:cc="http://creativecommons.org/ns#" >This work is licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-SA 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></p> 
 </div>
 </footer>
 </div>
@@ -242,6 +216,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -261,7 +236,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["Versuchsplanung_WS20.pdf"],
+"download": ["Robustheit und Voraussetzungstests.pdf"],
 "toc": {
 "collapse": "subsection"
 }
