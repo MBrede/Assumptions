@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Lehrplan | Robustheit und Voraussetzungstests</title>
+  <title>Lehrplan | Robustheit</title>
   <meta name="description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Lehrplan | Robustheit und Voraussetzungstests" />
+  <meta property="og:title" content="Lehrplan | Robustheit" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Lehrplan | Robustheit und Voraussetzungstests" />
+  <meta name="twitter:title" content="Lehrplan | Robustheit" />
   
   <meta name="twitter:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Max Brede und Johannes Andres" />
 
 
-<meta name="date" content="2021-10-05" />
+<meta name="date" content="2021-10-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,8 +32,8 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="programmieren-in-r.html"/>
-<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<link rel="next" href="funktionen.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -122,6 +122,28 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -144,13 +166,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html#semesterplan"><i class="fa fa-check"></i>Semesterplan</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html"><i class="fa fa-check"></i>Programmieren in R</a>
+<li class="part"><span><b>I Programmieren in R</b></span></li>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html"><i class="fa fa-check"></i>Funktionen</a>
 <ul>
-<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#funktionen"><i class="fa fa-check"></i>Funktionen</a></li>
-<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#geschachtelte-funktionen"><i class="fa fa-check"></i>Geschachtelte Funktionen</a></li>
-<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#optionale-argumente-und-if-statements"><i class="fa fa-check"></i>Optionale Argumente und if-Statements</a></li>
-<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#zufallswerte"><i class="fa fa-check"></i>Zufallswerte</a></li>
-<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#schleifen"><i class="fa fa-check"></i>Schleifen</a></li>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html#geschachtelte-funktionen"><i class="fa fa-check"></i>Geschachtelte Funktionen</a></li>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html#optionale-argumente"><i class="fa fa-check"></i>Optionale Argumente</a></li>
+</ul></li>
+<li><a href="if-statements.html#if-statements"><code>if</code>-Statements</a></li>
+<li class="chapter" data-level="" data-path="zufallswerte.html"><a href="zufallswerte.html"><i class="fa fa-check"></i>Zufallswerte</a></li>
+<li class="chapter" data-level="" data-path="schleifen.html"><a href="schleifen.html"><i class="fa fa-check"></i>Schleifen</a></li>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html"><i class="fa fa-check"></i>Listen</a>
+<ul>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html#listen-und-datensätze"><i class="fa fa-check"></i>Listen und Datensätze</a></li>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html#arbeiten-mit-listen"><i class="fa fa-check"></i>Arbeiten mit Listen</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="attribute.html"><a href="attribute.html"><i class="fa fa-check"></i>Attribute</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html"><i class="fa fa-check"></i>Functionals</a>
+<ul>
+<li><a href="functionals.html#purrrmap"><code>purrr::map</code></a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#exkurs-iteratoren-vergleich"><i class="fa fa-check"></i>Exkurs: Iteratoren-Vergleich</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
 <li class="divider"></li>
@@ -165,7 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Robustheit und Voraussetzungstests</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Robustheit</a>
           </h1>
         </div>
 
@@ -314,10 +348,10 @@ können basales microbenchmarking einsetzen um Funktionsperformance zu evaluiere
 2021-11-22
 </td>
 <td style="text-align:left;">
-Erste Simulation I
+Beispiele
 </td>
 <td style="text-align:left;">
-können geschachtelte Schleifen und iterative functionals nutzen
+haben erste Erfahrungen mit der Durchführung von Simulationsstudien in R
 </td>
 </tr>
 <tr>
@@ -328,7 +362,7 @@ können geschachtelte Schleifen und iterative functionals nutzen
 2021-11-29
 </td>
 <td style="text-align:left;">
-Erste Simulation II
+Beispiele
 </td>
 <td style="text-align:left;">
 </td>
@@ -341,9 +375,10 @@ Erste Simulation II
 2021-12-06
 </td>
 <td style="text-align:left;">
-Beispiele
+Psychopy I
 </td>
 <td style="text-align:left;">
+können einfache Reaktionszeit- und Rating-Experimente in Psychopy erstellen
 </td>
 </tr>
 <tr>
@@ -354,9 +389,10 @@ Beispiele
 2021-12-13
 </td>
 <td style="text-align:left;">
-Beispiele
+Psychopy II
 </td>
 <td style="text-align:left;">
+können Ergebnisse von mit Psychopy und Pavlovia durchgeführten Studien in R einlesen und aufbereiten
 </td>
 </tr>
 <tr>
@@ -367,8 +403,10 @@ Beispiele
 2021-12-20
 </td>
 <td style="text-align:left;">
+Beispiele
 </td>
 <td style="text-align:left;">
+haben erste Erfahrungen mit der Durchführung von Experimenten in Psychopy und Pavlovia
 </td>
 </tr>
 <tr>
@@ -379,6 +417,7 @@ Beispiele
 2022-01-10
 </td>
 <td style="text-align:left;">
+Puffer
 </td>
 <td style="text-align:left;">
 </td>
@@ -391,6 +430,7 @@ Beispiele
 2022-01-17
 </td>
 <td style="text-align:left;">
+Puffer
 </td>
 <td style="text-align:left;">
 </td>
@@ -403,6 +443,7 @@ Beispiele
 2022-01-24
 </td>
 <td style="text-align:left;">
+Puffer
 </td>
 <td style="text-align:left;">
 </td>
@@ -415,30 +456,7 @@ Beispiele
 2022-01-31
 </td>
 <td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-14
-</td>
-<td style="text-align:left;">
-2022-02-07
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-15
-</td>
-<td style="text-align:left;">
-2022-02-14
-</td>
-<td style="text-align:left;">
+Puffer
 </td>
 <td style="text-align:left;">
 </td>
@@ -448,13 +466,16 @@ Beispiele
 
 </div>
 </div>
+
+
+
             </section>
 
           </div>
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="programmieren-in-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="funktionen.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -497,7 +518,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["Robustheit und Voraussetzungstests.pdf"],
+"download": ["Robustheit.pdf"],
 "toc": {
 "collapse": "subsection"
 }

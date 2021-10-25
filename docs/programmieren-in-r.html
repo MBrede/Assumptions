@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Programmieren in R | Robustheit und Voraussetzungstests</title>
+  <title>Programmieren in R | Robustheit</title>
   <meta name="description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Programmieren in R | Robustheit und Voraussetzungstests" />
+  <meta property="og:title" content="Programmieren in R | Robustheit" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Programmieren in R | Robustheit und Voraussetzungstests" />
+  <meta name="twitter:title" content="Programmieren in R | Robustheit" />
   
   <meta name="twitter:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
   
@@ -24,16 +24,16 @@
 <meta name="author" content="Max Brede und Johannes Andres" />
 
 
-<meta name="date" content="2021-10-05" />
+<meta name="date" content="2021-10-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="lehrplan.html"/>
+<link rel="prev" href="index.html"/>
 <link rel="next" href="literatur.html"/>
-<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -53,8 +53,6 @@
 
 <link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
-<script src="libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -122,6 +120,28 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -139,10 +159,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Robustheit und Voraussetzungstests</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Vorwort</a></li>
-<li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html"><i class="fa fa-check"></i>Lehrplan</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Vorwort</a>
 <ul>
-<li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html#semesterplan"><i class="fa fa-check"></i>Semesterplan</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#semesterplan"><i class="fa fa-check"></i>Semesterplan</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html"><i class="fa fa-check"></i>Programmieren in R</a>
 <ul>
@@ -151,6 +170,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#optionale-argumente-und-if-statements"><i class="fa fa-check"></i>Optionale Argumente und if-Statements</a></li>
 <li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#zufallswerte"><i class="fa fa-check"></i>Zufallswerte</a></li>
 <li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#schleifen"><i class="fa fa-check"></i>Schleifen</a></li>
+<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#listen"><i class="fa fa-check"></i>Listen</a></li>
+<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#attribute"><i class="fa fa-check"></i>Attribute</a></li>
+<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html#functionals"><i class="fa fa-check"></i>Functionals</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
 <li class="divider"></li>
@@ -165,7 +187,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Robustheit und Voraussetzungstests</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Robustheit</a>
           </h1>
         </div>
 
@@ -175,7 +197,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="programmieren-in-r" class="section level1">
 <h1>Programmieren in R</h1>
-<!-- start -->
 <div id="funktionen" class="section level2">
 <h2>Funktionen</h2>
 <p>Wir kennen Funktionen ja schon aus den EDV-Veranstaltungen.</p>
@@ -477,7 +498,7 @@ Antworten
 <span id="cb56-12"><a href="programmieren-in-r.html#cb56-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">&#39;black&#39;</span>,</span>
 <span id="cb56-13"><a href="programmieren-in-r.html#cb56-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">bins =</span> <span class="dv">40</span>) <span class="sc">+</span></span>
 <span id="cb56-14"><a href="programmieren-in-r.html#cb56-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>dist,<span class="at">scales =</span> <span class="st">&#39;free_x&#39;</span>)</span></code></pre></div>
-<p><img src="Robustheit-und-Voraussetzungstests_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <div id="aufgabe-3" class="section level3">
 <h3>Aufgabe</h3>
 <p>Erstelle eine Funktion <code>gen_distributed_values</code>, die mit Hilfe von <code>if</code>-Statements anhand eines Arguments <code>distribution</code> und eines Arguments <code>n</code> einen Vektor an Zufallszahlen generiert. Dabei soll <code>distribution</code> angeben, welche aus drei möglichen Verteilungen genutzt wird. Denke außerdem an mögliche Verteilungseigenschaften der genutzten Funktionen und füge sie als optionale Argumente zur Funktion hinzu.</p>
@@ -594,9 +615,9 @@ In R gibt es davon drei Arten:</p>
 <span id="cb66-30"><a href="programmieren-in-r.html#cb66-30" aria-hidden="true" tabindex="-1"></a>runtime_no_alloc <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="sc">-</span> start</span>
 <span id="cb66-31"><a href="programmieren-in-r.html#cb66-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb66-32"><a href="programmieren-in-r.html#cb66-32" aria-hidden="true" tabindex="-1"></a>runtime_alloc</span></code></pre></div>
-<pre><code>## Time difference of 0.03586459 secs</code></pre>
+<pre><code>## Time difference of 0.03651381 secs</code></pre>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="programmieren-in-r.html#cb68-1" aria-hidden="true" tabindex="-1"></a>runtime_no_alloc</span></code></pre></div>
-<pre><code>## Time difference of 0.07799411 secs</code></pre>
+<pre><code>## Time difference of 0.08606291 secs</code></pre>
 <p>Mehr als die Hälfte der Zeit geht für das Erstellen des neuen Vektors drauf!</p>
 <div id="aufgabe-4" class="section level3">
 <h3>Aufgabe</h3>
@@ -631,10 +652,374 @@ Antwort
 <span id="cb70-21"><a href="programmieren-in-r.html#cb70-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">1</span>,</span>
 <span id="cb70-22"><a href="programmieren-in-r.html#cb70-22" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">&#39;grey&#39;</span>,</span>
 <span id="cb70-23"><a href="programmieren-in-r.html#cb70-23" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&#39;white&#39;</span>)</span></code></pre></div>
-<img src="Robustheit-und-Voraussetzungstests_files/figure-html/unnamed-chunk-42-1.png" width="672" />
+<img src="Robustheit_files/figure-html/unnamed-chunk-38-1.png" width="672" />
 </details>
+</div>
+</div>
+<div id="listen" class="section level2">
+<h2>Listen</h2>
+<p>Listen sind uns aus der R-Übung schon im Rahmen der <a href="https://mbrede.github.io/CAU_Kiel_EDVI/aggregation-und-filemanagement.html#lazy-evaluation">Gruppenweisen Aggregation mit <code>across</code></a> und <a href="https://mbrede.github.io/CAU_KIEL_EDVII/einfache-lineare-zusammenh%C3%A4nge.html#weitere-parameter">als Output von Inferenzstatistischen Funktionen</a> untergekommen.
+Aber was genau Listen architektonisch sind, haben wir bisher übergangen.</p>
+<p>Listen sind in R ziemlich ähnlich zu Vektoren <a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>. Sie bilden Aneinander-Kettungen von Objekten ab, bei denen wir die einzelnen Elemente benennen können.
+Ein Unterschied zu Vektoren ist aber, dass die Objekte nicht von einem einzelnen Typ sein müssen.
+Ein anderer Unterschied wird deutlich, wenn wir uns den Output von benannten Vektoren und Listen genauer anschauen.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="programmieren-in-r.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">&#39;a&#39;</span><span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb71-2"><a href="programmieren-in-r.html#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;b&#39;</span><span class="ot">=</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## a b 
+## 1 2</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="programmieren-in-r.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="st">&#39;a&#39;</span><span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb73-2"><a href="programmieren-in-r.html#cb73-2" aria-hidden="true" tabindex="-1"></a>     <span class="st">&#39;b&#39;</span><span class="ot">=</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## $a
+## [1] 1
+## 
+## $b
+## [1] 2</code></pre>
+<p>Die Ausgabe der Liste ähnelt unter der jeweiligen Überschrift (z.B.: <code>$a</code>) dem Output, den wir bei einem unbenannten Vektor sehen:</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="programmieren-in-r.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>Das liegt daran, dass in einer Liste unter dem Namen auch der ganze Vektor “abgespeichert” ist. Abgespeichert ist hier in Anführungszeichen, da in der Liste eigentlich nur ein Verweis auf einen Vektor liegt. Das kann man sich verdeutlichen, wenn man sich die Größen von Vektoren und Listen im Arbeitsspeicher anguckt.</p>
+<p>Dazu erstellen wir einen Vektoren mit den Zahlen von 1:1000 und eine Liste, der wir dreimal diesen Vektor übergeben.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="programmieren-in-r.html#cb77-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>)</span>
+<span id="cb77-2"><a href="programmieren-in-r.html#cb77-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-3"><a href="programmieren-in-r.html#cb77-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> a, <span class="at">b =</span> a, <span class="at">c =</span> a, <span class="at">d =</span> a)</span></code></pre></div>
+<p>Wenn wir uns jetzt die Größen der beiden Objekte angucken, sehen wir dass die Liste kleiner ist, als vielleicht zuerst erwartet:</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="programmieren-in-r.html#cb78-1" aria-hidden="true" tabindex="-1"></a>lobstr<span class="sc">::</span><span class="fu">obj_size</span>(a)</span></code></pre></div>
+<pre><code>## 4,048 B</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="programmieren-in-r.html#cb80-1" aria-hidden="true" tabindex="-1"></a>lobstr<span class="sc">::</span><span class="fu">obj_size</span>(b)</span></code></pre></div>
+<pre><code>## 4,544 B</code></pre>
+<p>Wenn wir die Liste mit einem vergleichbaren Vektor gegenüberstellen sehen wir, dass dieser die Werte offensichtlich direkt ablegt, wohingegen die Liste die Werte nur einmal beinhaltet (plus ein bisschen Speicher für die wiederholten Verweise und Namen):</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="programmieren-in-r.html#cb82-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">c</span>(a, a, a, a)</span>
+<span id="cb82-2"><a href="programmieren-in-r.html#cb82-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-3"><a href="programmieren-in-r.html#cb82-3" aria-hidden="true" tabindex="-1"></a>lobstr<span class="sc">::</span><span class="fu">obj_size</span>(a)</span></code></pre></div>
+<pre><code>## 4,048 B</code></pre>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="programmieren-in-r.html#cb84-1" aria-hidden="true" tabindex="-1"></a>lobstr<span class="sc">::</span><span class="fu">obj_size</span>(b)</span></code></pre></div>
+<pre><code>## 4,544 B</code></pre>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="programmieren-in-r.html#cb86-1" aria-hidden="true" tabindex="-1"></a>lobstr<span class="sc">::</span><span class="fu">obj_size</span>(d)</span></code></pre></div>
+<pre><code>## 16,048 B</code></pre>
+<p>Was passiert nun, wenn wir einen Teil eines der vier Einträge in der Liste ändern?</p>
+<p>Dazu können wir die schon von <code>data.frames</code> bekannte Index-Variante mit dem <code>$</code>-Operator nutzen um einen der Vektoren in der Liste zu modifizieren:</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="programmieren-in-r.html#cb88-1" aria-hidden="true" tabindex="-1"></a>b<span class="sc">$</span>a[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb88-2"><a href="programmieren-in-r.html#cb88-2" aria-hidden="true" tabindex="-1"></a>lobstr<span class="sc">::</span><span class="fu">obj_size</span>(b)</span></code></pre></div>
+<pre><code>## 12,592 B</code></pre>
+<p>Die Liste wird größer. Dass sie nicht in Inkrementen von 4000 B größer wird, liegt daran, dass die Zahlen in <code>a</code> als Sequenz von R effizienter gespeichert werden können, als als einfache Zahlen. Wenn wir uns <code>a</code> alleine angucken und die Größe vor und nach Änderung der ersten Stelle betrachten, wird das deutlich:</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="programmieren-in-r.html#cb90-1" aria-hidden="true" tabindex="-1"></a>lobstr<span class="sc">::</span><span class="fu">obj_size</span>(a)</span></code></pre></div>
+<pre><code>## 4,048 B</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="programmieren-in-r.html#cb92-1" aria-hidden="true" tabindex="-1"></a>a[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb92-2"><a href="programmieren-in-r.html#cb92-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-3"><a href="programmieren-in-r.html#cb92-3" aria-hidden="true" tabindex="-1"></a>lobstr<span class="sc">::</span><span class="fu">obj_size</span>(a)</span></code></pre></div>
+<pre><code>## 8,048 B</code></pre>
+<p>Für mehr Details zu diesem Speicher-Verhalten und dem zugrunde liegenden Prinzip ist das kostenlos <a href="https://adv-r.hadley.nz/index.html">hier zugängliche</a> Buch “Advanced R” <span class="citation">Wickham (<a href="#ref-wickhamAdvanced2019" role="doc-biblioref">2019</a>)</span> sehr gut, vor allem die <a href="https://adv-r.hadley.nz/names-values.html#binding-basics">Kapitel 2.2</a> und folgende und das <a href="https://adv-r.hadley.nz/vectors-chap.html">Kapitel über Vektoren</a>.</p>
+<div id="aufgabe-5" class="section level4">
+<h4>Aufgabe</h4>
+<p>Überlege dir, wie sich der Speicherbedarf der Liste <code>b</code> ändert, wenn Du den zweiten Platz der Liste mit dem ersten Platz der Liste überschreibst.
+Probiere dann aus, ob sich deine Vorhersage bewahrheitet.
+Überprüfe dann, was passiert, wenn du die erste Stelle des dritten Platzes der Liste durch fünf ersetzt.
+Was könnte hier passiert sein?</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="programmieren-in-r.html#cb94-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>)</span>
+<span id="cb94-2"><a href="programmieren-in-r.html#cb94-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> a,<span class="at">b =</span> a,<span class="at">c =</span> a,<span class="at">d =</span> a)</span>
+<span id="cb94-3"><a href="programmieren-in-r.html#cb94-3" aria-hidden="true" tabindex="-1"></a>b<span class="sc">$</span>a[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb94-4"><a href="programmieren-in-r.html#cb94-4" aria-hidden="true" tabindex="-1"></a>lobstr<span class="sc">::</span><span class="fu">obj_size</span>(b)</span></code></pre></div>
+<pre><code>## 12,592 B</code></pre>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="programmieren-in-r.html#cb96-1" aria-hidden="true" tabindex="-1"></a>b<span class="sc">$</span>b <span class="ot">&lt;-</span> b<span class="sc">$</span>a</span>
+<span id="cb96-2"><a href="programmieren-in-r.html#cb96-2" aria-hidden="true" tabindex="-1"></a>lobstr<span class="sc">::</span><span class="fu">obj_size</span>(b)</span></code></pre></div>
+<pre><code>## 12,592 B</code></pre>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="programmieren-in-r.html#cb98-1" aria-hidden="true" tabindex="-1"></a>b<span class="sc">$</span>c[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb98-2"><a href="programmieren-in-r.html#cb98-2" aria-hidden="true" tabindex="-1"></a>lobstr<span class="sc">::</span><span class="fu">obj_size</span>(b)</span></code></pre></div>
+<pre><code>## 20,640 B</code></pre>
+</details>
+</div>
+<div id="listen-und-datensätze" class="section level3">
+<h3>Listen und Datensätze</h3>
+<p>Das Arbeiten mit Listen ist ziemlich ähnlich zu der mit Datensätzen.
+Das liegt ganz einfach daran, dass Datensätze auch Listen sind, der einzige wirklich wichtige Unterschied ist, dass Datensätze im Vergleich zu Listen einheitliche Längen von den eingefügten Vektoren erwarten.</p>
+<p>Zu sehen ist dieses Verhältnis ganz einfach, wenn man sich den <code>mode</code> eines Datensatzes anguckt:</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="programmieren-in-r.html#cb100-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb100-2"><a href="programmieren-in-r.html#cb100-2" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb100-3"><a href="programmieren-in-r.html#cb100-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-4"><a href="programmieren-in-r.html#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(a)</span></code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="programmieren-in-r.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(a)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<p>Der Unterschied ist in den <code>attributes</code> des Datensatzes festgelegt.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="programmieren-in-r.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(a)</span></code></pre></div>
+<pre><code>## $names
+## [1] &quot;X1.10&quot;   &quot;X1.10.1&quot;
+## 
+## $class
+## [1] &quot;data.frame&quot;
+## 
+## $row.names
+##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<p>Nur zum Spaß können wir so auch versuchen, umständlich einen Datensatz zu erstellen:</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="programmieren-in-r.html#cb106-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb106-2"><a href="programmieren-in-r.html#cb106-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(a)</span></code></pre></div>
+<pre><code>## NULL</code></pre>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="programmieren-in-r.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(a) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">names =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
+<span id="cb108-2"><a href="programmieren-in-r.html#cb108-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">row.names =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb108-3"><a href="programmieren-in-r.html#cb108-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">class =</span> <span class="st">&quot;data.frame&quot;</span>)</span>
+<span id="cb108-4"><a href="programmieren-in-r.html#cb108-4" aria-hidden="true" tabindex="-1"></a>a</span></code></pre></div>
+<pre><code>##     a  b
+## 1   1  1
+## 2   2  2
+## 3   3  3
+## 4   4  4
+## 5   5  5
+## 6   6  6
+## 7   7  7
+## 8   8  8
+## 9   9  9
+## 10 10 10</code></pre>
+<div id="aufgabe-6" class="section level4">
+<h4>Aufgabe</h4>
+<p>Überlege Dir, was wohl passiert, wenn du auf die gerade demonstrierte Art und Weise einen Datensatz erstellst, bei dem die eingefügten Vektoren von unterschiedlicher Länge sind.
+Überprüfe dann, ob die Erwartungen stimmen.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="programmieren-in-r.html#cb110-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>,<span class="dv">21</span><span class="sc">:</span><span class="dv">30</span>,<span class="dv">41</span><span class="sc">:</span><span class="dv">45</span>)</span>
+<span id="cb110-2"><a href="programmieren-in-r.html#cb110-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(a)</span></code></pre></div>
+<pre><code>## NULL</code></pre>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="programmieren-in-r.html#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(a) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">names =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>],</span>
+<span id="cb112-2"><a href="programmieren-in-r.html#cb112-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">row.names =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb112-3"><a href="programmieren-in-r.html#cb112-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">class =</span> <span class="st">&quot;data.frame&quot;</span>)</span>
+<span id="cb112-4"><a href="programmieren-in-r.html#cb112-4" aria-hidden="true" tabindex="-1"></a>a</span></code></pre></div>
+<pre><code>## Warning in format.data.frame(if (omit) x[seq_len(n0), , drop = FALSE] else x, :
+## corrupt data frame: columns will be truncated or padded with NAs</code></pre>
+<pre><code>##     a  b    c
+## 1   1 21   41
+## 2   2 22   42
+## 3   3 23   43
+## 4   4 24   44
+## 5   5 25   45
+## 6   6 26 &lt;NA&gt;
+## 7   7 27 &lt;NA&gt;
+## 8   8 28 &lt;NA&gt;
+## 9   9 29 &lt;NA&gt;
+## 10 10 30 &lt;NA&gt;</code></pre>
+</details>
+</div>
+</div>
+<div id="arbeiten-mit-listen" class="section level3">
+<h3>Arbeiten mit Listen</h3>
+<p>Da Datensätze eigentlich nur Listen sind, gibt es Listen-Operationen die wir schon von Datensätzen kennen, bei denen wir einfach noch nicht wussten, dass sie eigentlich aus dem Listen-Kontext stammen.</p>
+<p>Insbesondere sind die Operationen, die wir auch schon hier im Skript genutzt haben, Listen-Operationen, die wir aus dem <code>data.frame</code>-Kontext kennen.
+Da wären das Anlegen von Spalten/Listen-Einträgen mit Namen, wie wir es eben gesehen haben:</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="programmieren-in-r.html#cb115-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb115-2"><a href="programmieren-in-r.html#cb115-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code></pre></div>
+<p>Und das Indizieren mit dem <code>$</code>-Operator:</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="programmieren-in-r.html#cb116-1" aria-hidden="true" tabindex="-1"></a>a<span class="sc">$</span>a</span></code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="programmieren-in-r.html#cb118-1" aria-hidden="true" tabindex="-1"></a>b<span class="sc">$</span>a</span></code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<p>Als kleinen Zusatz können wir uns noch die numerische Indizierung angucken, die bei Listen und damit auch Datensätzen mit doppelten eckigen Klammern funktioniert (<code>[[]]</code>). Dieser Index-Operator ist hilfreich, wenn nicht jedes mal für jeden Eintrag ein Name angelegt werden soll. Das kann zum Beispiel sinnvoll bei <code>functional</code>-Iteratoren sein, bei denen man nur eine schnelle Stapelverarbeitung plant, dazu aber später mehr.</p>
+<p>Bei Listen und Datensätzen sieht der <code>[[]]</code>-Einsatz dann so aus:</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="programmieren-in-r.html#cb120-1" aria-hidden="true" tabindex="-1"></a>a[[<span class="dv">1</span>]]</span></code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="programmieren-in-r.html#cb122-1" aria-hidden="true" tabindex="-1"></a>b[[<span class="dv">1</span>]]</span></code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<div id="aufgabe-7" class="section level4">
+<h4>Aufgabe</h4>
+<p>Baue ein Skript, das eine Liste erstellt, die drei Einträge enthält.
+Jeder dieser Einträge soll auch wieder eine Liste sein.
+Das Skript soll nun mit Hilfe einer Schleife die Zahlen von 1 bis 100 durchgehen und alle durch 2 teilbaren Zahlen in den zweiten Eintrag, alle durch 3 teilbaren Zahlen in den dritten Eintrag und alle restlichen Zahlen in den ersten Eintrag einfügen.
+Nutze hierfür den “Modulo”-Operator <code>%%</code>, der den ‘Rest’ einer Ganzzahldivision ausgibt.
+Überlege dir, wie du mit Zahlen wie der 6 umgehst, die sowohl durch 3 als auch durch 2 teilbar sind.
+Kleiner Tipp: <code>length</code> kann hier sehr hilfreich sein.</p>
+<p>Zusatzaufgabe:
+Überlege dir, wie man dieses Skript so umbauen könnte, dass es für einen Vektor mit beliebigen Teilern funktioniert.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="programmieren-in-r.html#cb124-1" aria-hidden="true" tabindex="-1"></a>divisions <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">list</span>(), <span class="fu">list</span>(), <span class="fu">list</span>())</span>
+<span id="cb124-2"><a href="programmieren-in-r.html#cb124-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-3"><a href="programmieren-in-r.html#cb124-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
+<span id="cb124-4"><a href="programmieren-in-r.html#cb124-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(i<span class="sc">%%</span><span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>){</span>
+<span id="cb124-5"><a href="programmieren-in-r.html#cb124-5" aria-hidden="true" tabindex="-1"></a>    divisions[[<span class="dv">2</span>]][[<span class="fu">length</span>(divisions[[<span class="dv">2</span>]]) <span class="sc">+</span> <span class="dv">1</span>]] <span class="ot">&lt;-</span> i</span>
+<span id="cb124-6"><a href="programmieren-in-r.html#cb124-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb124-7"><a href="programmieren-in-r.html#cb124-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(i<span class="sc">%%</span><span class="dv">3</span> <span class="sc">==</span> <span class="dv">0</span>){</span>
+<span id="cb124-8"><a href="programmieren-in-r.html#cb124-8" aria-hidden="true" tabindex="-1"></a>    divisions[[<span class="dv">3</span>]][[<span class="fu">length</span>(divisions[[<span class="dv">3</span>]]) <span class="sc">+</span> <span class="dv">1</span>]] <span class="ot">&lt;-</span> i</span>
+<span id="cb124-9"><a href="programmieren-in-r.html#cb124-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb124-10"><a href="programmieren-in-r.html#cb124-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(i<span class="sc">%%</span><span class="dv">2</span> <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> i<span class="sc">%%</span><span class="dv">3</span> <span class="sc">!=</span> <span class="dv">0</span>){</span>
+<span id="cb124-11"><a href="programmieren-in-r.html#cb124-11" aria-hidden="true" tabindex="-1"></a>    divisions[[<span class="dv">1</span>]][[<span class="fu">length</span>(divisions[[<span class="dv">1</span>]]) <span class="sc">+</span> <span class="dv">1</span>]] <span class="ot">&lt;-</span> i</span>
+<span id="cb124-12"><a href="programmieren-in-r.html#cb124-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb124-13"><a href="programmieren-in-r.html#cb124-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb124-14"><a href="programmieren-in-r.html#cb124-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(divisions)</span></code></pre></div>
+<pre><code>##      Length Class  Mode
+## [1,] 33     -none- list
+## [2,] 50     -none- list
+## [3,] 33     -none- list</code></pre>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="programmieren-in-r.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Zusatz:</span></span>
+<span id="cb126-2"><a href="programmieren-in-r.html#cb126-2" aria-hidden="true" tabindex="-1"></a>divisions <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">list</span>()) <span class="co"># mit einer leeren Liste für die nicht-teilbaren initiieren</span></span>
+<span id="cb126-3"><a href="programmieren-in-r.html#cb126-3" aria-hidden="true" tabindex="-1"></a>divider <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">9</span>)</span>
+<span id="cb126-4"><a href="programmieren-in-r.html#cb126-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> divider){</span>
+<span id="cb126-5"><a href="programmieren-in-r.html#cb126-5" aria-hidden="true" tabindex="-1"></a>  divisions[[i]] <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb126-6"><a href="programmieren-in-r.html#cb126-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb126-7"><a href="programmieren-in-r.html#cb126-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
+<span id="cb126-8"><a href="programmieren-in-r.html#cb126-8" aria-hidden="true" tabindex="-1"></a>  divided <span class="ot">&lt;-</span>  F</span>
+<span id="cb126-9"><a href="programmieren-in-r.html#cb126-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> divider){</span>
+<span id="cb126-10"><a href="programmieren-in-r.html#cb126-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(i <span class="sc">%%</span> j <span class="sc">==</span> <span class="dv">0</span>){</span>
+<span id="cb126-11"><a href="programmieren-in-r.html#cb126-11" aria-hidden="true" tabindex="-1"></a>      divisions[[j]][[<span class="fu">length</span>(divisions[[j]]) <span class="sc">+</span> <span class="dv">1</span>]] <span class="ot">&lt;-</span> i</span>
+<span id="cb126-12"><a href="programmieren-in-r.html#cb126-12" aria-hidden="true" tabindex="-1"></a>      divided <span class="ot">&lt;-</span> T</span>
+<span id="cb126-13"><a href="programmieren-in-r.html#cb126-13" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb126-14"><a href="programmieren-in-r.html#cb126-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb126-15"><a href="programmieren-in-r.html#cb126-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>divided){</span>
+<span id="cb126-16"><a href="programmieren-in-r.html#cb126-16" aria-hidden="true" tabindex="-1"></a>    divisions[[<span class="dv">1</span>]][[<span class="fu">length</span>(divisions[[<span class="dv">1</span>]]) <span class="sc">+</span> <span class="dv">1</span>]] <span class="ot">&lt;-</span> i</span>
+<span id="cb126-17"><a href="programmieren-in-r.html#cb126-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb126-18"><a href="programmieren-in-r.html#cb126-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb126-19"><a href="programmieren-in-r.html#cb126-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-20"><a href="programmieren-in-r.html#cb126-20" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(divisions)</span></code></pre></div>
+<pre><code>##       Length Class  Mode
+##  [1,] 22     -none- list
+##  [2,] 50     -none- list
+##  [3,] 33     -none- list
+##  [4,]  0     -none- NULL
+##  [5,] 20     -none- list
+##  [6,]  0     -none- NULL
+##  [7,] 14     -none- list
+##  [8,]  0     -none- NULL
+##  [9,] 11     -none- list</code></pre>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="programmieren-in-r.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>(divisions[[<span class="dv">1</span>]]) <span class="co"># Mit Teilern und ohne 1 haben wir hier die Primzahlen bis 100 gesammelt.</span></span></code></pre></div>
+<pre><code>##  [1]  1 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97</code></pre>
+</details>
+</div>
+</div>
+</div>
+<div id="attribute" class="section level2">
+<h2>Attribute</h2>
+<p>Bei der sehr umständlichen Erstellung des Datensatzes haben wir schon die <code>attributes</code> kennen gelernt. Diese Informationen, die in R zu einem Objekt neben dem eigentlichen Inhalt angelegt werden können, sind ein wichtiger Teil der Abbildung objektorientierter Programmierparadigmen<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> in R.</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="programmieren-in-r.html#cb130-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb130-2"><a href="programmieren-in-r.html#cb130-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(a)</span></code></pre></div>
+<pre><code>## NULL</code></pre>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="programmieren-in-r.html#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(a) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">names =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
+<span id="cb132-2"><a href="programmieren-in-r.html#cb132-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">row.names =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb132-3"><a href="programmieren-in-r.html#cb132-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">class =</span> <span class="st">&quot;data.frame&quot;</span>)</span>
+<span id="cb132-4"><a href="programmieren-in-r.html#cb132-4" aria-hidden="true" tabindex="-1"></a>a</span></code></pre></div>
+<pre><code>##     a  b
+## 1   1  1
+## 2   2  2
+## 3   3  3
+## 4   4  4
+## 5   5  5
+## 6   6  6
+## 7   7  7
+## 8   8  8
+## 9   9  9
+## 10 10 10</code></pre>
+<p>Neben der Klasse (<code>class</code>) haben wir hier in die <code>attributes</code> auch die Namen der Einträge und die Zeilennamen geschrieben. Wir sehen also, dass der sichtbare und bemerkbare Unterschied zwischen Listen und Datensätzen aus dem Setzen dieser Attribute entsteht. Außerdem wird an diesem Beispiel deutlich, dass die Funktionen, die wir bisher zum Erstellen von Datensätzen genutzt haben, auch eigentlich nur Attribute setzen.
+Attribute sind also zusätzliche Informationen, die den Umgang mit Objekten ändern können.</p>
+<p>Ein weiteres Beispiel für solche Änderungen durch Attribute sind Matritzen. In R kann man mit der <code>matrix</code>-Funktion zweidimensionale Daten-Raster erstellen, für die zum Beispiel auch die dimensionierte Indizierung <code>[,]</code> definiert ist:</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="programmieren-in-r.html#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,</span>
+<span id="cb134-2"><a href="programmieren-in-r.html#cb134-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">nrow =</span> <span class="dv">10</span>, </span>
+<span id="cb134-3"><a href="programmieren-in-r.html#cb134-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">ncol =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]    1   11   21   31   41   51   61   71   81    91
+##  [2,]    2   12   22   32   42   52   62   72   82    92
+##  [3,]    3   13   23   33   43   53   63   73   83    93
+##  [4,]    4   14   24   34   44   54   64   74   84    94
+##  [5,]    5   15   25   35   45   55   65   75   85    95
+##  [6,]    6   16   26   36   46   56   66   76   86    96
+##  [7,]    7   17   27   37   47   57   67   77   87    97
+##  [8,]    8   18   28   38   48   58   68   78   88    98
+##  [9,]    9   19   29   39   49   59   69   79   89    99
+## [10,]   10   20   30   40   50   60   70   80   90   100</code></pre>
+<div id="aufgabe-8" class="section level4">
+<h4>Aufgabe</h4>
+<p>Erstelle eine Matrix und gucke die genau die Attribute und Inhalte an.</p>
+<p>Können wir so wie wir einen Datensatz aus einer Liste erstellt haben, irgendwie ohne die <code>matrix</code>-Funktion eine Matrix erstellen? Gucke Dir dabei nach jeder Änderung an, was <code>class</code> und <code>mode</code> zurückgeben.</p>
+<p>Probiere außerdem aus, was passiert, wenn man die Attribute einer Matrix auf eine Liste überträgt.</p>
+<p><strong>Zusatz:</strong></p>
+<p>Was passiert, wenn wir der Liste drei Dimensionen geben?</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="programmieren-in-r.html#cb136-1" aria-hidden="true" tabindex="-1"></a>my_mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>],</span>
+<span id="cb136-2"><a href="programmieren-in-r.html#cb136-2" aria-hidden="true" tabindex="-1"></a>                 <span class="dv">4</span>)</span>
+<span id="cb136-3"><a href="programmieren-in-r.html#cb136-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb136-4"><a href="programmieren-in-r.html#cb136-4" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(my_mat)</span></code></pre></div>
+<pre><code>## $dim
+## [1] 4 5</code></pre>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="programmieren-in-r.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(my_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="programmieren-in-r.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="programmieren-in-r.html#cb142-1" aria-hidden="true" tabindex="-1"></a>my_list_mat <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,<span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>,<span class="dv">11</span><span class="sc">:</span><span class="dv">15</span>,<span class="dv">16</span><span class="sc">:</span><span class="dv">20</span>)</span>
+<span id="cb142-2"><a href="programmieren-in-r.html#cb142-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb142-3"><a href="programmieren-in-r.html#cb142-3" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(my_list_mat) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb142-4"><a href="programmieren-in-r.html#cb142-4" aria-hidden="true" tabindex="-1"></a>my_list_mat</span></code></pre></div>
+<pre><code>##      [,1]      [,2]     
+## [1,] integer,5 integer,5
+## [2,] integer,5 integer,5</code></pre>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="programmieren-in-r.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(my_list_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="programmieren-in-r.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_list_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="programmieren-in-r.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Zusatz</span></span>
+<span id="cb148-2"><a href="programmieren-in-r.html#cb148-2" aria-hidden="true" tabindex="-1"></a>my_list_mat <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, </span>
+<span id="cb148-3"><a href="programmieren-in-r.html#cb148-3" aria-hidden="true" tabindex="-1"></a>                    <span class="dv">3</span>, <span class="dv">4</span>, </span>
+<span id="cb148-4"><a href="programmieren-in-r.html#cb148-4" aria-hidden="true" tabindex="-1"></a>                    <span class="dv">5</span>, <span class="dv">6</span>, </span>
+<span id="cb148-5"><a href="programmieren-in-r.html#cb148-5" aria-hidden="true" tabindex="-1"></a>                    <span class="dv">7</span>, <span class="dv">8</span>)</span>
+<span id="cb148-6"><a href="programmieren-in-r.html#cb148-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb148-7"><a href="programmieren-in-r.html#cb148-7" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(my_list_mat) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>))</span>
+<span id="cb148-8"><a href="programmieren-in-r.html#cb148-8" aria-hidden="true" tabindex="-1"></a>my_list_mat</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,] 1    3    5    7   
+## [2,] 2    4    6    8</code></pre>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="programmieren-in-r.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(my_list_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="programmieren-in-r.html#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_list_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="programmieren-in-r.html#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(my_list_mat) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb154-2"><a href="programmieren-in-r.html#cb154-2" aria-hidden="true" tabindex="-1"></a>my_list_mat</span></code></pre></div>
+<pre><code>## , , 1
+## 
+##      [,1] [,2]
+## [1,] 1    3   
+## [2,] 2    4   
+## 
+## , , 2
+## 
+##      [,1] [,2]
+## [1,] 5    7   
+## [2,] 6    8</code></pre>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="programmieren-in-r.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(my_list_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="programmieren-in-r.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_list_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;array&quot;</code></pre>
+<p>Mit anderen Worten ist eine Matrix als ein Array definiert, das (egal ob Liste oder Vektor), zwei Dimensionen hat. Mit mehr als zwei Dimensionen fällt die Matrix-Klasse weg.</p>
+</details>
+<p>Die Matrix-Listen aus der Aufgabe können wir übrigens auch wie Matrizen verwenden:</p>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="programmieren-in-r.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(my_list_mat) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>))</span>
+<span id="cb160-2"><a href="programmieren-in-r.html#cb160-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb160-3"><a href="programmieren-in-r.html#cb160-3" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(my_list_mat)</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,] 1    2   
+## [2,] 3    4   
+## [3,] 5    6   
+## [4,] 7    8</code></pre>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="programmieren-in-r.html#cb162-1" aria-hidden="true" tabindex="-1"></a>my_list_mat[<span class="dv">1</span>,<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## [[1]]
+## [1] 3</code></pre>
+<p>Das Ergebnis ist halt nur eine Liste, was mit dem bekannten doppel-Index aber auch umgangen werden kann:</p>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="programmieren-in-r.html#cb164-1" aria-hidden="true" tabindex="-1"></a>my_list_mat[[<span class="dv">1</span>,<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+</div>
+</div>
+<div id="functionals" class="section level2">
+<h2>Functionals</h2>
 
 </div>
+</div>
+<h3>Literatur</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-wickhamAdvanced2019" class="csl-entry">
+Wickham, Hadley. 2019. <em>Advanced r</em>. <span>CRC press</span>.
 </div>
 </div>
 <div class="footnotes">
@@ -642,6 +1027,8 @@ Antwort
 <ol start="1">
 <li id="fn1"><p>Nicht, dass er uns verklagt.<a href="programmieren-in-r.html#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p>Es ist für einen Rechner sehr schwierig, wahren Zufall zu erzeugen. Auf der Hilfeseite <code>?Random</code> kann man sich eine Liste der Algorithmen anschauen, die R zur Generation quasi-zufälliger Wertfolgen nutzt. Diese nicht-wirklich-zufällige Natur der Wertfolgen hat aber auch den Vorteil, dass wir “zufällige” Ergebnisse reproduzierbar machen können. mit <code>set.seed()</code> können wir einen Startwert für die Zufalls-Generation festlegen, den andere R-Nutzer dann auch wählen können.<a href="programmieren-in-r.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Wobei der Ausdruck “Vektoren” hier irreführend ist, in R wird eigentlich die Eltern-Klasse der Objekte <code>Vector</code> genannt, zu der <code>Atomic</code>(unsere “Vektoren”) und <code>List</code> gehören. Da wir aber in den Grundlagenfächern wegen der mathematischen Analogie “Vektor” zu den <code>Atomic</code>-Objekten gesagt haben, behalten wir das hier bei.<a href="programmieren-in-r.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>Was genau objektorientierte Programmierung ist, ist hier erstmal nicht so wichtig, im Prinzip sind aber alle Objekte mit <code>class</code>-Attribut nach objektorientierten Paradigmen erstellt. Hier wird das nur erwähnt, weil es die Geschichte von R als Nachfolger von S demonstriert, in dem ursprünglich “moderne” Paradigmen nicht Thema waren. Die Erweiterung der bestehenden Objekte durch das Setzen von Attributen ist die Lösung für dieses Problem, die in Rs <code>S3</code>-Objekten resultieren. Daneben gibt es in R die <code>S4</code>-Objekte, die formalisiertere Klassendefinitionen ermöglichen. Das führt aber alles ein bisschen weit für diese Veranstaltung, deswegen sei hier nochmal auf das sehr gute Buch von <span class="citation">Wickham (<a href="#ref-wickhamAdvanced2019" role="doc-biblioref">2019</a>)</span> verwiesen, in den Kapiteln 13-15 geht er auf OO-Programmierung in R ein.<a href="programmieren-in-r.html#fnref4" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
@@ -649,7 +1036,7 @@ Antwort
           </div>
         </div>
       </div>
-<a href="lehrplan.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="literatur.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
@@ -693,7 +1080,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["Robustheit und Voraussetzungstests.pdf"],
+"download": ["Robustheit.pdf"],
 "toc": {
 "collapse": "subsection"
 }

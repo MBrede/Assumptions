@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Robustheit</title>
+  <title>Zufallswerte | Robustheit</title>
   <meta name="description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Robustheit" />
+  <meta property="og:title" content="Zufallswerte | Robustheit" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Robustheit" />
+  <meta name="twitter:title" content="Zufallswerte | Robustheit" />
   
   <meta name="twitter:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="lehrplan.html"/>
+<link rel="prev" href="if-statements.html"/>
+<link rel="next" href="schleifen.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -207,27 +207,70 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Robustheit</h1>
-<p class="author"><em>Max Brede und Johannes Andres</em></p>
-<p class="date" style="margin-top: 1.5em;"><em>2021-10-25</em></p>
+<div id="zufallswerte" class="section level1">
+<h1>Zufallswerte</h1>
+<p>Mit R kann man sehr einfach quasi-zufällige<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> Wertreihen erstellen. Aus der Veranstaltung letztes Semester kennen wir ja schon die Funktion <code>sample</code>, die aus einer vorgegebenen Urne ziehen kann.</p>
+<p>Für unsere Simulations-Probleme gibt es noch eine andere Reihe an Funktionen, die für eine feste Verteilungsklasse zufällige Wertfolgen erstellen können.</p>
+<p>Diese Funktionen werden mit einem <code>r</code> für <em>random</em> und der Verteilungsklasse aufgerufen. Eine Übersicht der implementierten Verteilungen kann man mit <code>?Distributions</code> aufrufen.</p>
+<p>Mit diesen Funktionen können wir uns zum Beispiel jeweils 1000 zufällige Werte aus einer <span class="math inline">\(N(0,5)-\)</span>, einer <span class="math inline">\(B(20000, 1/6)-\)</span>, einer <span class="math inline">\(t(50)\)</span>- und einer <span class="math inline">\(F(12,36)-\)</span>Verteilung ziehen und in Histogrammen darstellen:</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="zufallswerte.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb56-2"><a href="zufallswerte.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb56-3"><a href="zufallswerte.html#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">norm =</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>,<span class="at">mean =</span> <span class="dv">0</span>,<span class="at">sd =</span> <span class="fu">sqrt</span>(<span class="dv">5</span>)),</span>
+<span id="cb56-4"><a href="zufallswerte.html#cb56-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">binom =</span> <span class="fu">rbinom</span>(<span class="dv">1000</span>, <span class="at">size =</span> <span class="dv">20000</span>,<span class="at">prob =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>),</span>
+<span id="cb56-5"><a href="zufallswerte.html#cb56-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">t =</span> <span class="fu">rt</span>(<span class="dv">1000</span>,<span class="at">df =</span> <span class="dv">50</span>),</span>
+<span id="cb56-6"><a href="zufallswerte.html#cb56-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">f =</span> <span class="fu">rf</span>(<span class="dv">1000</span>,<span class="at">df1 =</span> <span class="dv">12</span>,<span class="at">df2 =</span> <span class="dv">36</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-7"><a href="zufallswerte.html#cb56-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(),</span>
+<span id="cb56-8"><a href="zufallswerte.html#cb56-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&#39;dist&#39;</span>,</span>
+<span id="cb56-9"><a href="zufallswerte.html#cb56-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&#39;sample&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-10"><a href="zufallswerte.html#cb56-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sample)) <span class="sc">+</span></span>
+<span id="cb56-11"><a href="zufallswerte.html#cb56-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">&#39;white&#39;</span>,</span>
+<span id="cb56-12"><a href="zufallswerte.html#cb56-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">&#39;black&#39;</span>,</span>
+<span id="cb56-13"><a href="zufallswerte.html#cb56-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">bins =</span> <span class="dv">40</span>) <span class="sc">+</span></span>
+<span id="cb56-14"><a href="zufallswerte.html#cb56-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>dist,<span class="at">scales =</span> <span class="st">&#39;free_x&#39;</span>)</span></code></pre></div>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<div id="aufgabe-3" class="section level3">
+<h3>Aufgabe</h3>
+<p>Erstelle eine Funktion <code>gen_distributed_values</code>, die mit Hilfe von <code>if</code>-Statements anhand eines Arguments <code>distribution</code> und eines Arguments <code>n</code> einen Vektor an Zufallszahlen generiert. Dabei soll <code>distribution</code> angeben, welche aus drei möglichen Verteilungen genutzt wird. Denke außerdem an mögliche Verteilungseigenschaften der genutzten Funktionen und füge sie als optionale Argumente zur Funktion hinzu.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="zufallswerte.html#cb57-1" aria-hidden="true" tabindex="-1"></a>gen_distributed_values <span class="ot">&lt;-</span> <span class="cf">function</span>(distribution,</span>
+<span id="cb57-2"><a href="zufallswerte.html#cb57-2" aria-hidden="true" tabindex="-1"></a>                                   n,</span>
+<span id="cb57-3"><a href="zufallswerte.html#cb57-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">df =</span> <span class="dv">1</span>,</span>
+<span id="cb57-4"><a href="zufallswerte.html#cb57-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">lambda =</span> <span class="dv">25</span>,</span>
+<span id="cb57-5"><a href="zufallswerte.html#cb57-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">rate =</span> <span class="dv">5</span>) {</span>
+<span id="cb57-6"><a href="zufallswerte.html#cb57-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(distribution <span class="sc">==</span> <span class="st">&#39;t&#39;</span>){</span>
+<span id="cb57-7"><a href="zufallswerte.html#cb57-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">rt</span>(n, df))</span>
+<span id="cb57-8"><a href="zufallswerte.html#cb57-8" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span> <span class="cf">if</span>(distribution <span class="sc">==</span> <span class="st">&#39;pois&#39;</span>){</span>
+<span id="cb57-9"><a href="zufallswerte.html#cb57-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">rpois</span>(n, lambda))</span>
+<span id="cb57-10"><a href="zufallswerte.html#cb57-10" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span> <span class="cf">if</span>(distribution <span class="sc">==</span> <span class="st">&#39;exp&#39;</span>){</span>
+<span id="cb57-11"><a href="zufallswerte.html#cb57-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">rexp</span>(n, rate))</span>
+<span id="cb57-12"><a href="zufallswerte.html#cb57-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb57-13"><a href="zufallswerte.html#cb57-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">&#39;Distribution is not implemented, returning zeros&#39;</span>)</span>
+<span id="cb57-14"><a href="zufallswerte.html#cb57-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">numeric</span>(n))</span>
+<span id="cb57-15"><a href="zufallswerte.html#cb57-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb57-16"><a href="zufallswerte.html#cb57-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-17"><a href="zufallswerte.html#cb57-17" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_distributed_values</span>(<span class="st">&#39;pois&#39;</span>,</span>
+<span id="cb57-18"><a href="zufallswerte.html#cb57-18" aria-hidden="true" tabindex="-1"></a>                       <span class="dv">5</span>,</span>
+<span id="cb57-19"><a href="zufallswerte.html#cb57-19" aria-hidden="true" tabindex="-1"></a>                       <span class="at">lambda =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 4 4 3 5 2</code></pre>
+</details>
 </div>
-<div id="vorwort" class="section level1">
-<h1>Vorwort</h1>
-<p>Dieses mit <code>bookdown</code> erstellte Dokument ist das Skript zum Seminar “psyM9-1: Psychologische Forschungsmethoden. Projektseminar I” und “PSY_B_20_e-1: Forschungsorientierte Vertiefung: Forschungsmethoden” der CAU zu Kiel.</p>
-<footer>
-<div style="font-size: 75%; display: flex; align-items: center; justify-content: center;style="padding-top: 50px;">
- <p xmlns:cc="http://creativecommons.org/ns#" >This work is licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-SA 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></p> 
 </div>
-</footer>
+<div class="footnotes">
+<hr />
+<ol start="2">
+<li id="fn2"><p>Es ist für einen Rechner sehr schwierig, wahren Zufall zu erzeugen. Auf der Hilfeseite <code>?Random</code> kann man sich eine Liste der Algorithmen anschauen, die R zur Generation quasi-zufälliger Wertfolgen nutzt. Diese nicht-wirklich-zufällige Natur der Wertfolgen hat aber auch den Vorteil, dass wir “zufällige” Ergebnisse reproduzierbar machen können. mit <code>set.seed()</code> können wir einen Startwert für die Zufalls-Generation festlegen, den andere R-Nutzer dann auch wählen können.<a href="zufallswerte.html#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="lehrplan.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="if-statements.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="schleifen.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

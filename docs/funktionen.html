@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Funktionen | Robustheit</title>
+  <meta name="description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Funktionen | Robustheit" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Funktionen | Robustheit" />
+  
+  <meta name="twitter:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  
+
+<meta name="author" content="Max Brede und Johannes Andres" />
+
+
+<meta name="date" content="2021-10-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="lehrplan.html"/>
+<link rel="next" href="if-statements.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Robustheit und Voraussetzungstests</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Vorwort</a></li>
+<li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html"><i class="fa fa-check"></i>Lehrplan</a>
+<ul>
+<li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html#semesterplan"><i class="fa fa-check"></i>Semesterplan</a></li>
+</ul></li>
+<li class="part"><span><b>I Programmieren in R</b></span></li>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html"><i class="fa fa-check"></i>Funktionen</a>
+<ul>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html#geschachtelte-funktionen"><i class="fa fa-check"></i>Geschachtelte Funktionen</a></li>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html#optionale-argumente"><i class="fa fa-check"></i>Optionale Argumente</a></li>
+</ul></li>
+<li><a href="if-statements.html#if-statements"><code>if</code>-Statements</a></li>
+<li class="chapter" data-level="" data-path="zufallswerte.html"><a href="zufallswerte.html"><i class="fa fa-check"></i>Zufallswerte</a></li>
+<li class="chapter" data-level="" data-path="schleifen.html"><a href="schleifen.html"><i class="fa fa-check"></i>Schleifen</a></li>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html"><i class="fa fa-check"></i>Listen</a>
+<ul>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html#listen-und-datensätze"><i class="fa fa-check"></i>Listen und Datensätze</a></li>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html#arbeiten-mit-listen"><i class="fa fa-check"></i>Arbeiten mit Listen</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="attribute.html"><a href="attribute.html"><i class="fa fa-check"></i>Attribute</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html"><i class="fa fa-check"></i>Functionals</a>
+<ul>
+<li><a href="functionals.html#purrrmap"><code>purrr::map</code></a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#exkurs-iteratoren-vergleich"><i class="fa fa-check"></i>Exkurs: Iteratoren-Vergleich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
+<li class="divider"></li>
+<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Robustheit</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="funktionen" class="section level1">
+<h1>Funktionen</h1>
+<p>Wir kennen Funktionen ja schon aus den EDV-Veranstaltungen.</p>
+<p>Zum Beispiel macht die <code>sum</code>-Funktion mit einem Vektor das, was der Name sagt:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="funktionen.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="funktionen.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p>Funktionen können wir auch selbst definieren. Eine Funktion, die uns begrüßt könnte zum Beispiel wie folgt aussehen:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="funktionen.html#cb5-1" aria-hidden="true" tabindex="-1"></a>greet_me <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb5-2"><a href="funktionen.html#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="st">&#39;Hello! Nice to see you!&#39;</span>)</span>
+<span id="cb5-3"><a href="funktionen.html#cb5-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Wenn wir jetzt die <code>greet_me</code>-Funktion aufrufen, sehen wir:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="funktionen.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">greet_me</span>()</span></code></pre></div>
+<pre><code>## [1] &quot;Hello! Nice to see you!&quot;</code></pre>
+<p>In der Funktionsdefinition können wir ein paar Teile wiederkennen.
+Zum Einen ist da der <code>greet_me &lt;-</code>-Teil, den wir ja schon als Objektzuweisung kennen. Wir weisen also dem Ergebnis eines Ausdrucks den Namen <code>greet_me</code> zu.</p>
+<p>Funktions-<em>Objekte</em> werden also genauso wie Datensätze und Vektoren als eine Kombination von Namen und zugehörigem Inhalt definiert.</p>
+<p>Dabei erstellt die Funktion <code>function()</code> einen Objektinhalt, der aus <em>body</em> und <em>formals</em> besteht und in einem <em>environment</em> definiert ist.</p>
+<p>Der <em>body</em> ist der Teil der Funktion, der definiert, was passieren soll und wird in R in geschweiften Klammern hinter der <code>function</code>-Funktion definiert
+In unserem Beispiel besteht der body aus dem Aufruf, einen Text zurückzugeben:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="funktionen.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">body</span>(greet_me)</span></code></pre></div>
+<pre><code>## {
+##     return(&quot;Hello! Nice to see you!&quot;)
+## }</code></pre>
+<p>Die <em>formals</em> sind die Argumente, die bei der Ausführung des <em>body</em>s genutzt werden sollen.</p>
+<p>In unserem Beispiel haben wir noch keine Argumente berücksichtigt:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="funktionen.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">formals</span>(greet_me)</span></code></pre></div>
+<pre><code>## NULL</code></pre>
+<p>Wir könnten die Funktion aber neu definieren, so dass sie einen gegebenen Namen begrüßt. Dafür geben wir der <code>function</code>-Funktion ein Argument, das der Name des erwarteten Arguments sein soll:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="funktionen.html#cb12-1" aria-hidden="true" tabindex="-1"></a>greet_someone <span class="ot">&lt;-</span> <span class="cf">function</span>(name){</span>
+<span id="cb12-2"><a href="funktionen.html#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">paste0</span>(<span class="st">&#39;Hello &#39;</span>,name,<span class="st">&#39;! Nice to see you!&#39;</span>))</span>
+<span id="cb12-3"><a href="funktionen.html#cb12-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-4"><a href="funktionen.html#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="funktionen.html#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">greet_someone</span>(<span class="st">&#39;Marvin&#39;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Hello Marvin! Nice to see you!&quot;</code></pre>
+<p>Wenn wir uns jetzt nochmal die <code>formals</code> ausgeben lassen, sehen wir, dass ein Argument vorgesehen ist:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="funktionen.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">formals</span>(greet_someone)</span></code></pre></div>
+<pre><code>## $name</code></pre>
+<p>Der letzte Teil einer Funktionsdefinition ist das <em>environment</em>. Damit ist der Namensraum gemeint, auf den die Funktion zugreifen kann:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="funktionen.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">environment</span>(greet_someone)</span></code></pre></div>
+<pre><code>## &lt;environment: R_GlobalEnv&gt;</code></pre>
+<p>In unserem Beispiel wurde die Funktion in der laufenden R-Session definiert (wie die allermeisten Funktionen, die wir dieses Semester nutzen werden). Der Output <code>R_GlobalEnv</code> heißt also, dass die Funktion auf Objekte in der Haupt-R-Session zurückgreifen kann.</p>
+<p>Praktisch heißt das, dass wir zum Beispiel Konstanten einmal außerhalb einer Funktion definieren können, die diese dann nutzen kann:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="funktionen.html#cb18-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb18-2"><a href="funktionen.html#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="funktionen.html#cb18-3" aria-hidden="true" tabindex="-1"></a>greet_someone_n_times <span class="ot">&lt;-</span> <span class="cf">function</span>(name) {</span>
+<span id="cb18-4"><a href="funktionen.html#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rep</span>(<span class="fu">paste0</span>(<span class="st">&#39;Hello &#39;</span>, </span>
+<span id="cb18-5"><a href="funktionen.html#cb18-5" aria-hidden="true" tabindex="-1"></a>                    name, </span>
+<span id="cb18-6"><a href="funktionen.html#cb18-6" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&#39;! Nice to see you!&#39;</span>), </span>
+<span id="cb18-7"><a href="funktionen.html#cb18-7" aria-hidden="true" tabindex="-1"></a>             n))</span>
+<span id="cb18-8"><a href="funktionen.html#cb18-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-9"><a href="funktionen.html#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="funktionen.html#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">greet_someone_n_times</span>(<span class="st">&#39;Marvin&#39;</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;Hello Marvin! Nice to see you!&quot; &quot;Hello Marvin! Nice to see you!&quot;
+##  [3] &quot;Hello Marvin! Nice to see you!&quot; &quot;Hello Marvin! Nice to see you!&quot;
+##  [5] &quot;Hello Marvin! Nice to see you!&quot; &quot;Hello Marvin! Nice to see you!&quot;
+##  [7] &quot;Hello Marvin! Nice to see you!&quot; &quot;Hello Marvin! Nice to see you!&quot;
+##  [9] &quot;Hello Marvin! Nice to see you!&quot; &quot;Hello Marvin! Nice to see you!&quot;</code></pre>
+<p>Was das aber nicht heißt ist, dass die Funktion eine externe Variable ändern kann:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="funktionen.html#cb20-1" aria-hidden="true" tabindex="-1"></a>greet_someone_n_times <span class="ot">&lt;-</span> <span class="cf">function</span>(name) {</span>
+<span id="cb20-2"><a href="funktionen.html#cb20-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-3"><a href="funktionen.html#cb20-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb20-4"><a href="funktionen.html#cb20-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-5"><a href="funktionen.html#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rep</span>(<span class="fu">paste0</span>(<span class="st">&#39;Hello &#39;</span>, </span>
+<span id="cb20-6"><a href="funktionen.html#cb20-6" aria-hidden="true" tabindex="-1"></a>                    name, </span>
+<span id="cb20-7"><a href="funktionen.html#cb20-7" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&#39;! Nice to see you!&#39;</span>), </span>
+<span id="cb20-8"><a href="funktionen.html#cb20-8" aria-hidden="true" tabindex="-1"></a>             n))</span>
+<span id="cb20-9"><a href="funktionen.html#cb20-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-10"><a href="funktionen.html#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="funktionen.html#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="fu">greet_someone_n_times</span>(<span class="st">&#39;Marvin&#39;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Hello Marvin! Nice to see you!&quot; &quot;Hello Marvin! Nice to see you!&quot;
+## [3] &quot;Hello Marvin! Nice to see you!&quot;</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="funktionen.html#cb22-1" aria-hidden="true" tabindex="-1"></a>n</span></code></pre></div>
+<pre><code>## [1] 10</code></pre>
+<p>Das liegt daran, dass die Funktion beim Aufrufen eine Kopie des globalen Environments als eigene Variablenumgebung zugewiesen bekommt und diese Kopie auch verändern kann. Die Kopie wird aber bei Beenden der Funktion verworfen, so dass Änderungen in der Funktion nicht erhalten bleiben.</p>
+<p>Dabei werden die Argumente der Funktion dem Environment der Funktion hinzugefügt, wobei im Zweifelsfall gleichnamige Objekte für die Funktion überschrieben werden:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="funktionen.html#cb24-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb24-2"><a href="funktionen.html#cb24-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">20</span></span>
+<span id="cb24-3"><a href="funktionen.html#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="funktionen.html#cb24-4" aria-hidden="true" tabindex="-1"></a>my_function <span class="ot">&lt;-</span> <span class="cf">function</span>(x,y){</span>
+<span id="cb24-5"><a href="funktionen.html#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(x,y))</span>
+<span id="cb24-6"><a href="funktionen.html#cb24-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-7"><a href="funktionen.html#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="funktionen.html#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="fu">my_function</span>(<span class="dv">21</span>,<span class="dv">22</span>)</span></code></pre></div>
+<pre><code>## [1] 21 22</code></pre>
+<div id="aufgabe" class="section level3">
+<h3>Aufgabe</h3>
+<ol style="list-style-type: decimal">
+<li><p>Erstelle eine Funktion mit dem Namen <code>my_mean</code>, die den Mittelwert eines gegebenen Vektors berechnet.</p></li>
+<li><p>Was ergibt der folgende Aufruf:</p></li>
+</ol>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="funktionen.html#cb26-1" aria-hidden="true" tabindex="-1"></a>dummy_function <span class="ot">&lt;-</span> <span class="cf">function</span>(a,b){</span>
+<span id="cb26-2"><a href="funktionen.html#cb26-2" aria-hidden="true" tabindex="-1"></a>  a <span class="sc">*</span> b</span>
+<span id="cb26-3"><a href="funktionen.html#cb26-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-4"><a href="funktionen.html#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="funktionen.html#cb26-5" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">dummy_function</span>(<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb26-6"><a href="funktionen.html#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="funktionen.html#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">formals</span>(dummy_function)</span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Was ist am Ende des folgenden Aufrufs in <code>number</code> abgelegt?</li>
+</ol>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="funktionen.html#cb27-1" aria-hidden="true" tabindex="-1"></a>number <span class="ot">&lt;-</span> <span class="st">&#39;a number&#39;</span></span>
+<span id="cb27-2"><a href="funktionen.html#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="funktionen.html#cb27-3" aria-hidden="true" tabindex="-1"></a>important_calculation <span class="ot">&lt;-</span> <span class="cf">function</span>(number){</span>
+<span id="cb27-4"><a href="funktionen.html#cb27-4" aria-hidden="true" tabindex="-1"></a>  number <span class="ot">&lt;-</span> <span class="dv">42</span> <span class="sc">/</span> number <span class="sc">*</span> number</span>
+<span id="cb27-5"><a href="funktionen.html#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(number)</span>
+<span id="cb27-6"><a href="funktionen.html#cb27-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-7"><a href="funktionen.html#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="funktionen.html#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="fu">important_calculation</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 42</code></pre>
+<details>
+<summary>
+Antworten
+</summary>
+<p><strong>1.</strong></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="funktionen.html#cb29-1" aria-hidden="true" tabindex="-1"></a>my_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb29-2"><a href="funktionen.html#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(x)<span class="sc">/</span><span class="fu">length</span>(x))</span>
+<span id="cb29-3"><a href="funktionen.html#cb29-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><strong>2.</strong></p>
+<pre><code>## $a
+## 
+## 
+## $b</code></pre>
+<p><strong>3.</strong></p>
+<p><code>'a number'</code></p>
+</details>
+</div>
+<div id="geschachtelte-funktionen" class="section level2">
+<h2>Geschachtelte Funktionen</h2>
+<p>Um den Code übersichtlicher zu halten, können Teile von Funktionen in andere Funktionen ausgegliedert werden.
+Dabei nutzen wir, dass unsere Funktionen auch auf das global Environment zugreifen und Funktionen ja auch nur Arten von Objekten sind.</p>
+<p>Wenn wir unsere Funktionen <code>greet_someone</code> und <code>greet_someone_n_times</code> von vorhin nochmal angucken sehen wir, dass ein Teil des Codes in beiden auftaucht:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="funktionen.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(greet_someone)</span></code></pre></div>
+<pre><code>## function(name){
+##   return(paste0(&#39;Hello &#39;,name,&#39;! Nice to see you!&#39;))
+## }</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="funktionen.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(greet_someone_n_times)</span></code></pre></div>
+<pre><code>## function(name) {
+##   
+##   n &lt;- 3
+##   
+##   return(rep(paste0(&#39;Hello &#39;, 
+##                     name, 
+##                     &#39;! Nice to see you!&#39;), 
+##              n))
+## }</code></pre>
+<p>Wir können <code>greet_someone_n_times</code> jetzt so umschreiben, dass sie <code>greet_someone</code> benutzt:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="funktionen.html#cb35-1" aria-hidden="true" tabindex="-1"></a>greet_someone_n_times <span class="ot">&lt;-</span> <span class="cf">function</span>(name){</span>
+<span id="cb35-2"><a href="funktionen.html#cb35-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb35-3"><a href="funktionen.html#cb35-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-4"><a href="funktionen.html#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rep</span>(<span class="fu">greet_someone</span>(name), </span>
+<span id="cb35-5"><a href="funktionen.html#cb35-5" aria-hidden="true" tabindex="-1"></a>             n))</span>
+<span id="cb35-6"><a href="funktionen.html#cb35-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb35-7"><a href="funktionen.html#cb35-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="funktionen.html#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="funktionen.html#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="fu">greet_someone_n_times</span>(<span class="st">&#39;Marvin&#39;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Hello Marvin! Nice to see you!&quot; &quot;Hello Marvin! Nice to see you!&quot;
+## [3] &quot;Hello Marvin! Nice to see you!&quot;</code></pre>
+<div id="aufgabe-1" class="section level3">
+<h3>Aufgabe</h3>
+<ol style="list-style-type: decimal">
+<li>Erstelle eine <code>my_var</code> Funktion, die die unkorrigierte Varianz eines Vektors (<span class="math inline">\(S^2 = {1\over{n}} \sum_{i=1}^n(x_i -M_X)^2\)</span>) berechnet. Benutze für den Mittelwert deine Mittelwerts-Funktion aus dem letzten Aufgaben-Block.</li>
+</ol>
+<details>
+<summary>
+Antworten
+</summary>
+<p><strong>1.</strong></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="funktionen.html#cb37-1" aria-hidden="true" tabindex="-1"></a>my_var <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb37-2"><a href="funktionen.html#cb37-2" aria-hidden="true" tabindex="-1"></a>  m_x <span class="ot">&lt;-</span> <span class="fu">my_mean</span>(x)</span>
+<span id="cb37-3"><a href="funktionen.html#cb37-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb37-4"><a href="funktionen.html#cb37-4" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> (x <span class="sc">-</span> m_x)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb37-5"><a href="funktionen.html#cb37-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb37-6"><a href="funktionen.html#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">length</span>(x) <span class="sc">*</span> <span class="fu">sum</span>(x))</span>
+<span id="cb37-7"><a href="funktionen.html#cb37-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</details>
+</div>
+</div>
+<div id="optionale-argumente" class="section level2">
+<h2>Optionale Argumente</h2>
+<p>Unsere <code>greet_someone_n_times</code>-Funktion sieht ja im Moment wie folgt aus:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="funktionen.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(greet_someone_n_times)</span></code></pre></div>
+<pre><code>## function(name){
+##   n &lt;- 3
+##   
+##   return(rep(greet_someone(name), 
+##              n))
+## }</code></pre>
+<p>Ungünstig daran ist noch, dass das <code>n</code> bei jedem Aufruf als Konstante neu definiert ist.</p>
+<p>Um dieses n anpassen zu können, können wir es als zweites Argument übergeben, das beim Aufruf festgelegt werden kann:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="funktionen.html#cb40-1" aria-hidden="true" tabindex="-1"></a>greet_someone_n_times <span class="ot">&lt;-</span> <span class="cf">function</span>(name, n){</span>
+<span id="cb40-2"><a href="funktionen.html#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rep</span>(<span class="fu">greet_someone</span>(name), </span>
+<span id="cb40-3"><a href="funktionen.html#cb40-3" aria-hidden="true" tabindex="-1"></a>             n))</span>
+<span id="cb40-4"><a href="funktionen.html#cb40-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-5"><a href="funktionen.html#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="funktionen.html#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">greet_someone_n_times</span>(<span class="st">&#39;Marvin&#39;</span>,<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Hello Marvin! Nice to see you!&quot; &quot;Hello Marvin! Nice to see you!&quot;
+## [3] &quot;Hello Marvin! Nice to see you!&quot;</code></pre>
+<p>Da wir uns aber das Tippen sparen wollen und nicht jedes Mal unseren Standard-Fall (n=3) explizit machen wollen, können wir dem Argument einen Standardwert zuweisen.</p>
+<p>Dadurch machen wir aus dem <code>n</code> ein <em>optionales Argument</em>, wie wir es ja auch schon aus anderen Situationen kennen:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="funktionen.html#cb42-1" aria-hidden="true" tabindex="-1"></a>greet_someone_n_times <span class="ot">&lt;-</span> <span class="cf">function</span>(name, <span class="at">n=</span><span class="dv">3</span>){</span>
+<span id="cb42-2"><a href="funktionen.html#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rep</span>(<span class="fu">greet_someone</span>(name), </span>
+<span id="cb42-3"><a href="funktionen.html#cb42-3" aria-hidden="true" tabindex="-1"></a>             n))</span>
+<span id="cb42-4"><a href="funktionen.html#cb42-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb42-5"><a href="funktionen.html#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="funktionen.html#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">greet_someone_n_times</span>(<span class="st">&#39;Marvin&#39;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Hello Marvin! Nice to see you!&quot; &quot;Hello Marvin! Nice to see you!&quot;
+## [3] &quot;Hello Marvin! Nice to see you!&quot;</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="funktionen.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">greet_someone_n_times</span>(<span class="st">&#39;Marvin&#39;</span>, <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Hello Marvin! Nice to see you!&quot; &quot;Hello Marvin! Nice to see you!&quot;
+## [3] &quot;Hello Marvin! Nice to see you!&quot; &quot;Hello Marvin! Nice to see you!&quot;
+## [5] &quot;Hello Marvin! Nice to see you!&quot;</code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="lehrplan.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="if-statements.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Robustheit.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Attribute | Robustheit</title>
+  <meta name="description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Attribute | Robustheit" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Attribute | Robustheit" />
+  
+  <meta name="twitter:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  
+
+<meta name="author" content="Max Brede und Johannes Andres" />
+
+
+<meta name="date" content="2021-10-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="listen.html"/>
+<link rel="next" href="functionals.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Robustheit und Voraussetzungstests</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Vorwort</a></li>
+<li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html"><i class="fa fa-check"></i>Lehrplan</a>
+<ul>
+<li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html#semesterplan"><i class="fa fa-check"></i>Semesterplan</a></li>
+</ul></li>
+<li class="part"><span><b>I Programmieren in R</b></span></li>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html"><i class="fa fa-check"></i>Funktionen</a>
+<ul>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html#geschachtelte-funktionen"><i class="fa fa-check"></i>Geschachtelte Funktionen</a></li>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html#optionale-argumente"><i class="fa fa-check"></i>Optionale Argumente</a></li>
+</ul></li>
+<li><a href="if-statements.html#if-statements"><code>if</code>-Statements</a></li>
+<li class="chapter" data-level="" data-path="zufallswerte.html"><a href="zufallswerte.html"><i class="fa fa-check"></i>Zufallswerte</a></li>
+<li class="chapter" data-level="" data-path="schleifen.html"><a href="schleifen.html"><i class="fa fa-check"></i>Schleifen</a></li>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html"><i class="fa fa-check"></i>Listen</a>
+<ul>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html#listen-und-datensätze"><i class="fa fa-check"></i>Listen und Datensätze</a></li>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html#arbeiten-mit-listen"><i class="fa fa-check"></i>Arbeiten mit Listen</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="attribute.html"><a href="attribute.html"><i class="fa fa-check"></i>Attribute</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html"><i class="fa fa-check"></i>Functionals</a>
+<ul>
+<li><a href="functionals.html#purrrmap"><code>purrr::map</code></a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#exkurs-iteratoren-vergleich"><i class="fa fa-check"></i>Exkurs: Iteratoren-Vergleich</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
+<li class="divider"></li>
+<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Robustheit</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="attribute" class="section level1">
+<h1>Attribute</h1>
+<p>Bei der sehr umständlichen Erstellung des Datensatzes haben wir schon die <code>attributes</code> kennen gelernt. Diese Informationen, die in R zu einem Objekt neben dem eigentlichen Inhalt angelegt werden können, sind ein wichtiger Teil der Abbildung objektorientierter Programmierparadigmen<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> in R.</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="attribute.html#cb130-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb130-2"><a href="attribute.html#cb130-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(a)</span></code></pre></div>
+<pre><code>## NULL</code></pre>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="attribute.html#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(a) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">names =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
+<span id="cb132-2"><a href="attribute.html#cb132-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">row.names =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb132-3"><a href="attribute.html#cb132-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">class =</span> <span class="st">&quot;data.frame&quot;</span>)</span>
+<span id="cb132-4"><a href="attribute.html#cb132-4" aria-hidden="true" tabindex="-1"></a>a</span></code></pre></div>
+<pre><code>##     a  b
+## 1   1  1
+## 2   2  2
+## 3   3  3
+## 4   4  4
+## 5   5  5
+## 6   6  6
+## 7   7  7
+## 8   8  8
+## 9   9  9
+## 10 10 10</code></pre>
+<p>Neben der Klasse (<code>class</code>) haben wir hier in die <code>attributes</code> auch die Namen der Einträge und die Zeilennamen geschrieben. Wir sehen also, dass der sichtbare und bemerkbare Unterschied zwischen Listen und Datensätzen aus dem Setzen dieser Attribute entsteht. Außerdem wird an diesem Beispiel deutlich, dass die Funktionen, die wir bisher zum Erstellen von Datensätzen genutzt haben, auch eigentlich nur Attribute setzen.
+Attribute sind also zusätzliche Informationen, die den Umgang mit Objekten ändern können.</p>
+<p>Ein weiteres Beispiel für solche Änderungen durch Attribute sind Matritzen. In R kann man mit der <code>matrix</code>-Funktion zweidimensionale Daten-Raster erstellen, für die zum Beispiel auch die dimensionierte Indizierung <code>[,]</code> definiert ist:</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="attribute.html#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,</span>
+<span id="cb134-2"><a href="attribute.html#cb134-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">nrow =</span> <span class="dv">10</span>, </span>
+<span id="cb134-3"><a href="attribute.html#cb134-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">ncol =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]    1   11   21   31   41   51   61   71   81    91
+##  [2,]    2   12   22   32   42   52   62   72   82    92
+##  [3,]    3   13   23   33   43   53   63   73   83    93
+##  [4,]    4   14   24   34   44   54   64   74   84    94
+##  [5,]    5   15   25   35   45   55   65   75   85    95
+##  [6,]    6   16   26   36   46   56   66   76   86    96
+##  [7,]    7   17   27   37   47   57   67   77   87    97
+##  [8,]    8   18   28   38   48   58   68   78   88    98
+##  [9,]    9   19   29   39   49   59   69   79   89    99
+## [10,]   10   20   30   40   50   60   70   80   90   100</code></pre>
+<div id="aufgabe-8" class="section level4">
+<h4>Aufgabe</h4>
+<p>Erstelle eine Matrix und gucke die genau die Attribute und Inhalte an.</p>
+<p>Können wir so wie wir einen Datensatz aus einer Liste erstellt haben, irgendwie ohne die <code>matrix</code>-Funktion eine Matrix erstellen? Gucke Dir dabei nach jeder Änderung an, was <code>class</code> und <code>mode</code> zurückgeben.</p>
+<p>Probiere außerdem aus, was passiert, wenn man die Attribute einer Matrix auf eine Liste überträgt.</p>
+<p><strong>Zusatz:</strong></p>
+<p>Was passiert, wenn wir der Liste drei Dimensionen geben?</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="attribute.html#cb136-1" aria-hidden="true" tabindex="-1"></a>my_mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>],</span>
+<span id="cb136-2"><a href="attribute.html#cb136-2" aria-hidden="true" tabindex="-1"></a>                 <span class="dv">4</span>)</span>
+<span id="cb136-3"><a href="attribute.html#cb136-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb136-4"><a href="attribute.html#cb136-4" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(my_mat)</span></code></pre></div>
+<pre><code>## $dim
+## [1] 4 5</code></pre>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="attribute.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(my_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="attribute.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="attribute.html#cb142-1" aria-hidden="true" tabindex="-1"></a>my_list_mat <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,<span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>,<span class="dv">11</span><span class="sc">:</span><span class="dv">15</span>,<span class="dv">16</span><span class="sc">:</span><span class="dv">20</span>)</span>
+<span id="cb142-2"><a href="attribute.html#cb142-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb142-3"><a href="attribute.html#cb142-3" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(my_list_mat) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb142-4"><a href="attribute.html#cb142-4" aria-hidden="true" tabindex="-1"></a>my_list_mat</span></code></pre></div>
+<pre><code>##      [,1]      [,2]     
+## [1,] integer,5 integer,5
+## [2,] integer,5 integer,5</code></pre>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="attribute.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(my_list_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="attribute.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_list_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="attribute.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Zusatz</span></span>
+<span id="cb148-2"><a href="attribute.html#cb148-2" aria-hidden="true" tabindex="-1"></a>my_list_mat <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, </span>
+<span id="cb148-3"><a href="attribute.html#cb148-3" aria-hidden="true" tabindex="-1"></a>                    <span class="dv">3</span>, <span class="dv">4</span>, </span>
+<span id="cb148-4"><a href="attribute.html#cb148-4" aria-hidden="true" tabindex="-1"></a>                    <span class="dv">5</span>, <span class="dv">6</span>, </span>
+<span id="cb148-5"><a href="attribute.html#cb148-5" aria-hidden="true" tabindex="-1"></a>                    <span class="dv">7</span>, <span class="dv">8</span>)</span>
+<span id="cb148-6"><a href="attribute.html#cb148-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb148-7"><a href="attribute.html#cb148-7" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(my_list_mat) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>))</span>
+<span id="cb148-8"><a href="attribute.html#cb148-8" aria-hidden="true" tabindex="-1"></a>my_list_mat</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,] 1    3    5    7   
+## [2,] 2    4    6    8</code></pre>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="attribute.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(my_list_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="attribute.html#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_list_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="attribute.html#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(my_list_mat) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb154-2"><a href="attribute.html#cb154-2" aria-hidden="true" tabindex="-1"></a>my_list_mat</span></code></pre></div>
+<pre><code>## , , 1
+## 
+##      [,1] [,2]
+## [1,] 1    3   
+## [2,] 2    4   
+## 
+## , , 2
+## 
+##      [,1] [,2]
+## [1,] 5    7   
+## [2,] 6    8</code></pre>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="attribute.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(my_list_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="attribute.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_list_mat)</span></code></pre></div>
+<pre><code>## [1] &quot;array&quot;</code></pre>
+<p>Mit anderen Worten ist eine Matrix als ein Array definiert, das (egal ob Liste oder Vektor), zwei Dimensionen hat. Mit mehr als zwei Dimensionen fällt die Matrix-Klasse weg.</p>
+</details>
+<p>Die Matrix-Listen aus der Aufgabe können wir übrigens auch wie Matrizen verwenden:</p>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="attribute.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(my_list_mat) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>))</span>
+<span id="cb160-2"><a href="attribute.html#cb160-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb160-3"><a href="attribute.html#cb160-3" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(my_list_mat)</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,] 1    2   
+## [2,] 3    4   
+## [3,] 5    6   
+## [4,] 7    8</code></pre>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="attribute.html#cb162-1" aria-hidden="true" tabindex="-1"></a>my_list_mat[<span class="dv">1</span>,<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## [[1]]
+## [1] 3</code></pre>
+<p>Das Ergebnis ist halt nur eine Liste, was mit dem bekannten doppel-Index aber auch umgangen werden kann:</p>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="attribute.html#cb164-1" aria-hidden="true" tabindex="-1"></a>my_list_mat[[<span class="dv">1</span>,<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+</div>
+</div>
+<h3>Literatur</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-wickhamAdvanced2019" class="csl-entry">
+Wickham, Hadley. 2019. <em>Advanced r</em>. <span>CRC press</span>.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="4">
+<li id="fn4"><p>Was genau objektorientierte Programmierung ist, ist hier erstmal nicht so wichtig, im Prinzip sind aber alle Objekte mit <code>class</code>-Attribut nach objektorientierten Paradigmen erstellt. Hier wird das nur erwähnt, weil es die Geschichte von R als Nachfolger von S demonstriert, in dem ursprünglich “moderne” Paradigmen nicht Thema waren. Die Erweiterung der bestehenden Objekte durch das Setzen von Attributen ist die Lösung für dieses Problem, die in Rs <code>S3</code>-Objekten resultieren. Daneben gibt es in R die <code>S4</code>-Objekte, die formalisiertere Klassendefinitionen ermöglichen. Das führt aber alles ein bisschen weit für diese Veranstaltung, deswegen sei hier nochmal auf das sehr gute Buch von <span class="citation">Wickham (<a href="#ref-wickhamAdvanced2019" role="doc-biblioref">2019</a>)</span> verwiesen, in den Kapiteln 13-15 geht er auf OO-Programmierung in R ein.<a href="attribute.html#fnref4" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="listen.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="functionals.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Robustheit.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
