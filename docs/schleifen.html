@@ -24,7 +24,7 @@
 <meta name="author" content="Max Brede und Johannes Andres" />
 
 
-<meta name="date" content="2021-10-25" />
+<meta name="date" content="2021-11-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -184,7 +184,9 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html"><i class="fa fa-check"></i>Functionals</a>
 <ul>
 <li><a href="functionals.html#purrrmap"><code>purrr::map</code></a></li>
-<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#exkurs-iteratoren-vergleich"><i class="fa fa-check"></i>Exkurs: Iteratoren-Vergleich</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#exkurs-iteratoren-vergleich-und-microbenchmarking"><i class="fa fa-check"></i>Exkurs: Iteratoren-Vergleich und Microbenchmarking</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#eigene-functionals"><i class="fa fa-check"></i>Eigene Functionals</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#argumente-durchreichen"><i class="fa fa-check"></i>Argumente durchreichen</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
 <li class="divider"></li>
@@ -293,9 +295,9 @@ In R gibt es davon drei Arten:</p>
 <span id="cb66-30"><a href="schleifen.html#cb66-30" aria-hidden="true" tabindex="-1"></a>runtime_no_alloc <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="sc">-</span> start</span>
 <span id="cb66-31"><a href="schleifen.html#cb66-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb66-32"><a href="schleifen.html#cb66-32" aria-hidden="true" tabindex="-1"></a>runtime_alloc</span></code></pre></div>
-<pre><code>## Time difference of 0.03426456 secs</code></pre>
+<pre><code>## Time difference of 0.03541708 secs</code></pre>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="schleifen.html#cb68-1" aria-hidden="true" tabindex="-1"></a>runtime_no_alloc</span></code></pre></div>
-<pre><code>## Time difference of 0.07682252 secs</code></pre>
+<pre><code>## Time difference of 0.08358455 secs</code></pre>
 <p>Mehr als die Hälfte der Zeit geht für das Erstellen des neuen Vektors drauf!</p>
 <div id="aufgabe-4" class="section level3">
 <h3>Aufgabe</h3>

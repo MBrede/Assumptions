@@ -173,7 +173,7 @@
 
 \title{Robustheit}
 \author{Max Brede und Johannes Andres}
-\date{2021-10-25}
+\date{2021-11-08}
 
 \begin{document}
 \maketitle
@@ -989,7 +989,7 @@ Bei 10 Stellen ist der Unterschied noch nicht wirklich bemerkbar. Wenn wir jetzt
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 0.03702068 secs
+## Time difference of 0.03683734 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -999,7 +999,7 @@ Bei 10 Stellen ist der Unterschied noch nicht wirklich bemerkbar. Wenn wir jetzt
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 0.08719563 secs
+## Time difference of 0.08184695 secs
 \end{verbatim}
 
 Mehr als die Hälfte der Zeit geht für das Erstellen des neuen Vektors drauf!
@@ -1955,16 +1955,43 @@ Alternativ kann mit der sogenannten Funktionsschreibweise auch ein Ausdruck form
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{map\_dbl}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, }\SpecialCharTok{\textasciitilde{}}\FunctionTok{sqrt}\NormalTok{(.))}
+\FunctionTok{map}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, }\SpecialCharTok{\textasciitilde{}}\FunctionTok{sqrt}\NormalTok{(.))}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##  [1] 1.000000 1.414214 1.732051 2.000000 2.236068 2.449490 2.645751 2.828427
-##  [9] 3.000000 3.162278
+## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 1.414214
+## 
+## [[3]]
+## [1] 1.732051
+## 
+## [[4]]
+## [1] 2
+## 
+## [[5]]
+## [1] 2.236068
+## 
+## [[6]]
+## [1] 2.44949
+## 
+## [[7]]
+## [1] 2.645751
+## 
+## [[8]]
+## [1] 2.828427
+## 
+## [[9]]
+## [1] 3
+## 
+## [[10]]
+## [1] 3.162278
 \end{verbatim}
 
-Der besondere Vorteil dieser Funktionen gegenüber den \texttt{*apply}-Funktionen, ist die Gruppe von Funktionen, die klar lesbar den erwarteten Output einer Iteration definieren.
+Der besondere Vorteil dieser Funktionen gegenüber den \texttt{*apply}-Funktionen, ist dass diese Gruppe von Funktionen ermöglicht, den erwarteten Output einer Iteration klar lesbar zu definieren.
 
 Beispielsweise kann mit \texttt{map\_dbl}, \texttt{map\_lgl} und \texttt{map\_chr} klar festgelegt werden, dass 1. ein \texttt{atomic}-Vektor ausgegeben wird, der 2. einen klaren Datentyp hat:
 
@@ -2046,111 +2073,543 @@ Und, noch praktischer, auch für komplexere Datentypen gibt es Wrapper. So könn
 ## 1     5     8     3     4    15     9    11    15    13    10
 \end{verbatim}
 
-\hypertarget{exkurs-iteratoren-vergleich}{%
-\section{Exkurs: Iteratoren-Vergleich}\label{exkurs-iteratoren-vergleich}}
+\hypertarget{exkurs-iteratoren-vergleich-und-microbenchmarking}{%
+\section{Exkurs: Iteratoren-Vergleich und Microbenchmarking}\label{exkurs-iteratoren-vergleich-und-microbenchmarking}}
 
 Man liest manchmal, dass loops in R wegen geringerer Geschwindigkeit in jedem Fall vermieden werden sollten. Das stimmt aber nicht wirklich, wenn man für seine \texttt{for}-Schleifen alloziert.
 
-Um das zu zeigen vergleichen wir mit der folgenden Funktion \texttt{for} ohne Allokation, for mit Allokation, \texttt{sapply} und \texttt{map\_dbl}:
+Um das zu zeigen vergleichen wir mit der folgenden Funktion \texttt{for} ohne Allokation, for mit Allokation, \texttt{sapply} und \texttt{map\_dbl}. Um die Laufzeiten zu vergleichen, nutzen wir die \texttt{bench::mark}- und \texttt{bench::press}-Funktion, sehr akkurate Funktion um Microbenchmarking durchzuführen.
+Microbenchmarking heißt hier nichts anders, als dass wir die möglichen Implementationen alle unter denselben Bedingungen sehr oft ausführen und die Ausführungszeiten notieren, um eine Idee von der Effizienz dieser zu erlangen.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{my\_function }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) x}\SpecialCharTok{\^{}}\DecValTok{2}
 
 
-
-\NormalTok{my\_test }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(i)\{}
-\NormalTok{  out }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
-\NormalTok{  out[[}\StringTok{\textquotesingle{}len\textquotesingle{}}\NormalTok{]] }\OtherTok{\textless{}{-}} \DecValTok{10}\SpecialCharTok{\^{}}\NormalTok{(i}\SpecialCharTok{\%\%}\DecValTok{6}\NormalTok{)}
-\NormalTok{  to\_do }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{:}\NormalTok{out[[}\StringTok{\textquotesingle{}len\textquotesingle{}}\NormalTok{]]}
-\NormalTok{  start }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{()}
-\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{()}
-  \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in}\NormalTok{ to\_do)\{}
-\NormalTok{    res }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(res, }\FunctionTok{my\_function}\NormalTok{(j))}
-\NormalTok{  \}}
-\NormalTok{  out[[}\StringTok{\textquotesingle{}for ohne Allokation\textquotesingle{}}\NormalTok{]] }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{() }\SpecialCharTok{{-}}\NormalTok{ start}
-  
-\NormalTok{  start }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{()}
-\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{length}\NormalTok{(to\_do))}
-  \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in}\NormalTok{ to\_do)\{}
-\NormalTok{    res[j] }\OtherTok{\textless{}{-}} \FunctionTok{my\_function}\NormalTok{(j)}
-\NormalTok{  \}}
-\NormalTok{  out[[}\StringTok{\textquotesingle{}for mit Allokation\textquotesingle{}}\NormalTok{]] }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{() }\SpecialCharTok{{-}}\NormalTok{ start}
-  
-\NormalTok{  start }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{()}
-\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(to\_do, my\_function)}
-\NormalTok{  out[[}\StringTok{\textquotesingle{}sapply\textquotesingle{}}\NormalTok{]] }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{() }\SpecialCharTok{{-}}\NormalTok{ start}
-  
-\NormalTok{  start }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{()}
-\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{map\_dbl}\NormalTok{(to\_do, my\_function)}
-\NormalTok{  out[[}\StringTok{\textquotesingle{}map\_dbl\textquotesingle{}}\NormalTok{]] }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{() }\SpecialCharTok{{-}}\NormalTok{ start}
-  \FunctionTok{return}\NormalTok{(out)}
-\NormalTok{\}}
+\NormalTok{results }\OtherTok{\textless{}{-}}\NormalTok{ bench}\SpecialCharTok{::}\FunctionTok{press}\NormalTok{(}\AttributeTok{n =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{,}
+\NormalTok{                        \{}
+\NormalTok{                          to\_do }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10} \SpecialCharTok{\^{}}\NormalTok{ n}
+\NormalTok{                          bench}\SpecialCharTok{::}\FunctionTok{mark}\NormalTok{(}
+                            \AttributeTok{min\_iterations =} \DecValTok{100}\NormalTok{,}
+                            
+                            \AttributeTok{for\_no\_alloc =}\NormalTok{ \{}
+\NormalTok{                              res }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{()}
+                              \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in}\NormalTok{ to\_do) \{}
+\NormalTok{                                res }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(res, }\FunctionTok{my\_function}\NormalTok{(j))}
+\NormalTok{                              \}}
+\NormalTok{                              res}
+\NormalTok{                            \},}
+                            
+                            \AttributeTok{for\_alloc =}\NormalTok{ \{}
+\NormalTok{                              res }\OtherTok{\textless{}{-}} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{length}\NormalTok{(to\_do))}
+                              \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in}\NormalTok{ to\_do) \{}
+\NormalTok{                                res[j] }\OtherTok{\textless{}{-}} \FunctionTok{my\_function}\NormalTok{(j)}
+\NormalTok{                              \}}
+\NormalTok{                              res}
+\NormalTok{                            \},}
+                            
+                            \AttributeTok{while\_alloc =}\NormalTok{ \{}
+\NormalTok{                              res }\OtherTok{\textless{}{-}} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{length}\NormalTok{(to\_do))}
+\NormalTok{                              j }\OtherTok{\textless{}{-}} \DecValTok{1}
+                              \ControlFlowTok{while}\NormalTok{(j }\SpecialCharTok{\textless{}} \FunctionTok{length}\NormalTok{(to\_do)) \{}
+\NormalTok{                                res[to\_do[j]] }\OtherTok{\textless{}{-}} \FunctionTok{my\_function}\NormalTok{(to\_do[j])}
+\NormalTok{                                j }\OtherTok{\textless{}{-}}\NormalTok{ j }\SpecialCharTok{+} \DecValTok{1}
+\NormalTok{                              \}}
+\NormalTok{                              res}
+\NormalTok{                            \},}
+                            
+                            \AttributeTok{sapply =}\NormalTok{ \{}
+\NormalTok{                              res }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(to\_do, my\_function)}
+\NormalTok{                            \},}
+                            
+                            \AttributeTok{map\_dbl =}\NormalTok{ \{}
+\NormalTok{                              res }\OtherTok{\textless{}{-}} \FunctionTok{map\_dbl}\NormalTok{(to\_do, my\_function)}
+\NormalTok{                            \}}
+\NormalTok{                          )}
+\NormalTok{                        \})}
 \end{Highlighting}
 \end{Shaded}
+
+Die Ergebnisse dieses Testlaufs sehen so aus:
+
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-70-1.pdf}
+
+Dabei stellen die Linien die Median-Verläufe der jeweiligen Aufrufe dar. Vorsicht: Die Achsen sind logarithmisch skaliert. Ohne diese Skalierung sehen die Ergebnisse so aus:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pmap\_dfr}\NormalTok{(}\FunctionTok{list}\NormalTok{(sim\_data}\SpecialCharTok{$}\NormalTok{time,}
+              \FunctionTok{names}\NormalTok{(sim\_data}\SpecialCharTok{$}\NormalTok{expression),}
+\NormalTok{              sim\_data}\SpecialCharTok{$}\NormalTok{n),}
+         \SpecialCharTok{\textasciitilde{}}\FunctionTok{tibble}\NormalTok{(}\AttributeTok{times =} \FunctionTok{as.numeric}\NormalTok{(..}\DecValTok{1}\NormalTok{),}
+                 \AttributeTok{iterator =}\NormalTok{ ..}\DecValTok{2}\NormalTok{,}
+                 \AttributeTok{reps =} \DecValTok{10}\SpecialCharTok{\^{}}\NormalTok{..}\DecValTok{3}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ reps,}
+             \AttributeTok{y =}\NormalTok{ times,}
+             \AttributeTok{color =}\NormalTok{ iterator)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =}\NormalTok{ .}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{stat\_summary}\NormalTok{(}\AttributeTok{geom=}\StringTok{\textquotesingle{}line\textquotesingle{}}\NormalTok{,}
+               \AttributeTok{fun =}\NormalTok{ median) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{y =} \StringTok{\textquotesingle{}Zeit [s]\textquotesingle{}}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{\textquotesingle{}Iterierte Werte\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{\textquotesingle{}Dark2\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-71-1.pdf}
 
 \hypertarget{aufgabe-10}{%
 \subsection{Aufgabe}\label{aufgabe-10}}
 
-Was passiert hier?
+Benutzt \texttt{bench::mark} um die folgenden drei Mittelwerts-Funktionen zu vergleichen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_for\_mean }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
+\NormalTok{  out }\OtherTok{\textless{}{-}} \FunctionTok{numeric}\NormalTok{(}\DecValTok{0}\NormalTok{)}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in}\NormalTok{ x)\{}
+\NormalTok{    out }\OtherTok{\textless{}{-}}\NormalTok{ out }\SpecialCharTok{+}\NormalTok{ i}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(out}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(x))}
+\NormalTok{\}}
+
+\NormalTok{my\_manual\_mean }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{sum}\NormalTok{(x)}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(x))}
+\NormalTok{\}}
+
+\FunctionTok{mean}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
 
 Antwort
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{my\_function }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) x}\SpecialCharTok{\^{}}\DecValTok{2} \CommentTok{\# Funktion zum Quadrieren}
-
-\NormalTok{my\_test }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(i)\{}
-\NormalTok{  out }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{() }\CommentTok{\# initiiere leere output{-}Liste}
-\NormalTok{  out[[}\StringTok{\textquotesingle{}len\textquotesingle{}}\NormalTok{]] }\OtherTok{\textless{}{-}} \DecValTok{10}\SpecialCharTok{\^{}}\NormalTok{(i}\SpecialCharTok{\%\%}\DecValTok{6}\NormalTok{) }\CommentTok{\# Berechne Länge der Iteration als }
-  \CommentTok{\# 10{-}Potenz zwischen 0 und 5}
-\NormalTok{  to\_do }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{:}\NormalTok{out[[}\StringTok{\textquotesingle{}len\textquotesingle{}}\NormalTok{]] }\CommentTok{\# durch zu iterierender Vektor}
-\NormalTok{  start }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{() }\CommentTok{\# Startzeit erster Test}
-\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{() }\CommentTok{\# initiiere leeren Vektor (keine Allokation)}
-  \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in}\NormalTok{ to\_do)\{ }\CommentTok{\# iteriere duch to\_do}
-\NormalTok{    res }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(res, }\FunctionTok{my\_function}\NormalTok{(j)) }\CommentTok{\#quadriere jede Zahl und }
-    \CommentTok{\# vergrößere res mit jeder Iteration}
-\NormalTok{  \}}
-\NormalTok{  out[[}\StringTok{\textquotesingle{}for ohne Allokation\textquotesingle{}}\NormalTok{]] }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{() }\SpecialCharTok{{-}}\NormalTok{ start }\CommentTok{\# berechne Zeit{-}delta}
-  
-\NormalTok{  start }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{() }\CommentTok{\# Startzeit zweiter Test}
-\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{length}\NormalTok{(to\_do))}\CommentTok{\# initiiere Vektor mit Allokation}
-  \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in}\NormalTok{ to\_do)\{}\CommentTok{\# iteriere durch to\_do}
-\NormalTok{    res[j] }\OtherTok{\textless{}{-}} \FunctionTok{my\_function}\NormalTok{(j) }\CommentTok{\#quadriere jede Zahl und lege in res ab}
-\NormalTok{  \}}
-\NormalTok{  out[[}\StringTok{\textquotesingle{}for mit Allokation\textquotesingle{}}\NormalTok{]] }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{() }\SpecialCharTok{{-}}\NormalTok{ start }\CommentTok{\# berechne Zeit{-}delta}
-  
-\NormalTok{  start }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{() }\CommentTok{\# Startzeit dritter Test}
-\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(to\_do, my\_function) }\CommentTok{\# quadriere jede Zahl und speicher output}
-\NormalTok{  out[[}\StringTok{\textquotesingle{}sapply\textquotesingle{}}\NormalTok{]] }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{() }\SpecialCharTok{{-}}\NormalTok{ start }\CommentTok{\# berechne Zeit{-}delta}
-  
-\NormalTok{  start }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{() }\CommentTok{\# Startzeit vierter Test}
-\NormalTok{  res }\OtherTok{\textless{}{-}} \FunctionTok{map\_dbl}\NormalTok{(to\_do, my\_function) }\CommentTok{\# quadriere jede Zahl und speicher output}
-\NormalTok{  out[[}\StringTok{\textquotesingle{}map\_dbl\textquotesingle{}}\NormalTok{]] }\OtherTok{\textless{}{-}} \FunctionTok{Sys.time}\NormalTok{() }\SpecialCharTok{{-}}\NormalTok{ start }\CommentTok{\# berechne Zeit{-}delta}
-  \FunctionTok{return}\NormalTok{(out)}
-\NormalTok{\}}
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{10000}\NormalTok{)}
+\NormalTok{bmark }\OtherTok{\textless{}{-}}\NormalTok{ bench}\SpecialCharTok{::}\FunctionTok{mark}\NormalTok{(}\AttributeTok{mean =} \FunctionTok{mean}\NormalTok{(x),}
+             \AttributeTok{for\_mean =} \FunctionTok{my\_for\_mean}\NormalTok{(x),}
+             \AttributeTok{man\_mean =} \FunctionTok{my\_manual\_mean}\NormalTok{(x),}
+            \AttributeTok{iterations =} \DecValTok{10000}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-Diesen Test lassen wir 60 mal laufen, um ein paar Datenpunkte pro Länge und Iterator zu bekommen:
+Übrigens gibt es noch eine sehr nette Funktion, die man im Kontext von \texttt{bench::mark} nochmal erwähnen sollte:
+
+Mit \texttt{autoplot(type\ =\ \textquotesingle{}violin\textquotesingle{})} lassen sich die Ergebnisse eines Mikrobenchmarks ganz nett darstellen:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(furrr)}
+\FunctionTok{library}\NormalTok{(bench)}
+\NormalTok{bmark }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{autoplot}\NormalTok{(}\AttributeTok{type =} \StringTok{\textquotesingle{}violin\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
-\FunctionTok{plan}\NormalTok{(multisession)}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-75-1.pdf}
 
-\NormalTok{out }\OtherTok{\textless{}{-}} \FunctionTok{future\_map\_dfr}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{60}\NormalTok{, }\SpecialCharTok{\textasciitilde{}}\FunctionTok{my\_test}\NormalTok{(.))}
+\hypertarget{eigene-functionals}{%
+\section{Eigene Functionals}\label{eigene-functionals}}
 
-\FunctionTok{write\_rds}\NormalTok{(out,}\StringTok{\textquotesingle{}data/iterators.rds\textquotesingle{}}\NormalTok{)}
+Warum Functionals neben den Iteratoren für uns praktisch sind, wird am Simulations-Beispiel klar.
+
+Wenn wir eine Funktion schreiben wollen, die zum Beispiel für einen t-Test das Ausschöpfen des Alpha-Niveaus bei verschiedenen Verteilungen überprüft, könnten wir wie bisher für eine Untermenge der Möglichkeiten mit if-else die richtige Funktion auswählen.
+Schöner wäre es aber doch, wenn wir eine Simulationsfunktion hätten, die einfach eine Funktion als Objekt nimmt und die Ergebnisse zurückgibt.
+
+Dafür müssen wir erstmal verstehen, warum der folgende Aufruf funktioniert:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rnd\_fct }\OtherTok{\textless{}{-}}\NormalTok{ rnorm}
+
+\FunctionTok{rnd\_fct}\NormalTok{(}\DecValTok{10}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## `summarise()` has grouped output by 'len'. You can override using the `.groups` argument.
+##  [1] -0.4199126  0.2312317  0.4539680  0.2489447  1.0210670 -1.3311690
+##  [7]  1.5289611  0.1749426 -0.8485907 -1.0582308
 \end{verbatim}
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-72-1.pdf}
+Wir haben in \texttt{rnd\_fct} einen Verweis auf \texttt{rnorm} abgelegt und können den Namen des Verweises jetzt äquivalent zum Inhalt des Ziels, also ganz einfach wie die ursprüngliche Funktion verwenden.
+
+Das funktioniert aus ähnlichen Gründen, aus denen unsere Listen mit Verweisen kleiner als erwartet waren. Da wir den Inhalt nicht verändert haben, spart sich R den Aufwand die Funktion zu kopieren und legt einfach einen zweiten Verweis auf die \texttt{rnorm}-Funktion an, inklusive \texttt{body} und \texttt{formals}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{body}\NormalTok{(rnorm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## .Call(C_rnorm, n, mean, sd)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{body}\NormalTok{(rnd\_fct)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## .Call(C_rnorm, n, mean, sd)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{formals}\NormalTok{(rnorm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $n
+## 
+## 
+## $mean
+## [1] 0
+## 
+## $sd
+## [1] 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{formals}\NormalTok{(rnd\_fct)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $n
+## 
+## 
+## $mean
+## [1] 0
+## 
+## $sd
+## [1] 1
+\end{verbatim}
+
+Mit anderen Worten können wir einen Verweis auf ein Funktions-Objekt wie die eigentliche Funktion verwenden. Diesen Umstand können wir ausnutzen, wenn wir unsere Simulationsfunktion schreiben, indem wir einfach ein Argument vorsehen, dass als Funktion benutzt werden kann.
+
+So eine Funktion könnte so aussehen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{generate\_values }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}\AttributeTok{rnd\_fct =}\NormalTok{ rnorm,}
+                            \AttributeTok{n =} \DecValTok{1000}\NormalTok{)\{}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{rnd\_fct}\NormalTok{(n))}
+\NormalTok{\}}
+
+\FunctionTok{generate\_values}\NormalTok{(}\AttributeTok{n =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1]  0.2994693  0.5303306  2.3644090 -1.5828983  0.3834167 -0.8116823
+##  [7] -1.1964809 -0.6136671  1.2368626  0.5172003
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{generate\_values}\NormalTok{(runif, }\AttributeTok{n =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 0.44395272 0.30926817 0.13344473 0.58773504 0.47318257 0.61197434
+##  [7] 0.37293941 0.91837751 0.74896328 0.07670441
+\end{verbatim}
+
+Und schon ist unser erster Functional fertig.
+
+\hypertarget{aufgabe-11}{%
+\subsection{Aufgabe}\label{aufgabe-11}}
+
+Erstelle einen functional \texttt{summarise\_for\_me}, der einen Vektor als Argument x und eine Funktion als Argument \texttt{agg\_fn} erwartet, und die Ihr dazu nutzen könnt, mit demselben Stichwort NA-bereinigt Summe, Mittelwert, Median
+und SD des Vektors \texttt{c(10,\ NA,\ 21,\ 25,\ 13)} zu berechnen.
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{summarise\_for\_me }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, agg\_fn)\{}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{agg\_fn}\NormalTok{(x, }\AttributeTok{na.rm =}\NormalTok{ T))}
+\NormalTok{\}}
+
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\ConstantTok{NA}\NormalTok{, }\DecValTok{21}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{13}\NormalTok{)}
+\FunctionTok{summarise\_for\_me}\NormalTok{(x, mean)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 17.25
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summarise\_for\_me}\NormalTok{(x, sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 69
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summarise\_for\_me}\NormalTok{(x, median)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 17
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summarise\_for\_me}\NormalTok{(x, sd)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6.946222
+\end{verbatim}
+
+\hypertarget{argumente-durchreichen}{%
+\section{Argumente durchreichen}\label{argumente-durchreichen}}
+
+Unsere schöne Funktion wird offensichtlich problematisch, wenn wir zum Beispiel \texttt{rf} übergeben:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{generate\_values}\NormalTok{(rf, }\AttributeTok{n =} \DecValTok{100}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Error in rnd_fct(n): argument "df1" is missing, with no default
+\end{verbatim}
+
+Dafür gibt es in R den Platzhalter \texttt{...}, dem Ihr auch schon an anderer Stelle begegnet sein könntet. \texttt{...} heißt nichts anderes als dass mehr Argumente möglich sind, bei denen wir noch nicht so ganz sicher sind, welche es sein werden.
+
+Benutzen können wir das wie jedes andere Argument:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{generate\_values }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}\AttributeTok{rnd\_fct =}\NormalTok{ rnorm,}
+                            \AttributeTok{n =} \DecValTok{1000}\NormalTok{,}
+\NormalTok{                            ...)\{}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{rnd\_fct}\NormalTok{(n, ...))}
+\NormalTok{\}}
+
+\FunctionTok{generate\_values}\NormalTok{(rf, }\AttributeTok{n =} \DecValTok{100}\NormalTok{, }\AttributeTok{df1 =} \DecValTok{5}\NormalTok{, }\AttributeTok{df2 =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   [1]  1.30800244  0.34386902  1.07185386  1.26556593  1.07752607  2.03497546
+##   [7]  0.63611837  0.87353987  1.03485287  0.81601814  1.02639860  0.53705763
+##  [13]  0.31405869  0.52439110  1.39648091  1.06064416  0.46664706  0.27070874
+##  [19]  2.25204656  0.86366757  1.15693767  1.81259878  0.56410316  0.94787277
+##  [25]  3.89529621  0.37557481  1.92586101  0.42849312  1.49773976  0.05813357
+##  [31]  0.44438564  0.14525814  2.36696864  1.66339698  0.53827284  1.65650546
+##  [37]  0.46055553  1.60033949  0.30694711  1.85127786  1.48217075  2.62585139
+##  [43]  2.14504737  0.81919515  1.38374697  0.89745419  0.37185526  1.13406191
+##  [49]  1.31479498  0.65300786  0.80247351  1.80981147  0.32507006  1.55078471
+##  [55]  1.18369100  0.08447330  1.91984029  0.13914696  0.79177535  0.94549312
+##  [61]  0.93354001  0.28173625  1.45672514  0.60835450  0.91438839  0.75916434
+##  [67]  1.97458061  0.17009112  1.49389432  2.16806557  1.61570079  0.33946545
+##  [73]  1.30805728  1.48765000  0.41400625  0.98439720  2.91565515  1.18407534
+##  [79]  0.26514127  0.71282182  0.73094521  0.94654944  1.06797966 12.72549312
+##  [85]  2.87107955  1.15050343  0.27958205  0.55015957  0.47310973  0.89918620
+##  [91]  1.87930474  1.79708365  2.26899240  1.19920258  1.43975652  0.47004905
+##  [97]  1.47975343  1.80849062  2.76730517  1.20793446
+\end{verbatim}
+
+Sollten wir in dieser Liste noch für einen Sonderfall testen wollen (zum Beispiel um Sonderbehandlungen durchzuführen), können wir mit \texttt{hasArg} auf ein Argument testen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{generate\_values }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}\AttributeTok{rnd\_fct =}\NormalTok{ rnorm,}
+                            \AttributeTok{n =} \DecValTok{1000}\NormalTok{,}
+\NormalTok{                            ...)\{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{hasArg}\NormalTok{(df2))\{}
+    \FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}more than one df}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{rnd\_fct}\NormalTok{(n, ...))}
+\NormalTok{\}}
+
+\FunctionTok{generate\_values}\NormalTok{(rf, }\AttributeTok{n =} \DecValTok{10}\NormalTok{, }\AttributeTok{df1 =} \DecValTok{5}\NormalTok{, }\AttributeTok{df2 =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## more than one df
+\end{verbatim}
+
+\begin{verbatim}
+##  [1] 1.7191709 0.3844587 0.3358765 0.4924094 2.3220831 0.8904054 1.5374226
+##  [8] 0.3068908 1.7804266 0.1659158
+\end{verbatim}
+
+Damit könnten wir auch eigene Argumente definieren, wenn wir die Funktionsdefinition übersichtlich halten wollen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{generate\_values }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}\AttributeTok{rnd\_fct =}\NormalTok{ rnorm,}
+                            \AttributeTok{n =} \DecValTok{1000}\NormalTok{,}
+\NormalTok{                            ...)\{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{hasArg}\NormalTok{(skew))\{}
+\NormalTok{    args }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(...)}
+\NormalTok{    skew }\OtherTok{\textless{}{-}}\NormalTok{ args}\SpecialCharTok{$}\NormalTok{skew}
+\NormalTok{    args }\OtherTok{\textless{}{-}}\NormalTok{ args[}\FunctionTok{names}\NormalTok{(args) }\SpecialCharTok{!=} \StringTok{\textquotesingle{}skew\textquotesingle{}}\NormalTok{]}
+\NormalTok{    args}\SpecialCharTok{$}\NormalTok{n }\OtherTok{\textless{}{-}}\NormalTok{ n}
+\NormalTok{    out }\OtherTok{\textless{}{-}} \FunctionTok{do.call}\NormalTok{(rnd\_fct, args)}
+    \FunctionTok{return}\NormalTok{(out }\SpecialCharTok{+}\NormalTok{ skew }\SpecialCharTok{*}\NormalTok{ out}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{rnd\_fct}\NormalTok{(n, ...))}
+\NormalTok{\}}
+
+\FunctionTok{generate\_values}\NormalTok{(rf, }\AttributeTok{n =} \DecValTok{10}\NormalTok{, }\AttributeTok{df1 =} \DecValTok{5}\NormalTok{, }\AttributeTok{df2 =} \DecValTok{10}\NormalTok{, }\AttributeTok{skew =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 1.4748042 2.4036888 0.3793993 1.9490523 4.1082832 1.2057001 0.5293067
+##  [8] 0.8127482 0.2072046 4.8083358
+\end{verbatim}
+
+So haben wir eine allgemeine Funktion geschrieben, die zum einen flexibel Daten mit übergebenen Funktionen generiert und zum anderen im Falle eines gesetzten Arguments \texttt{skew} dieses aus den Argumenten nimmt und das Ergebnis des Funktionsarguments mit den restlichen \texttt{...}-Argumenten mit dem Skew transformiert.
+
+Auch nochmal zu betonen ist, dass wir den \texttt{...}-Operator sowohl nutzen können, um die Argumente durchzureichen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{do\_something }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(.fn, ...)\{}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{.fn}\NormalTok{(...))}
+\NormalTok{\}}
+\FunctionTok{do\_something}\NormalTok{(mean, }\AttributeTok{x =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, }\AttributeTok{trim =}\NormalTok{ .}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5.5
+\end{verbatim}
+
+als auch um eine Liste zu erstellen, die wir dann mit \texttt{do.call} als Argumentliste übergeben:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{do\_something }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(.fn, ...)\{}
+\NormalTok{  args }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(...)}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{do.call}\NormalTok{(.fn, args))}
+\NormalTok{\}}
+\FunctionTok{do\_something}\NormalTok{(mean, }\AttributeTok{x =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, }\AttributeTok{trim =}\NormalTok{ .}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5.5
+\end{verbatim}
+
+Letztere Methode ist dann praktisch, wenn wir entweder die Argumente ergänzen wollen, oder wie im Fall oben, nur Teile des Calls an eine Funktion weiterreichen wollen.
+
+Da diese ``impliziten'' Argumente aber für \texttt{formals} und Autocomplete nicht zugänglich sind, außerdem das schreiben eines Arguments als expliziten Teil der Funktion einfacher ist, sollte außer bei sehr komplexen (z.B. grafischen) Funktionen auf diese Art der Argumente eher verzichtet werden.
+
+Wir könnten die Verteilungs-Funktion mit Skew von oben ja auch (viel übersichtlicher und mit Standardwert) wie folgt schreiben:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{generate\_values }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(}\AttributeTok{rnd\_fct =}\NormalTok{ rnorm,}
+                            \AttributeTok{n =} \DecValTok{1000}\NormalTok{,}
+                            \AttributeTok{skew =} \DecValTok{0}\NormalTok{,}
+\NormalTok{                            ...)\{}
+\NormalTok{  out }\OtherTok{\textless{}{-}} \FunctionTok{rnd\_fct}\NormalTok{(n, ...)}
+  \FunctionTok{return}\NormalTok{(out }\SpecialCharTok{+}\NormalTok{ skew }\SpecialCharTok{*}\NormalTok{ out}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{\}}
+
+\FunctionTok{generate\_values}\NormalTok{(rf, }\AttributeTok{n =} \DecValTok{10}\NormalTok{, }\AttributeTok{df1 =} \DecValTok{5}\NormalTok{, }\AttributeTok{df2 =} \DecValTok{10}\NormalTok{, }\AttributeTok{skew =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 34.6888898  5.5226003  5.1995615 22.6796614 23.0399780  0.5764265
+##  [7]  2.2664878 19.1496233  4.9516273  0.4087788
+\end{verbatim}
+
+\hypertarget{aufgabe-12}{%
+\subsection{Aufgabe}\label{aufgabe-12}}
+
+Ergänze den functional \texttt{summarise\_for\_me} um einen \texttt{...}-Operator als Argument.
+Benutze diesen, um Argumente an die Funktionen weiterzugeben.
+
+Baue außerdem eine Ausnahmebedingung in die Funktion ein, die falls das Argument \texttt{scale} auf TRUE gesetzt ist, die Daten vor der Aggregation z-transformiert.\footnote{Das funktioniert ganz einfach mit der \texttt{scale}-Funktion.}
+
+Stelle außerdem sicher, dass die Funktion unabhängig von der Eingabe des Nutzers \texttt{na.rm} auf \texttt{TRUE} setzt.
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{summarise\_for\_me }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, agg\_fn, ...)\{}
+\NormalTok{  args }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(...)}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{hasArg}\NormalTok{(scale))\{}
+    \ControlFlowTok{if}\NormalTok{(args}\SpecialCharTok{$}\NormalTok{scale)\{}
+\NormalTok{      x }\OtherTok{\textless{}{-}} \FunctionTok{scale}\NormalTok{(x)}
+\NormalTok{      args }\OtherTok{\textless{}{-}}\NormalTok{ args[}\SpecialCharTok{!}\NormalTok{(}\FunctionTok{names}\NormalTok{(args) }\SpecialCharTok{==} \StringTok{\textquotesingle{}scale\textquotesingle{}}\NormalTok{)]}
+\NormalTok{    \}}
+\NormalTok{  \}}
+\NormalTok{  args }\OtherTok{\textless{}{-}}\NormalTok{ args[}\SpecialCharTok{!}\NormalTok{(}\FunctionTok{names}\NormalTok{(args) }\SpecialCharTok{==} \StringTok{\textquotesingle{}na.rm\textquotesingle{}}\NormalTok{)]}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{agg\_fn}\NormalTok{(x, }\AttributeTok{na.rm =}\NormalTok{ T))}
+\NormalTok{\}}
+
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\ConstantTok{NA}\NormalTok{, }\DecValTok{21}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{13}\NormalTok{)}
+\FunctionTok{summarise\_for\_me}\NormalTok{(x, mean, }\AttributeTok{scale =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.775558e-17
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summarise\_for\_me}\NormalTok{(x, sum, }\AttributeTok{scale =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.110223e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summarise\_for\_me}\NormalTok{(x, median, }\AttributeTok{scale =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.03599079
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summarise\_for\_me}\NormalTok{(x, sd, }\AttributeTok{scale =}\NormalTok{ F)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6.946222
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summarise\_for\_me}\NormalTok{(x, sd, }\AttributeTok{scale =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
 
   \bibliography{book.bib}
 

@@ -24,7 +24,7 @@
 <meta name="author" content="Max Brede und Johannes Andres" />
 
 
-<meta name="date" content="2021-10-25" />
+<meta name="date" content="2021-11-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -184,7 +184,9 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html"><i class="fa fa-check"></i>Functionals</a>
 <ul>
 <li><a href="functionals.html#purrrmap"><code>purrr::map</code></a></li>
-<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#exkurs-iteratoren-vergleich"><i class="fa fa-check"></i>Exkurs: Iteratoren-Vergleich</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#exkurs-iteratoren-vergleich-und-microbenchmarking"><i class="fa fa-check"></i>Exkurs: Iteratoren-Vergleich und Microbenchmarking</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#eigene-functionals"><i class="fa fa-check"></i>Eigene Functionals</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#argumente-durchreichen"><i class="fa fa-check"></i>Argumente durchreichen</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
 <li class="divider"></li>
@@ -301,10 +303,37 @@ Antwort
 ## [[10]]
 ## [1] 3.162278</code></pre>
 <p>Alternativ kann mit der sogenannten Funktionsschreibweise auch ein Ausdruck formuliert werden, der für jeden iterierten Wert ausgeführt werden soll:</p>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="functionals.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="sc">~</span><span class="fu">sqrt</span>(.))</span></code></pre></div>
-<pre><code>##  [1] 1.000000 1.414214 1.732051 2.000000 2.236068 2.449490 2.645751 2.828427
-##  [9] 3.000000 3.162278</code></pre>
-<p>Der besondere Vorteil dieser Funktionen gegenüber den <code>*apply</code>-Funktionen, ist die Gruppe von Funktionen, die klar lesbar den erwarteten Output einer Iteration definieren.</p>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="functionals.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="sc">~</span><span class="fu">sqrt</span>(.))</span></code></pre></div>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 1.414214
+## 
+## [[3]]
+## [1] 1.732051
+## 
+## [[4]]
+## [1] 2
+## 
+## [[5]]
+## [1] 2.236068
+## 
+## [[6]]
+## [1] 2.44949
+## 
+## [[7]]
+## [1] 2.645751
+## 
+## [[8]]
+## [1] 2.828427
+## 
+## [[9]]
+## [1] 3
+## 
+## [[10]]
+## [1] 3.162278</code></pre>
+<p>Der besondere Vorteil dieser Funktionen gegenüber den <code>*apply</code>-Funktionen, ist dass diese Gruppe von Funktionen ermöglicht, den erwarteten Output einer Iteration klar lesbar zu definieren.</p>
 <p>Beispielsweise kann mit <code>map_dbl</code>, <code>map_lgl</code> und <code>map_chr</code> klar festgelegt werden, dass 1. ein <code>atomic</code>-Vektor ausgegeben wird, der 2. einen klaren Datentyp hat:</p>
 <div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="functionals.html#cb178-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="sc">~</span>.<span class="sc">^</span><span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##  [1]   1   4   9  16  25  36  49  64  81 100</code></pre>
@@ -341,90 +370,306 @@ Antwort
 ##   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
 ## 1     5     8     3     4    15     9    11    15    13    10</code></pre>
 </div>
-<div id="exkurs-iteratoren-vergleich" class="section level2">
-<h2>Exkurs: Iteratoren-Vergleich</h2>
+<div id="exkurs-iteratoren-vergleich-und-microbenchmarking" class="section level2">
+<h2>Exkurs: Iteratoren-Vergleich und Microbenchmarking</h2>
 <p>Man liest manchmal, dass loops in R wegen geringerer Geschwindigkeit in jedem Fall vermieden werden sollten. Das stimmt aber nicht wirklich, wenn man für seine <code>for</code>-Schleifen alloziert.</p>
-<p>Um das zu zeigen vergleichen wir mit der folgenden Funktion <code>for</code> ohne Allokation, for mit Allokation, <code>sapply</code> und <code>map_dbl</code>:</p>
+<p>Um das zu zeigen vergleichen wir mit der folgenden Funktion <code>for</code> ohne Allokation, for mit Allokation, <code>sapply</code> und <code>map_dbl</code>. Um die Laufzeiten zu vergleichen, nutzen wir die <code>bench::mark</code>- und <code>bench::press</code>-Funktion, sehr akkurate Funktion um Microbenchmarking durchzuführen.
+Microbenchmarking heißt hier nichts anders, als dass wir die möglichen Implementationen alle unter denselben Bedingungen sehr oft ausführen und die Ausführungszeiten notieren, um eine Idee von der Effizienz dieser zu erlangen.</p>
 <div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="functionals.html#cb189-1" aria-hidden="true" tabindex="-1"></a>my_function <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">2</span></span>
 <span id="cb189-2"><a href="functionals.html#cb189-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb189-3"><a href="functionals.html#cb189-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb189-4"><a href="functionals.html#cb189-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb189-5"><a href="functionals.html#cb189-5" aria-hidden="true" tabindex="-1"></a>my_test <span class="ot">&lt;-</span> <span class="cf">function</span>(i){</span>
-<span id="cb189-6"><a href="functionals.html#cb189-6" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb189-7"><a href="functionals.html#cb189-7" aria-hidden="true" tabindex="-1"></a>  out[[<span class="st">&#39;len&#39;</span>]] <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span>(i<span class="sc">%%</span><span class="dv">6</span>)</span>
-<span id="cb189-8"><a href="functionals.html#cb189-8" aria-hidden="true" tabindex="-1"></a>  to_do <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>out[[<span class="st">&#39;len&#39;</span>]]</span>
-<span id="cb189-9"><a href="functionals.html#cb189-9" aria-hidden="true" tabindex="-1"></a>  start <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb189-10"><a href="functionals.html#cb189-10" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
-<span id="cb189-11"><a href="functionals.html#cb189-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> to_do){</span>
-<span id="cb189-12"><a href="functionals.html#cb189-12" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">c</span>(res, <span class="fu">my_function</span>(j))</span>
-<span id="cb189-13"><a href="functionals.html#cb189-13" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb189-14"><a href="functionals.html#cb189-14" aria-hidden="true" tabindex="-1"></a>  out[[<span class="st">&#39;for ohne Allokation&#39;</span>]] <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="sc">-</span> start</span>
-<span id="cb189-15"><a href="functionals.html#cb189-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb189-16"><a href="functionals.html#cb189-16" aria-hidden="true" tabindex="-1"></a>  start <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb189-17"><a href="functionals.html#cb189-17" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(to_do))</span>
-<span id="cb189-18"><a href="functionals.html#cb189-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> to_do){</span>
-<span id="cb189-19"><a href="functionals.html#cb189-19" aria-hidden="true" tabindex="-1"></a>    res[j] <span class="ot">&lt;-</span> <span class="fu">my_function</span>(j)</span>
-<span id="cb189-20"><a href="functionals.html#cb189-20" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb189-21"><a href="functionals.html#cb189-21" aria-hidden="true" tabindex="-1"></a>  out[[<span class="st">&#39;for mit Allokation&#39;</span>]] <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="sc">-</span> start</span>
-<span id="cb189-22"><a href="functionals.html#cb189-22" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb189-23"><a href="functionals.html#cb189-23" aria-hidden="true" tabindex="-1"></a>  start <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb189-24"><a href="functionals.html#cb189-24" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">sapply</span>(to_do, my_function)</span>
-<span id="cb189-25"><a href="functionals.html#cb189-25" aria-hidden="true" tabindex="-1"></a>  out[[<span class="st">&#39;sapply&#39;</span>]] <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="sc">-</span> start</span>
-<span id="cb189-26"><a href="functionals.html#cb189-26" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb189-27"><a href="functionals.html#cb189-27" aria-hidden="true" tabindex="-1"></a>  start <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb189-28"><a href="functionals.html#cb189-28" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(to_do, my_function)</span>
-<span id="cb189-29"><a href="functionals.html#cb189-29" aria-hidden="true" tabindex="-1"></a>  out[[<span class="st">&#39;map_dbl&#39;</span>]] <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="sc">-</span> start</span>
-<span id="cb189-30"><a href="functionals.html#cb189-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
-<span id="cb189-31"><a href="functionals.html#cb189-31" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb189-4"><a href="functionals.html#cb189-4" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> bench<span class="sc">::</span><span class="fu">press</span>(<span class="at">n =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb189-5"><a href="functionals.html#cb189-5" aria-hidden="true" tabindex="-1"></a>                        {</span>
+<span id="cb189-6"><a href="functionals.html#cb189-6" aria-hidden="true" tabindex="-1"></a>                          to_do <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span> <span class="sc">^</span> n</span>
+<span id="cb189-7"><a href="functionals.html#cb189-7" aria-hidden="true" tabindex="-1"></a>                          bench<span class="sc">::</span><span class="fu">mark</span>(</span>
+<span id="cb189-8"><a href="functionals.html#cb189-8" aria-hidden="true" tabindex="-1"></a>                            <span class="at">min_iterations =</span> <span class="dv">100</span>,</span>
+<span id="cb189-9"><a href="functionals.html#cb189-9" aria-hidden="true" tabindex="-1"></a>                            </span>
+<span id="cb189-10"><a href="functionals.html#cb189-10" aria-hidden="true" tabindex="-1"></a>                            <span class="at">for_no_alloc =</span> {</span>
+<span id="cb189-11"><a href="functionals.html#cb189-11" aria-hidden="true" tabindex="-1"></a>                              res <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb189-12"><a href="functionals.html#cb189-12" aria-hidden="true" tabindex="-1"></a>                              <span class="cf">for</span> (j <span class="cf">in</span> to_do) {</span>
+<span id="cb189-13"><a href="functionals.html#cb189-13" aria-hidden="true" tabindex="-1"></a>                                res <span class="ot">&lt;-</span> <span class="fu">c</span>(res, <span class="fu">my_function</span>(j))</span>
+<span id="cb189-14"><a href="functionals.html#cb189-14" aria-hidden="true" tabindex="-1"></a>                              }</span>
+<span id="cb189-15"><a href="functionals.html#cb189-15" aria-hidden="true" tabindex="-1"></a>                              res</span>
+<span id="cb189-16"><a href="functionals.html#cb189-16" aria-hidden="true" tabindex="-1"></a>                            },</span>
+<span id="cb189-17"><a href="functionals.html#cb189-17" aria-hidden="true" tabindex="-1"></a>                            </span>
+<span id="cb189-18"><a href="functionals.html#cb189-18" aria-hidden="true" tabindex="-1"></a>                            <span class="at">for_alloc =</span> {</span>
+<span id="cb189-19"><a href="functionals.html#cb189-19" aria-hidden="true" tabindex="-1"></a>                              res <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(to_do))</span>
+<span id="cb189-20"><a href="functionals.html#cb189-20" aria-hidden="true" tabindex="-1"></a>                              <span class="cf">for</span> (j <span class="cf">in</span> to_do) {</span>
+<span id="cb189-21"><a href="functionals.html#cb189-21" aria-hidden="true" tabindex="-1"></a>                                res[j] <span class="ot">&lt;-</span> <span class="fu">my_function</span>(j)</span>
+<span id="cb189-22"><a href="functionals.html#cb189-22" aria-hidden="true" tabindex="-1"></a>                              }</span>
+<span id="cb189-23"><a href="functionals.html#cb189-23" aria-hidden="true" tabindex="-1"></a>                              res</span>
+<span id="cb189-24"><a href="functionals.html#cb189-24" aria-hidden="true" tabindex="-1"></a>                            },</span>
+<span id="cb189-25"><a href="functionals.html#cb189-25" aria-hidden="true" tabindex="-1"></a>                            </span>
+<span id="cb189-26"><a href="functionals.html#cb189-26" aria-hidden="true" tabindex="-1"></a>                            <span class="at">while_alloc =</span> {</span>
+<span id="cb189-27"><a href="functionals.html#cb189-27" aria-hidden="true" tabindex="-1"></a>                              res <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(to_do))</span>
+<span id="cb189-28"><a href="functionals.html#cb189-28" aria-hidden="true" tabindex="-1"></a>                              j <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb189-29"><a href="functionals.html#cb189-29" aria-hidden="true" tabindex="-1"></a>                              <span class="cf">while</span>(j <span class="sc">&lt;</span> <span class="fu">length</span>(to_do)) {</span>
+<span id="cb189-30"><a href="functionals.html#cb189-30" aria-hidden="true" tabindex="-1"></a>                                res[to_do[j]] <span class="ot">&lt;-</span> <span class="fu">my_function</span>(to_do[j])</span>
+<span id="cb189-31"><a href="functionals.html#cb189-31" aria-hidden="true" tabindex="-1"></a>                                j <span class="ot">&lt;-</span> j <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb189-32"><a href="functionals.html#cb189-32" aria-hidden="true" tabindex="-1"></a>                              }</span>
+<span id="cb189-33"><a href="functionals.html#cb189-33" aria-hidden="true" tabindex="-1"></a>                              res</span>
+<span id="cb189-34"><a href="functionals.html#cb189-34" aria-hidden="true" tabindex="-1"></a>                            },</span>
+<span id="cb189-35"><a href="functionals.html#cb189-35" aria-hidden="true" tabindex="-1"></a>                            </span>
+<span id="cb189-36"><a href="functionals.html#cb189-36" aria-hidden="true" tabindex="-1"></a>                            <span class="at">sapply =</span> {</span>
+<span id="cb189-37"><a href="functionals.html#cb189-37" aria-hidden="true" tabindex="-1"></a>                              res <span class="ot">&lt;-</span> <span class="fu">sapply</span>(to_do, my_function)</span>
+<span id="cb189-38"><a href="functionals.html#cb189-38" aria-hidden="true" tabindex="-1"></a>                            },</span>
+<span id="cb189-39"><a href="functionals.html#cb189-39" aria-hidden="true" tabindex="-1"></a>                            </span>
+<span id="cb189-40"><a href="functionals.html#cb189-40" aria-hidden="true" tabindex="-1"></a>                            <span class="at">map_dbl =</span> {</span>
+<span id="cb189-41"><a href="functionals.html#cb189-41" aria-hidden="true" tabindex="-1"></a>                              res <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(to_do, my_function)</span>
+<span id="cb189-42"><a href="functionals.html#cb189-42" aria-hidden="true" tabindex="-1"></a>                            }</span>
+<span id="cb189-43"><a href="functionals.html#cb189-43" aria-hidden="true" tabindex="-1"></a>                          )</span>
+<span id="cb189-44"><a href="functionals.html#cb189-44" aria-hidden="true" tabindex="-1"></a>                        })</span></code></pre></div>
+<p>Die Ergebnisse dieses Testlaufs sehen so aus:</p>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
+<p>Dabei stellen die Linien die Median-Verläufe der jeweiligen Aufrufe dar. Vorsicht: Die Achsen sind logarithmisch skaliert. Ohne diese Skalierung sehen die Ergebnisse so aus:</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="functionals.html#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pmap_dfr</span>(<span class="fu">list</span>(sim_data<span class="sc">$</span>time,</span>
+<span id="cb190-2"><a href="functionals.html#cb190-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">names</span>(sim_data<span class="sc">$</span>expression),</span>
+<span id="cb190-3"><a href="functionals.html#cb190-3" aria-hidden="true" tabindex="-1"></a>              sim_data<span class="sc">$</span>n),</span>
+<span id="cb190-4"><a href="functionals.html#cb190-4" aria-hidden="true" tabindex="-1"></a>         <span class="sc">~</span><span class="fu">tibble</span>(<span class="at">times =</span> <span class="fu">as.numeric</span>(..<span class="dv">1</span>),</span>
+<span id="cb190-5"><a href="functionals.html#cb190-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">iterator =</span> ..<span class="dv">2</span>,</span>
+<span id="cb190-6"><a href="functionals.html#cb190-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">reps =</span> <span class="dv">10</span><span class="sc">^</span>..<span class="dv">3</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb190-7"><a href="functionals.html#cb190-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> reps,</span>
+<span id="cb190-8"><a href="functionals.html#cb190-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> times,</span>
+<span id="cb190-9"><a href="functionals.html#cb190-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> iterator)) <span class="sc">+</span></span>
+<span id="cb190-10"><a href="functionals.html#cb190-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb190-11"><a href="functionals.html#cb190-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">&#39;line&#39;</span>,</span>
+<span id="cb190-12"><a href="functionals.html#cb190-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">fun =</span> median) <span class="sc">+</span></span>
+<span id="cb190-13"><a href="functionals.html#cb190-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&#39;Zeit [s]&#39;</span>,</span>
+<span id="cb190-14"><a href="functionals.html#cb190-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&#39;Iterierte Werte&#39;</span>) <span class="sc">+</span></span>
+<span id="cb190-15"><a href="functionals.html#cb190-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">&#39;Dark2&#39;</span>)</span></code></pre></div>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
 <div id="aufgabe-10" class="section level3">
 <h3>Aufgabe</h3>
-<p>Was passiert hier?</p>
+<p>Benutzt <code>bench::mark</code> um die folgenden drei Mittelwerts-Funktionen zu vergleichen:</p>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="functionals.html#cb191-1" aria-hidden="true" tabindex="-1"></a>my_for_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb191-2"><a href="functionals.html#cb191-2" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">0</span>)</span>
+<span id="cb191-3"><a href="functionals.html#cb191-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> x){</span>
+<span id="cb191-4"><a href="functionals.html#cb191-4" aria-hidden="true" tabindex="-1"></a>    out <span class="ot">&lt;-</span> out <span class="sc">+</span> i</span>
+<span id="cb191-5"><a href="functionals.html#cb191-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb191-6"><a href="functionals.html#cb191-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out<span class="sc">/</span><span class="fu">length</span>(x))</span>
+<span id="cb191-7"><a href="functionals.html#cb191-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb191-8"><a href="functionals.html#cb191-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb191-9"><a href="functionals.html#cb191-9" aria-hidden="true" tabindex="-1"></a>my_manual_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb191-10"><a href="functionals.html#cb191-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(x)<span class="sc">/</span><span class="fu">length</span>(x))</span>
+<span id="cb191-11"><a href="functionals.html#cb191-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb191-12"><a href="functionals.html#cb191-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb191-13"><a href="functionals.html#cb191-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x)</span></code></pre></div>
 <details>
 <summary>
 Antwort
 </summary>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="functionals.html#cb190-1" aria-hidden="true" tabindex="-1"></a>my_function <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">2</span> <span class="co"># Funktion zum Quadrieren</span></span>
-<span id="cb190-2"><a href="functionals.html#cb190-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb190-3"><a href="functionals.html#cb190-3" aria-hidden="true" tabindex="-1"></a>my_test <span class="ot">&lt;-</span> <span class="cf">function</span>(i){</span>
-<span id="cb190-4"><a href="functionals.html#cb190-4" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>() <span class="co"># initiiere leere output-Liste</span></span>
-<span id="cb190-5"><a href="functionals.html#cb190-5" aria-hidden="true" tabindex="-1"></a>  out[[<span class="st">&#39;len&#39;</span>]] <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span>(i<span class="sc">%%</span><span class="dv">6</span>) <span class="co"># Berechne Länge der Iteration als </span></span>
-<span id="cb190-6"><a href="functionals.html#cb190-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 10-Potenz zwischen 0 und 5</span></span>
-<span id="cb190-7"><a href="functionals.html#cb190-7" aria-hidden="true" tabindex="-1"></a>  to_do <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>out[[<span class="st">&#39;len&#39;</span>]] <span class="co"># durch zu iterierender Vektor</span></span>
-<span id="cb190-8"><a href="functionals.html#cb190-8" aria-hidden="true" tabindex="-1"></a>  start <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="co"># Startzeit erster Test</span></span>
-<span id="cb190-9"><a href="functionals.html#cb190-9" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">c</span>() <span class="co"># initiiere leeren Vektor (keine Allokation)</span></span>
-<span id="cb190-10"><a href="functionals.html#cb190-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> to_do){ <span class="co"># iteriere duch to_do</span></span>
-<span id="cb190-11"><a href="functionals.html#cb190-11" aria-hidden="true" tabindex="-1"></a>    res <span class="ot">&lt;-</span> <span class="fu">c</span>(res, <span class="fu">my_function</span>(j)) <span class="co">#quadriere jede Zahl und </span></span>
-<span id="cb190-12"><a href="functionals.html#cb190-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># vergrößere res mit jeder Iteration</span></span>
-<span id="cb190-13"><a href="functionals.html#cb190-13" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb190-14"><a href="functionals.html#cb190-14" aria-hidden="true" tabindex="-1"></a>  out[[<span class="st">&#39;for ohne Allokation&#39;</span>]] <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="sc">-</span> start <span class="co"># berechne Zeit-delta</span></span>
-<span id="cb190-15"><a href="functionals.html#cb190-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb190-16"><a href="functionals.html#cb190-16" aria-hidden="true" tabindex="-1"></a>  start <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="co"># Startzeit zweiter Test</span></span>
-<span id="cb190-17"><a href="functionals.html#cb190-17" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(to_do))<span class="co"># initiiere Vektor mit Allokation</span></span>
-<span id="cb190-18"><a href="functionals.html#cb190-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> to_do){<span class="co"># iteriere durch to_do</span></span>
-<span id="cb190-19"><a href="functionals.html#cb190-19" aria-hidden="true" tabindex="-1"></a>    res[j] <span class="ot">&lt;-</span> <span class="fu">my_function</span>(j) <span class="co">#quadriere jede Zahl und lege in res ab</span></span>
-<span id="cb190-20"><a href="functionals.html#cb190-20" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb190-21"><a href="functionals.html#cb190-21" aria-hidden="true" tabindex="-1"></a>  out[[<span class="st">&#39;for mit Allokation&#39;</span>]] <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="sc">-</span> start <span class="co"># berechne Zeit-delta</span></span>
-<span id="cb190-22"><a href="functionals.html#cb190-22" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb190-23"><a href="functionals.html#cb190-23" aria-hidden="true" tabindex="-1"></a>  start <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="co"># Startzeit dritter Test</span></span>
-<span id="cb190-24"><a href="functionals.html#cb190-24" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">sapply</span>(to_do, my_function) <span class="co"># quadriere jede Zahl und speicher output</span></span>
-<span id="cb190-25"><a href="functionals.html#cb190-25" aria-hidden="true" tabindex="-1"></a>  out[[<span class="st">&#39;sapply&#39;</span>]] <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="sc">-</span> start <span class="co"># berechne Zeit-delta</span></span>
-<span id="cb190-26"><a href="functionals.html#cb190-26" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb190-27"><a href="functionals.html#cb190-27" aria-hidden="true" tabindex="-1"></a>  start <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="co"># Startzeit vierter Test</span></span>
-<span id="cb190-28"><a href="functionals.html#cb190-28" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(to_do, my_function) <span class="co"># quadriere jede Zahl und speicher output</span></span>
-<span id="cb190-29"><a href="functionals.html#cb190-29" aria-hidden="true" tabindex="-1"></a>  out[[<span class="st">&#39;map_dbl&#39;</span>]] <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="sc">-</span> start <span class="co"># berechne Zeit-delta</span></span>
-<span id="cb190-30"><a href="functionals.html#cb190-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
-<span id="cb190-31"><a href="functionals.html#cb190-31" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="functionals.html#cb192-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">10000</span>)</span>
+<span id="cb192-2"><a href="functionals.html#cb192-2" aria-hidden="true" tabindex="-1"></a>bmark <span class="ot">&lt;-</span> bench<span class="sc">::</span><span class="fu">mark</span>(<span class="at">mean =</span> <span class="fu">mean</span>(x),</span>
+<span id="cb192-3"><a href="functionals.html#cb192-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">for_mean =</span> <span class="fu">my_for_mean</span>(x),</span>
+<span id="cb192-4"><a href="functionals.html#cb192-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">man_mean =</span> <span class="fu">my_manual_mean</span>(x),</span>
+<span id="cb192-5"><a href="functionals.html#cb192-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">iterations =</span> <span class="dv">10000</span>)</span></code></pre></div>
+<p>Übrigens gibt es noch eine sehr nette Funktion, die man im Kontext von <code>bench::mark</code> nochmal erwähnen sollte:</p>
+<p>Mit <code>autoplot(type = 'violin')</code> lassen sich die Ergebnisse eines Mikrobenchmarks ganz nett darstellen:</p>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="functionals.html#cb193-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bench)</span>
+<span id="cb193-2"><a href="functionals.html#cb193-2" aria-hidden="true" tabindex="-1"></a>bmark <span class="sc">%&gt;%</span> </span>
+<span id="cb193-3"><a href="functionals.html#cb193-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">type =</span> <span class="st">&#39;violin&#39;</span>)</span></code></pre></div>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
 </details>
-<p>Diesen Test lassen wir 60 mal laufen, um ein paar Datenpunkte pro Länge und Iterator zu bekommen:</p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="functionals.html#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(furrr)</span>
-<span id="cb191-2"><a href="functionals.html#cb191-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb191-3"><a href="functionals.html#cb191-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
-<span id="cb191-4"><a href="functionals.html#cb191-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb191-5"><a href="functionals.html#cb191-5" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">future_map_dfr</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">60</span>, <span class="sc">~</span><span class="fu">my_test</span>(.))</span>
-<span id="cb191-6"><a href="functionals.html#cb191-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb191-7"><a href="functionals.html#cb191-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(out,<span class="st">&#39;data/iterators.rds&#39;</span>)</span></code></pre></div>
-<pre><code>## `summarise()` has grouped output by &#39;len&#39;. You can override using the `.groups` argument.</code></pre>
-<p><img src="Robustheit_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
+</div>
+</div>
+<div id="eigene-functionals" class="section level2">
+<h2>Eigene Functionals</h2>
+<p>Warum Functionals neben den Iteratoren für uns praktisch sind, wird am Simulations-Beispiel klar.</p>
+<p>Wenn wir eine Funktion schreiben wollen, die zum Beispiel für einen t-Test das Ausschöpfen des Alpha-Niveaus bei verschiedenen Verteilungen überprüft, könnten wir wie bisher für eine Untermenge der Möglichkeiten mit if-else die richtige Funktion auswählen.
+Schöner wäre es aber doch, wenn wir eine Simulationsfunktion hätten, die einfach eine Funktion als Objekt nimmt und die Ergebnisse zurückgibt.</p>
+<p>Dafür müssen wir erstmal verstehen, warum der folgende Aufruf funktioniert:</p>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="functionals.html#cb194-1" aria-hidden="true" tabindex="-1"></a>rnd_fct <span class="ot">&lt;-</span> rnorm</span>
+<span id="cb194-2"><a href="functionals.html#cb194-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb194-3"><a href="functionals.html#cb194-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rnd_fct</span>(<span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##  [1] -0.4199126  0.2312317  0.4539680  0.2489447  1.0210670 -1.3311690
+##  [7]  1.5289611  0.1749426 -0.8485907 -1.0582308</code></pre>
+<p>Wir haben in <code>rnd_fct</code> einen Verweis auf <code>rnorm</code> abgelegt und können den Namen des Verweises jetzt äquivalent zum Inhalt des Ziels, also ganz einfach wie die ursprüngliche Funktion verwenden.</p>
+<p>Das funktioniert aus ähnlichen Gründen, aus denen unsere Listen mit Verweisen kleiner als erwartet waren. Da wir den Inhalt nicht verändert haben, spart sich R den Aufwand die Funktion zu kopieren und legt einfach einen zweiten Verweis auf die <code>rnorm</code>-Funktion an, inklusive <code>body</code> und <code>formals</code>.</p>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="functionals.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">body</span>(rnorm)</span></code></pre></div>
+<pre><code>## .Call(C_rnorm, n, mean, sd)</code></pre>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="functionals.html#cb198-1" aria-hidden="true" tabindex="-1"></a><span class="fu">body</span>(rnd_fct)</span></code></pre></div>
+<pre><code>## .Call(C_rnorm, n, mean, sd)</code></pre>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="functionals.html#cb200-1" aria-hidden="true" tabindex="-1"></a><span class="fu">formals</span>(rnorm)</span></code></pre></div>
+<pre><code>## $n
+## 
+## 
+## $mean
+## [1] 0
+## 
+## $sd
+## [1] 1</code></pre>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="functionals.html#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="fu">formals</span>(rnd_fct)</span></code></pre></div>
+<pre><code>## $n
+## 
+## 
+## $mean
+## [1] 0
+## 
+## $sd
+## [1] 1</code></pre>
+<p>Mit anderen Worten können wir einen Verweis auf ein Funktions-Objekt wie die eigentliche Funktion verwenden. Diesen Umstand können wir ausnutzen, wenn wir unsere Simulationsfunktion schreiben, indem wir einfach ein Argument vorsehen, dass als Funktion benutzt werden kann.</p>
+<p>So eine Funktion könnte so aussehen:</p>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="functionals.html#cb204-1" aria-hidden="true" tabindex="-1"></a>generate_values <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">rnd_fct =</span> rnorm,</span>
+<span id="cb204-2"><a href="functionals.html#cb204-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">n =</span> <span class="dv">1000</span>){</span>
+<span id="cb204-3"><a href="functionals.html#cb204-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rnd_fct</span>(n))</span>
+<span id="cb204-4"><a href="functionals.html#cb204-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb204-5"><a href="functionals.html#cb204-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb204-6"><a href="functionals.html#cb204-6" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_values</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##  [1]  0.2994693  0.5303306  2.3644090 -1.5828983  0.3834167 -0.8116823
+##  [7] -1.1964809 -0.6136671  1.2368626  0.5172003</code></pre>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="functionals.html#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_values</span>(runif, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##  [1] 0.44395272 0.30926817 0.13344473 0.58773504 0.47318257 0.61197434
+##  [7] 0.37293941 0.91837751 0.74896328 0.07670441</code></pre>
+<p>Und schon ist unser erster Functional fertig.</p>
+<div id="aufgabe-11" class="section level3">
+<h3>Aufgabe</h3>
+<p>Erstelle einen functional <code>summarise_for_me</code>, der einen Vektor als Argument x und eine Funktion als Argument <code>agg_fn</code> erwartet, und die Ihr dazu nutzen könnt, mit demselben Stichwort NA-bereinigt Summe, Mittelwert, Median
+und SD des Vektors <code>c(10, NA, 21, 25, 13)</code> zu berechnen.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="functionals.html#cb208-1" aria-hidden="true" tabindex="-1"></a>summarise_for_me <span class="ot">&lt;-</span> <span class="cf">function</span>(x, agg_fn){</span>
+<span id="cb208-2"><a href="functionals.html#cb208-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">agg_fn</span>(x, <span class="at">na.rm =</span> T))</span>
+<span id="cb208-3"><a href="functionals.html#cb208-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb208-4"><a href="functionals.html#cb208-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb208-5"><a href="functionals.html#cb208-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="cn">NA</span>, <span class="dv">21</span>, <span class="dv">25</span>, <span class="dv">13</span>)</span>
+<span id="cb208-6"><a href="functionals.html#cb208-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_for_me</span>(x, mean)</span></code></pre></div>
+<pre><code>## [1] 17.25</code></pre>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="functionals.html#cb210-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_for_me</span>(x, sum)</span></code></pre></div>
+<pre><code>## [1] 69</code></pre>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="functionals.html#cb212-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_for_me</span>(x, median)</span></code></pre></div>
+<pre><code>## [1] 17</code></pre>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="functionals.html#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_for_me</span>(x, sd)</span></code></pre></div>
+<pre><code>## [1] 6.946222</code></pre>
+</details>
+</div>
+</div>
+<div id="argumente-durchreichen" class="section level2">
+<h2>Argumente durchreichen</h2>
+<p>Unsere schöne Funktion wird offensichtlich problematisch, wenn wir zum Beispiel <code>rf</code> übergeben:</p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="functionals.html#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_values</span>(rf, <span class="at">n =</span> <span class="dv">100</span>)</span></code></pre></div>
+<pre><code>## Error in rnd_fct(n): argument &quot;df1&quot; is missing, with no default</code></pre>
+<p>Dafür gibt es in R den Platzhalter <code>...</code>, dem Ihr auch schon an anderer Stelle begegnet sein könntet. <code>...</code> heißt nichts anderes als dass mehr Argumente möglich sind, bei denen wir noch nicht so ganz sicher sind, welche es sein werden.</p>
+<p>Benutzen können wir das wie jedes andere Argument:</p>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="functionals.html#cb218-1" aria-hidden="true" tabindex="-1"></a>generate_values <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">rnd_fct =</span> rnorm,</span>
+<span id="cb218-2"><a href="functionals.html#cb218-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb218-3"><a href="functionals.html#cb218-3" aria-hidden="true" tabindex="-1"></a>                            ...){</span>
+<span id="cb218-4"><a href="functionals.html#cb218-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rnd_fct</span>(n, ...))</span>
+<span id="cb218-5"><a href="functionals.html#cb218-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb218-6"><a href="functionals.html#cb218-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb218-7"><a href="functionals.html#cb218-7" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_values</span>(rf, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">df1 =</span> <span class="dv">5</span>, <span class="at">df2 =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##   [1]  1.30800244  0.34386902  1.07185386  1.26556593  1.07752607  2.03497546
+##   [7]  0.63611837  0.87353987  1.03485287  0.81601814  1.02639860  0.53705763
+##  [13]  0.31405869  0.52439110  1.39648091  1.06064416  0.46664706  0.27070874
+##  [19]  2.25204656  0.86366757  1.15693767  1.81259878  0.56410316  0.94787277
+##  [25]  3.89529621  0.37557481  1.92586101  0.42849312  1.49773976  0.05813357
+##  [31]  0.44438564  0.14525814  2.36696864  1.66339698  0.53827284  1.65650546
+##  [37]  0.46055553  1.60033949  0.30694711  1.85127786  1.48217075  2.62585139
+##  [43]  2.14504737  0.81919515  1.38374697  0.89745419  0.37185526  1.13406191
+##  [49]  1.31479498  0.65300786  0.80247351  1.80981147  0.32507006  1.55078471
+##  [55]  1.18369100  0.08447330  1.91984029  0.13914696  0.79177535  0.94549312
+##  [61]  0.93354001  0.28173625  1.45672514  0.60835450  0.91438839  0.75916434
+##  [67]  1.97458061  0.17009112  1.49389432  2.16806557  1.61570079  0.33946545
+##  [73]  1.30805728  1.48765000  0.41400625  0.98439720  2.91565515  1.18407534
+##  [79]  0.26514127  0.71282182  0.73094521  0.94654944  1.06797966 12.72549312
+##  [85]  2.87107955  1.15050343  0.27958205  0.55015957  0.47310973  0.89918620
+##  [91]  1.87930474  1.79708365  2.26899240  1.19920258  1.43975652  0.47004905
+##  [97]  1.47975343  1.80849062  2.76730517  1.20793446</code></pre>
+<p>Sollten wir in dieser Liste noch für einen Sonderfall testen wollen (zum Beispiel um Sonderbehandlungen durchzuführen), können wir mit <code>hasArg</code> auf ein Argument testen:</p>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="functionals.html#cb220-1" aria-hidden="true" tabindex="-1"></a>generate_values <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">rnd_fct =</span> rnorm,</span>
+<span id="cb220-2"><a href="functionals.html#cb220-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb220-3"><a href="functionals.html#cb220-3" aria-hidden="true" tabindex="-1"></a>                            ...){</span>
+<span id="cb220-4"><a href="functionals.html#cb220-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">hasArg</span>(df2)){</span>
+<span id="cb220-5"><a href="functionals.html#cb220-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">&#39;more than one df</span><span class="sc">\n</span><span class="st">&#39;</span>)</span>
+<span id="cb220-6"><a href="functionals.html#cb220-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb220-7"><a href="functionals.html#cb220-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rnd_fct</span>(n, ...))</span>
+<span id="cb220-8"><a href="functionals.html#cb220-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb220-9"><a href="functionals.html#cb220-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb220-10"><a href="functionals.html#cb220-10" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_values</span>(rf, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">df1 =</span> <span class="dv">5</span>, <span class="at">df2 =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>## more than one df</code></pre>
+<pre><code>##  [1] 1.7191709 0.3844587 0.3358765 0.4924094 2.3220831 0.8904054 1.5374226
+##  [8] 0.3068908 1.7804266 0.1659158</code></pre>
+<p>Damit könnten wir auch eigene Argumente definieren, wenn wir die Funktionsdefinition übersichtlich halten wollen:</p>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="functionals.html#cb223-1" aria-hidden="true" tabindex="-1"></a>generate_values <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">rnd_fct =</span> rnorm,</span>
+<span id="cb223-2"><a href="functionals.html#cb223-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb223-3"><a href="functionals.html#cb223-3" aria-hidden="true" tabindex="-1"></a>                            ...){</span>
+<span id="cb223-4"><a href="functionals.html#cb223-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">hasArg</span>(skew)){</span>
+<span id="cb223-5"><a href="functionals.html#cb223-5" aria-hidden="true" tabindex="-1"></a>    args <span class="ot">&lt;-</span> <span class="fu">list</span>(...)</span>
+<span id="cb223-6"><a href="functionals.html#cb223-6" aria-hidden="true" tabindex="-1"></a>    skew <span class="ot">&lt;-</span> args<span class="sc">$</span>skew</span>
+<span id="cb223-7"><a href="functionals.html#cb223-7" aria-hidden="true" tabindex="-1"></a>    args <span class="ot">&lt;-</span> args[<span class="fu">names</span>(args) <span class="sc">!=</span> <span class="st">&#39;skew&#39;</span>]</span>
+<span id="cb223-8"><a href="functionals.html#cb223-8" aria-hidden="true" tabindex="-1"></a>    args<span class="sc">$</span>n <span class="ot">&lt;-</span> n</span>
+<span id="cb223-9"><a href="functionals.html#cb223-9" aria-hidden="true" tabindex="-1"></a>    out <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rnd_fct, args)</span>
+<span id="cb223-10"><a href="functionals.html#cb223-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(out <span class="sc">+</span> skew <span class="sc">*</span> out<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb223-11"><a href="functionals.html#cb223-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb223-12"><a href="functionals.html#cb223-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rnd_fct</span>(n, ...))</span>
+<span id="cb223-13"><a href="functionals.html#cb223-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb223-14"><a href="functionals.html#cb223-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb223-15"><a href="functionals.html#cb223-15" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_values</span>(rf, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">df1 =</span> <span class="dv">5</span>, <span class="at">df2 =</span> <span class="dv">10</span>, <span class="at">skew =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>##  [1] 1.4748042 2.4036888 0.3793993 1.9490523 4.1082832 1.2057001 0.5293067
+##  [8] 0.8127482 0.2072046 4.8083358</code></pre>
+<p>So haben wir eine allgemeine Funktion geschrieben, die zum einen flexibel Daten mit übergebenen Funktionen generiert und zum anderen im Falle eines gesetzten Arguments <code>skew</code> dieses aus den Argumenten nimmt und das Ergebnis des Funktionsarguments mit den restlichen <code>...</code>-Argumenten mit dem Skew transformiert.</p>
+<p>Auch nochmal zu betonen ist, dass wir den <code>...</code>-Operator sowohl nutzen können, um die Argumente durchzureichen:</p>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="functionals.html#cb225-1" aria-hidden="true" tabindex="-1"></a>do_something <span class="ot">&lt;-</span> <span class="cf">function</span>(.fn, ...){</span>
+<span id="cb225-2"><a href="functionals.html#cb225-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">.fn</span>(...))</span>
+<span id="cb225-3"><a href="functionals.html#cb225-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb225-4"><a href="functionals.html#cb225-4" aria-hidden="true" tabindex="-1"></a><span class="fu">do_something</span>(mean, <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">trim =</span> .<span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 5.5</code></pre>
+<p>als auch um eine Liste zu erstellen, die wir dann mit <code>do.call</code> als Argumentliste übergeben:</p>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="functionals.html#cb227-1" aria-hidden="true" tabindex="-1"></a>do_something <span class="ot">&lt;-</span> <span class="cf">function</span>(.fn, ...){</span>
+<span id="cb227-2"><a href="functionals.html#cb227-2" aria-hidden="true" tabindex="-1"></a>  args <span class="ot">&lt;-</span> <span class="fu">list</span>(...)</span>
+<span id="cb227-3"><a href="functionals.html#cb227-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">do.call</span>(.fn, args))</span>
+<span id="cb227-4"><a href="functionals.html#cb227-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb227-5"><a href="functionals.html#cb227-5" aria-hidden="true" tabindex="-1"></a><span class="fu">do_something</span>(mean, <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">trim =</span> .<span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 5.5</code></pre>
+<p>Letztere Methode ist dann praktisch, wenn wir entweder die Argumente ergänzen wollen, oder wie im Fall oben, nur Teile des Calls an eine Funktion weiterreichen wollen.</p>
+<p>Da diese “impliziten” Argumente aber für <code>formals</code> und Autocomplete nicht zugänglich sind, außerdem das schreiben eines Arguments als expliziten Teil der Funktion einfacher ist, sollte außer bei sehr komplexen (z.B. grafischen) Funktionen auf diese Art der Argumente eher verzichtet werden.</p>
+<p>Wir könnten die Verteilungs-Funktion mit Skew von oben ja auch (viel übersichtlicher und mit Standardwert) wie folgt schreiben:</p>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="functionals.html#cb229-1" aria-hidden="true" tabindex="-1"></a>generate_values <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">rnd_fct =</span> rnorm,</span>
+<span id="cb229-2"><a href="functionals.html#cb229-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb229-3"><a href="functionals.html#cb229-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">skew =</span> <span class="dv">0</span>,</span>
+<span id="cb229-4"><a href="functionals.html#cb229-4" aria-hidden="true" tabindex="-1"></a>                            ...){</span>
+<span id="cb229-5"><a href="functionals.html#cb229-5" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">rnd_fct</span>(n, ...)</span>
+<span id="cb229-6"><a href="functionals.html#cb229-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out <span class="sc">+</span> skew <span class="sc">*</span> out<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb229-7"><a href="functionals.html#cb229-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb229-8"><a href="functionals.html#cb229-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb229-9"><a href="functionals.html#cb229-9" aria-hidden="true" tabindex="-1"></a><span class="fu">generate_values</span>(rf, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">df1 =</span> <span class="dv">5</span>, <span class="at">df2 =</span> <span class="dv">10</span>, <span class="at">skew =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>##  [1] 34.6888898  5.5226003  5.1995615 22.6796614 23.0399780  0.5764265
+##  [7]  2.2664878 19.1496233  4.9516273  0.4087788</code></pre>
+<div id="aufgabe-12" class="section level3">
+<h3>Aufgabe</h3>
+<p>Ergänze den functional <code>summarise_for_me</code> um einen <code>...</code>-Operator als Argument.
+Benutze diesen, um Argumente an die Funktionen weiterzugeben.</p>
+<p>Baue außerdem eine Ausnahmebedingung in die Funktion ein, die falls das Argument <code>scale</code> auf TRUE gesetzt ist, die Daten vor der Aggregation z-transformiert.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
+<p>Stelle außerdem sicher, dass die Funktion unabhängig von der Eingabe des Nutzers <code>na.rm</code> auf <code>TRUE</code> setzt.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="functionals.html#cb231-1" aria-hidden="true" tabindex="-1"></a>summarise_for_me <span class="ot">&lt;-</span> <span class="cf">function</span>(x, agg_fn, ...){</span>
+<span id="cb231-2"><a href="functionals.html#cb231-2" aria-hidden="true" tabindex="-1"></a>  args <span class="ot">&lt;-</span> <span class="fu">list</span>(...)</span>
+<span id="cb231-3"><a href="functionals.html#cb231-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">hasArg</span>(scale)){</span>
+<span id="cb231-4"><a href="functionals.html#cb231-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(args<span class="sc">$</span>scale){</span>
+<span id="cb231-5"><a href="functionals.html#cb231-5" aria-hidden="true" tabindex="-1"></a>      x <span class="ot">&lt;-</span> <span class="fu">scale</span>(x)</span>
+<span id="cb231-6"><a href="functionals.html#cb231-6" aria-hidden="true" tabindex="-1"></a>      args <span class="ot">&lt;-</span> args[<span class="sc">!</span>(<span class="fu">names</span>(args) <span class="sc">==</span> <span class="st">&#39;scale&#39;</span>)]</span>
+<span id="cb231-7"><a href="functionals.html#cb231-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb231-8"><a href="functionals.html#cb231-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb231-9"><a href="functionals.html#cb231-9" aria-hidden="true" tabindex="-1"></a>  args <span class="ot">&lt;-</span> args[<span class="sc">!</span>(<span class="fu">names</span>(args) <span class="sc">==</span> <span class="st">&#39;na.rm&#39;</span>)]</span>
+<span id="cb231-10"><a href="functionals.html#cb231-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">agg_fn</span>(x, <span class="at">na.rm =</span> T))</span>
+<span id="cb231-11"><a href="functionals.html#cb231-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb231-12"><a href="functionals.html#cb231-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb231-13"><a href="functionals.html#cb231-13" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="cn">NA</span>, <span class="dv">21</span>, <span class="dv">25</span>, <span class="dv">13</span>)</span>
+<span id="cb231-14"><a href="functionals.html#cb231-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_for_me</span>(x, mean, <span class="at">scale =</span> T)</span></code></pre></div>
+<pre><code>## [1] 2.775558e-17</code></pre>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="functionals.html#cb233-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_for_me</span>(x, sum, <span class="at">scale =</span> T)</span></code></pre></div>
+<pre><code>## [1] 1.110223e-16</code></pre>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="functionals.html#cb235-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_for_me</span>(x, median, <span class="at">scale =</span> T)</span></code></pre></div>
+<pre><code>## [1] -0.03599079</code></pre>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="functionals.html#cb237-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_for_me</span>(x, sd, <span class="at">scale =</span> F)</span></code></pre></div>
+<pre><code>## [1] 6.946222</code></pre>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="functionals.html#cb239-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_for_me</span>(x, sd, <span class="at">scale =</span> T)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+</details>
 
 </div>
 </div>
@@ -433,6 +678,7 @@ Antwort
 <hr />
 <ol start="5">
 <li id="fn5"><p>oder Vektoren<a href="functionals.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>Das funktioniert ganz einfach mit der <code>scale</code>-Funktion.<a href="functionals.html#fnref6" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
