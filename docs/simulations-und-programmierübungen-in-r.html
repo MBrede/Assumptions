@@ -192,6 +192,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html#pascalsches-dreieck"><i class="fa fa-check"></i>Pascalsches Dreieck</a></li>
 <li><a href="simulations-und-programmierübungen-in-r.html#matrizen-und-chi2">Matrizen und <span class="math inline">\(\chi^2\)</span></a></li>
+<li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html#t-test"><i class="fa fa-check"></i>t-Test</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
 <li class="divider"></li>
@@ -707,23 +708,21 @@ Als letztes quadrieren wir die Abweichungen der Matirx von den eij, teilen die E
 <p>Kleine Zusatzaufgabe falls Interesse besteht:
 Benchmarke die zwei Implementationen (gerne die aus der Musterlösung, Du musst nicht noch selber die andere umsetzen<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>) und die folgende Variante gegeneinander:</p>
 <div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="simulations-und-programmierübungen-in-r.html#cb274-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unname</span>(<span class="fu">chisq.test</span>(m)<span class="sc">$</span>statistic)</span></code></pre></div>
-<pre><code>## Warning in chisq.test(m): Chi-squared approximation may be incorrect</code></pre>
-<pre><code>## [1] 0</code></pre>
-Was kommt raus?
-Hast Du eine Idee, warum das Ergebnis so aussieht wie es aussieht?
+<p>Was kommt raus?
+Hast Du eine Idee, warum das Ergebnis so aussieht wie es aussieht?</p>
 <details>
 <summary>
 Antwort
 </summary>
-<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="simulations-und-programmierübungen-in-r.html#cb277-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>, <span class="at">ncol =</span> <span class="dv">100</span>)</span>
-<span id="cb277-2"><a href="simulations-und-programmierübungen-in-r.html#cb277-2" aria-hidden="true" tabindex="-1"></a>bmark <span class="ot">&lt;-</span> bench<span class="sc">::</span><span class="fu">mark</span>(</span>
-<span id="cb277-3"><a href="simulations-und-programmierübungen-in-r.html#cb277-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">iterations =</span> <span class="dv">1000</span>,</span>
-<span id="cb277-4"><a href="simulations-und-programmierübungen-in-r.html#cb277-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">forX2 =</span> <span class="fu">for_chisq</span>(m),</span>
-<span id="cb277-5"><a href="simulations-und-programmierübungen-in-r.html#cb277-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">matX2 =</span> <span class="fu">mat_chisq</span>(m),</span>
-<span id="cb277-6"><a href="simulations-und-programmierübungen-in-r.html#cb277-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">RX2 =</span> <span class="fu">unname</span>(<span class="fu">chisq.test</span>(m)<span class="sc">$</span>statistic)</span>
-<span id="cb277-7"><a href="simulations-und-programmierübungen-in-r.html#cb277-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb277-8"><a href="simulations-und-programmierübungen-in-r.html#cb277-8" aria-hidden="true" tabindex="-1"></a>bmark <span class="sc">%&gt;%</span> </span>
-<span id="cb277-9"><a href="simulations-und-programmierübungen-in-r.html#cb277-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">type =</span> <span class="st">&#39;violin&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="simulations-und-programmierübungen-in-r.html#cb275-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>, <span class="at">ncol =</span> <span class="dv">100</span>)</span>
+<span id="cb275-2"><a href="simulations-und-programmierübungen-in-r.html#cb275-2" aria-hidden="true" tabindex="-1"></a>bmark <span class="ot">&lt;-</span> bench<span class="sc">::</span><span class="fu">mark</span>(</span>
+<span id="cb275-3"><a href="simulations-und-programmierübungen-in-r.html#cb275-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">iterations =</span> <span class="dv">1000</span>,</span>
+<span id="cb275-4"><a href="simulations-und-programmierübungen-in-r.html#cb275-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">forX2 =</span> <span class="fu">for_chisq</span>(m),</span>
+<span id="cb275-5"><a href="simulations-und-programmierübungen-in-r.html#cb275-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">matX2 =</span> <span class="fu">mat_chisq</span>(m),</span>
+<span id="cb275-6"><a href="simulations-und-programmierübungen-in-r.html#cb275-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">RX2 =</span> <span class="fu">unname</span>(<span class="fu">chisq.test</span>(m)<span class="sc">$</span>statistic)</span>
+<span id="cb275-7"><a href="simulations-und-programmierübungen-in-r.html#cb275-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb275-8"><a href="simulations-und-programmierübungen-in-r.html#cb275-8" aria-hidden="true" tabindex="-1"></a>bmark <span class="sc">%&gt;%</span> </span>
+<span id="cb275-9"><a href="simulations-und-programmierübungen-in-r.html#cb275-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">type =</span> <span class="st">&#39;violin&#39;</span>)</span></code></pre></div>
 <img src="Robustheit_files/figure-html/unnamed-chunk-108-1.png" width="672" />
 </details>
 <p>Als letztes baue einen chi-Quadrat-Test auf Unabhängigkeit mit der <span class="math inline">\(\chi^2\)</span>-Statistik aus unseren Funktionen durchführt und die Originalmatrix mit Randsummen, die Gesamtzahl an Beobachtungen, die Teststatistik, die Freiheitsgrade und das p<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a> zurückgibt.</p>
@@ -731,20 +730,20 @@ Antwort
 <summary>
 Antwort
 </summary>
-<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="simulations-und-programmierübungen-in-r.html#cb278-1" aria-hidden="true" tabindex="-1"></a>my_chisq.test <span class="ot">&lt;-</span> <span class="cf">function</span>(m){</span>
-<span id="cb278-2"><a href="simulations-und-programmierübungen-in-r.html#cb278-2" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">statistic =</span> <span class="fu">mat_chisq</span>(m))</span>
-<span id="cb278-3"><a href="simulations-und-programmierübungen-in-r.html#cb278-3" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">rbind</span>(m, <span class="fu">colSums</span>(m))</span>
-<span id="cb278-4"><a href="simulations-und-programmierübungen-in-r.html#cb278-4" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(mat, <span class="fu">rowSums</span>(mat))</span>
-<span id="cb278-5"><a href="simulations-und-programmierübungen-in-r.html#cb278-5" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>mat <span class="ot">&lt;-</span> mat</span>
-<span id="cb278-6"><a href="simulations-und-programmierübungen-in-r.html#cb278-6" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>n <span class="ot">&lt;-</span> mat[<span class="fu">nrow</span>(mat), <span class="fu">ncol</span>(mat)]</span>
-<span id="cb278-7"><a href="simulations-und-programmierübungen-in-r.html#cb278-7" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>df <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(m)<span class="sc">-</span><span class="dv">1</span>) <span class="sc">*</span> (<span class="fu">ncol</span>(m) <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb278-8"><a href="simulations-und-programmierübungen-in-r.html#cb278-8" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>p <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(out<span class="sc">$</span>statistic,</span>
-<span id="cb278-9"><a href="simulations-und-programmierübungen-in-r.html#cb278-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">df =</span> out<span class="sc">$</span>df,</span>
-<span id="cb278-10"><a href="simulations-und-programmierübungen-in-r.html#cb278-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">lower.tail =</span> F)</span>
-<span id="cb278-11"><a href="simulations-und-programmierübungen-in-r.html#cb278-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
-<span id="cb278-12"><a href="simulations-und-programmierübungen-in-r.html#cb278-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb278-13"><a href="simulations-und-programmierübungen-in-r.html#cb278-13" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>,<span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb278-14"><a href="simulations-und-programmierübungen-in-r.html#cb278-14" aria-hidden="true" tabindex="-1"></a><span class="fu">my_chisq.test</span>(m)</span></code></pre></div>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="simulations-und-programmierübungen-in-r.html#cb276-1" aria-hidden="true" tabindex="-1"></a>my_chisq.test <span class="ot">&lt;-</span> <span class="cf">function</span>(m){</span>
+<span id="cb276-2"><a href="simulations-und-programmierübungen-in-r.html#cb276-2" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">statistic =</span> <span class="fu">mat_chisq</span>(m))</span>
+<span id="cb276-3"><a href="simulations-und-programmierübungen-in-r.html#cb276-3" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">rbind</span>(m, <span class="fu">colSums</span>(m))</span>
+<span id="cb276-4"><a href="simulations-und-programmierübungen-in-r.html#cb276-4" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(mat, <span class="fu">rowSums</span>(mat))</span>
+<span id="cb276-5"><a href="simulations-und-programmierübungen-in-r.html#cb276-5" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>mat <span class="ot">&lt;-</span> mat</span>
+<span id="cb276-6"><a href="simulations-und-programmierübungen-in-r.html#cb276-6" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>n <span class="ot">&lt;-</span> mat[<span class="fu">nrow</span>(mat), <span class="fu">ncol</span>(mat)]</span>
+<span id="cb276-7"><a href="simulations-und-programmierübungen-in-r.html#cb276-7" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>df <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(m)<span class="sc">-</span><span class="dv">1</span>) <span class="sc">*</span> (<span class="fu">ncol</span>(m) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb276-8"><a href="simulations-und-programmierübungen-in-r.html#cb276-8" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>p <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(out<span class="sc">$</span>statistic,</span>
+<span id="cb276-9"><a href="simulations-und-programmierübungen-in-r.html#cb276-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">df =</span> out<span class="sc">$</span>df,</span>
+<span id="cb276-10"><a href="simulations-und-programmierübungen-in-r.html#cb276-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">lower.tail =</span> F)</span>
+<span id="cb276-11"><a href="simulations-und-programmierübungen-in-r.html#cb276-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb276-12"><a href="simulations-und-programmierübungen-in-r.html#cb276-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb276-13"><a href="simulations-und-programmierübungen-in-r.html#cb276-13" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>,<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb276-14"><a href="simulations-und-programmierübungen-in-r.html#cb276-14" aria-hidden="true" tabindex="-1"></a><span class="fu">my_chisq.test</span>(m)</span></code></pre></div>
 <pre><code>## $statistic
 ## [1] 0.46875
 ## 
@@ -763,7 +762,7 @@ Antwort
 ## 
 ## $p
 ## [1] 0.976471</code></pre>
-<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="simulations-und-programmierübungen-in-r.html#cb280-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(m)</span></code></pre></div>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="simulations-und-programmierübungen-in-r.html#cb278-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(m)</span></code></pre></div>
 <pre><code>## Warning in chisq.test(m): Chi-squared approximation may be incorrect</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
@@ -776,37 +775,37 @@ Antwort
 <summary>
 Antwort
 </summary>
-<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="simulations-und-programmierübungen-in-r.html#cb283-1" aria-hidden="true" tabindex="-1"></a>my_chisq.test <span class="ot">&lt;-</span> <span class="cf">function</span>(m){</span>
-<span id="cb283-2"><a href="simulations-und-programmierübungen-in-r.html#cb283-2" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">statistic =</span> <span class="fu">mat_chisq</span>(m))</span>
-<span id="cb283-3"><a href="simulations-und-programmierübungen-in-r.html#cb283-3" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">rbind</span>(m, <span class="fu">colSums</span>(m))</span>
-<span id="cb283-4"><a href="simulations-und-programmierübungen-in-r.html#cb283-4" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(mat, <span class="fu">rowSums</span>(mat))</span>
-<span id="cb283-5"><a href="simulations-und-programmierübungen-in-r.html#cb283-5" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>mat <span class="ot">&lt;-</span> mat</span>
-<span id="cb283-6"><a href="simulations-und-programmierübungen-in-r.html#cb283-6" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>n <span class="ot">&lt;-</span> mat[<span class="fu">nrow</span>(mat), <span class="fu">ncol</span>(mat)]</span>
-<span id="cb283-7"><a href="simulations-und-programmierübungen-in-r.html#cb283-7" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>df <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(m)<span class="sc">-</span><span class="dv">1</span>) <span class="sc">*</span> (<span class="fu">ncol</span>(m) <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb283-8"><a href="simulations-und-programmierübungen-in-r.html#cb283-8" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>p <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(out<span class="sc">$</span>statistic,</span>
-<span id="cb283-9"><a href="simulations-und-programmierübungen-in-r.html#cb283-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">df =</span> out<span class="sc">$</span>df,</span>
-<span id="cb283-10"><a href="simulations-und-programmierübungen-in-r.html#cb283-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">lower.tail =</span> F)</span>
-<span id="cb283-11"><a href="simulations-und-programmierübungen-in-r.html#cb283-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attributes</span>(out)<span class="sc">$</span>class <span class="ot">&lt;-</span> <span class="st">&#39;my_chisqtest&#39;</span></span>
-<span id="cb283-12"><a href="simulations-und-programmierübungen-in-r.html#cb283-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
-<span id="cb283-13"><a href="simulations-und-programmierübungen-in-r.html#cb283-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb283-14"><a href="simulations-und-programmierübungen-in-r.html#cb283-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb283-15"><a href="simulations-und-programmierübungen-in-r.html#cb283-15" aria-hidden="true" tabindex="-1"></a>print.my_chisqtest <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...){</span>
-<span id="cb283-16"><a href="simulations-und-programmierübungen-in-r.html#cb283-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;Chi-Quadrat-Test auf Unabhängigkeit&#39;</span>)</span>
-<span id="cb283-17"><a href="simulations-und-programmierübungen-in-r.html#cb283-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span>)</span>
-<span id="cb283-18"><a href="simulations-und-programmierübungen-in-r.html#cb283-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;Chi^2_(&#39;</span>,x<span class="sc">$</span>df,<span class="st">&#39;) = &#39;</span>,x<span class="sc">$</span>statistic,<span class="st">&#39;; p = &#39;</span>,x<span class="sc">$</span>p, <span class="at">sep =</span> <span class="st">&#39;&#39;</span>)</span>
-<span id="cb283-19"><a href="simulations-und-programmierübungen-in-r.html#cb283-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;</span><span class="sc">\n\n</span><span class="st">&#39;</span>)</span>
-<span id="cb283-20"><a href="simulations-und-programmierübungen-in-r.html#cb283-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;Der Test ist damit auf 5%-Niveau&#39;</span>,</span>
-<span id="cb283-21"><a href="simulations-und-programmierübungen-in-r.html#cb283-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(x<span class="sc">$</span>p<span class="sc">&lt;</span>.<span class="dv">05</span>,<span class="st">&#39; &#39;</span>,<span class="st">&#39; nicht &#39;</span>),</span>
-<span id="cb283-22"><a href="simulations-und-programmierübungen-in-r.html#cb283-22" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;signifikant!&#39;</span>, <span class="at">sep =</span> <span class="st">&#39;&#39;</span>)</span>
-<span id="cb283-23"><a href="simulations-und-programmierübungen-in-r.html#cb283-23" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb283-24"><a href="simulations-und-programmierübungen-in-r.html#cb283-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb283-25"><a href="simulations-und-programmierübungen-in-r.html#cb283-25" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>,<span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb283-26"><a href="simulations-und-programmierübungen-in-r.html#cb283-26" aria-hidden="true" tabindex="-1"></a><span class="fu">my_chisq.test</span>(m)</span></code></pre></div>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="simulations-und-programmierübungen-in-r.html#cb281-1" aria-hidden="true" tabindex="-1"></a>my_chisq.test <span class="ot">&lt;-</span> <span class="cf">function</span>(m){</span>
+<span id="cb281-2"><a href="simulations-und-programmierübungen-in-r.html#cb281-2" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">statistic =</span> <span class="fu">mat_chisq</span>(m))</span>
+<span id="cb281-3"><a href="simulations-und-programmierübungen-in-r.html#cb281-3" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">rbind</span>(m, <span class="fu">colSums</span>(m))</span>
+<span id="cb281-4"><a href="simulations-und-programmierübungen-in-r.html#cb281-4" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(mat, <span class="fu">rowSums</span>(mat))</span>
+<span id="cb281-5"><a href="simulations-und-programmierübungen-in-r.html#cb281-5" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>mat <span class="ot">&lt;-</span> mat</span>
+<span id="cb281-6"><a href="simulations-und-programmierübungen-in-r.html#cb281-6" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>n <span class="ot">&lt;-</span> mat[<span class="fu">nrow</span>(mat), <span class="fu">ncol</span>(mat)]</span>
+<span id="cb281-7"><a href="simulations-und-programmierübungen-in-r.html#cb281-7" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>df <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(m)<span class="sc">-</span><span class="dv">1</span>) <span class="sc">*</span> (<span class="fu">ncol</span>(m) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb281-8"><a href="simulations-und-programmierübungen-in-r.html#cb281-8" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>p <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(out<span class="sc">$</span>statistic,</span>
+<span id="cb281-9"><a href="simulations-und-programmierübungen-in-r.html#cb281-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">df =</span> out<span class="sc">$</span>df,</span>
+<span id="cb281-10"><a href="simulations-und-programmierübungen-in-r.html#cb281-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">lower.tail =</span> F)</span>
+<span id="cb281-11"><a href="simulations-und-programmierübungen-in-r.html#cb281-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attributes</span>(out)<span class="sc">$</span>class <span class="ot">&lt;-</span> <span class="st">&#39;my_chisqtest&#39;</span></span>
+<span id="cb281-12"><a href="simulations-und-programmierübungen-in-r.html#cb281-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb281-13"><a href="simulations-und-programmierübungen-in-r.html#cb281-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb281-14"><a href="simulations-und-programmierübungen-in-r.html#cb281-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb281-15"><a href="simulations-und-programmierübungen-in-r.html#cb281-15" aria-hidden="true" tabindex="-1"></a>print.my_chisqtest <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...){</span>
+<span id="cb281-16"><a href="simulations-und-programmierübungen-in-r.html#cb281-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;Chi-Quadrat-Test auf Unabhängigkeit&#39;</span>)</span>
+<span id="cb281-17"><a href="simulations-und-programmierübungen-in-r.html#cb281-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span>)</span>
+<span id="cb281-18"><a href="simulations-und-programmierübungen-in-r.html#cb281-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;Chi^2_(&#39;</span>,x<span class="sc">$</span>df,<span class="st">&#39;) = &#39;</span>,x<span class="sc">$</span>statistic,<span class="st">&#39;; p = &#39;</span>,x<span class="sc">$</span>p, <span class="at">sep =</span> <span class="st">&#39;&#39;</span>)</span>
+<span id="cb281-19"><a href="simulations-und-programmierübungen-in-r.html#cb281-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;</span><span class="sc">\n\n</span><span class="st">&#39;</span>)</span>
+<span id="cb281-20"><a href="simulations-und-programmierübungen-in-r.html#cb281-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;Der Test ist damit auf 5%-Niveau&#39;</span>,</span>
+<span id="cb281-21"><a href="simulations-und-programmierübungen-in-r.html#cb281-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(x<span class="sc">$</span>p<span class="sc">&lt;</span>.<span class="dv">05</span>,<span class="st">&#39; &#39;</span>,<span class="st">&#39; nicht &#39;</span>),</span>
+<span id="cb281-22"><a href="simulations-und-programmierübungen-in-r.html#cb281-22" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;signifikant!&#39;</span>, <span class="at">sep =</span> <span class="st">&#39;&#39;</span>)</span>
+<span id="cb281-23"><a href="simulations-und-programmierübungen-in-r.html#cb281-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb281-24"><a href="simulations-und-programmierübungen-in-r.html#cb281-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb281-25"><a href="simulations-und-programmierübungen-in-r.html#cb281-25" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>,<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb281-26"><a href="simulations-und-programmierübungen-in-r.html#cb281-26" aria-hidden="true" tabindex="-1"></a><span class="fu">my_chisq.test</span>(m)</span></code></pre></div>
 <pre><code>## Chi-Quadrat-Test auf Unabhängigkeit
 ## Chi^2_(4) = 0.46875; p = 0.976471
 ## 
 ## Der Test ist damit auf 5%-Niveau nicht signifikant!</code></pre>
-<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="simulations-und-programmierübungen-in-r.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(m)</span></code></pre></div>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="simulations-und-programmierübungen-in-r.html#cb283-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(m)</span></code></pre></div>
 <pre><code>## Warning in chisq.test(m): Chi-squared approximation may be incorrect</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s Chi-squared test
@@ -814,7 +813,296 @@ Antwort
 ## data:  m
 ## X-squared = 0.46875, df = 4, p-value = 0.9765</code></pre>
 </details>
+<style>
+pre.numberSource code > span > a:first-child::before {
+  left: -0.3em;
+}
+</style>
+</div>
+<div id="t-test" class="section level2">
+<h2>t-Test</h2>
+<p>Erstelle eine Funktion <code>my_dkw</code>, die für einen gegebenen Vektor <code>x</code> deskriptive Kennwerte als Liste zurückgibt.
+Diese Liste soll die Stichprobengröße<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a>, den Mittelwert und die Varianz beinhalten.
+Mit einem optionalen Argument <code>corrected</code> soll angegeben werden können, ob die korrigierte oder die unkorrigierte Stichprobenvarianz ausgegeben werden soll.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="simulations-und-programmierübungen-in-r.html#cb286-1" aria-hidden="true" tabindex="-1"></a>my_dkw <span class="ot">&lt;-</span> <span class="cf">function</span>(x,<span class="at">corrected=</span><span class="cn">FALSE</span>){ </span>
+<span id="cb286-2"><a href="simulations-und-programmierübungen-in-r.html#cb286-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)                  </span>
+<span id="cb286-3"><a href="simulations-und-programmierübungen-in-r.html#cb286-3" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">sum</span>(x)<span class="sc">/</span>n                     </span>
+<span id="cb286-4"><a href="simulations-und-programmierübungen-in-r.html#cb286-4" aria-hidden="true" tabindex="-1"></a>  sqa <span class="ot">&lt;-</span> <span class="fu">sum</span>((x<span class="sc">-</span>m)<span class="sc">^</span><span class="dv">2</span>)                 </span>
+<span id="cb286-5"><a href="simulations-und-programmierübungen-in-r.html#cb286-5" aria-hidden="true" tabindex="-1"></a>  var <span class="ot">&lt;-</span> sqa<span class="sc">/</span><span class="fu">ifelse</span>(corrected, n<span class="dv">-1</span>, n)  </span>
+<span id="cb286-6"><a href="simulations-und-programmierübungen-in-r.html#cb286-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">n =</span> n,<span class="at">m =</span> m, <span class="at">v =</span> var))</span>
+<span id="cb286-7"><a href="simulations-und-programmierübungen-in-r.html#cb286-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</details>
+<p>Mit Hilfe der vorangehenden Funktion soll nun ein rechtsseitiger Zwei-Stichproben-t-Test für unabhängige Stichproben bei vorausgesetzter Varianzhomogenität geschrieben werden.</p>
+<p>Als Argumente werden die Vektoren der beiden Stichproben eingegeben, die zu testende Vermutung soll sein, dass der zur ersten Stichprobe gehörende Erwartungswert größer ist als der zur zweiten Stichprobe gehörende.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<p>Hier eine mögliche Realisierung:</p>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="simulations-und-programmierübungen-in-r.html#cb287-1" aria-hidden="true" tabindex="-1"></a>my_t_test0 <span class="ot">&lt;-</span> <span class="cf">function</span>(x1,x2){      <span class="co"># (1)</span></span>
+<span id="cb287-2"><a href="simulations-und-programmierübungen-in-r.html#cb287-2" aria-hidden="true" tabindex="-1"></a>  dkw1 <span class="ot">&lt;-</span> <span class="fu">my_dkw</span>(x1)                <span class="co"># (2)</span></span>
+<span id="cb287-3"><a href="simulations-und-programmierübungen-in-r.html#cb287-3" aria-hidden="true" tabindex="-1"></a>  dkw2 <span class="ot">&lt;-</span> <span class="fu">my_dkw</span>(x2)</span>
+<span id="cb287-4"><a href="simulations-und-programmierübungen-in-r.html#cb287-4" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">&lt;-</span> dkw1<span class="sc">$</span>n                      <span class="co"># (3)</span></span>
+<span id="cb287-5"><a href="simulations-und-programmierübungen-in-r.html#cb287-5" aria-hidden="true" tabindex="-1"></a>  n2 <span class="ot">&lt;-</span> dkw2<span class="sc">$</span>n</span>
+<span id="cb287-6"><a href="simulations-und-programmierübungen-in-r.html#cb287-6" aria-hidden="true" tabindex="-1"></a>  S1q <span class="ot">&lt;-</span> dkw1<span class="sc">$</span>v                     <span class="co"># (4)</span></span>
+<span id="cb287-7"><a href="simulations-und-programmierübungen-in-r.html#cb287-7" aria-hidden="true" tabindex="-1"></a>  S2q <span class="ot">&lt;-</span> dkw2<span class="sc">$</span>v</span>
+<span id="cb287-8"><a href="simulations-und-programmierübungen-in-r.html#cb287-8" aria-hidden="true" tabindex="-1"></a>  sq <span class="ot">&lt;-</span> (n1 <span class="sc">*</span> S1q <span class="sc">+</span> n2 <span class="sc">*</span> S2q)<span class="sc">/</span>(n1<span class="sc">+</span>n2<span class="dv">-2</span>)    <span class="co"># (5)</span></span>
+<span id="cb287-9"><a href="simulations-und-programmierübungen-in-r.html#cb287-9" aria-hidden="true" tabindex="-1"></a>  vf <span class="ot">&lt;-</span> (n1<span class="sc">+</span>n2)<span class="sc">/</span>(n1<span class="sc">*</span>n2)             <span class="co"># (6)</span></span>
+<span id="cb287-10"><a href="simulations-und-programmierübungen-in-r.html#cb287-10" aria-hidden="true" tabindex="-1"></a>  nenner <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(vf<span class="sc">*</span>sq)             <span class="co"># (7)</span></span>
+<span id="cb287-11"><a href="simulations-und-programmierübungen-in-r.html#cb287-11" aria-hidden="true" tabindex="-1"></a>  t <span class="ot">&lt;-</span> (dkw1<span class="sc">$</span>m<span class="sc">-</span>dkw2<span class="sc">$</span>m)<span class="sc">/</span>nenner       <span class="co"># (8)</span></span>
+<span id="cb287-12"><a href="simulations-und-programmierübungen-in-r.html#cb287-12" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> n1<span class="sc">+</span>n2<span class="dv">-2</span>                     <span class="co"># (9)</span></span>
+<span id="cb287-13"><a href="simulations-und-programmierübungen-in-r.html#cb287-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">pt</span>(t,df))                <span class="co"># (10)</span></span>
+<span id="cb287-14"><a href="simulations-und-programmierübungen-in-r.html#cb287-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Anmerkungen:</p>
+<ol style="list-style-type: decimal">
+<li><p>Als Argumente werden die beiden Stichprobenvektoren eingegeben. Der Test ist in dieser Form nicht richtig befriedigend, daher die 0 am Namen. Ihre Aufgabe ist es später, die Funktion so zu modifizieren (dann mit einem anderen Namen), dass sie Ihren Wünschen entspricht. In der Funktion werden die einzelnen Bestandteile des t-Bruchs ermittelt umd am Ende zusammengebaut.</p></li>
+<li><p>Die Kennwerte der ersten Stichprobe werden ermittelt, in der nächsten Zeile die der zweiten.</p></li>
+<li><p>Die Länge der ersten Stichprobe wird extrahiert, da diese Länge häufiger vorkommt, ist ein kürzerer Name praktisch. Natürlich hätte man diese Zeile auch weglassen können; dann hätte man n1 im Folgenden überall durch dkw1$n ersetzten müssen. Entsprechend in der nächsten Zeile für die zweite Stichprobe.</p></li>
+<li><p>Die Varianz der ersten Stichprobe wird extrahiert; sie bekommt den kürzeren Namen S1q (q für Quadrat), ausnahmsweise ist der erste Buchstabe groß, um daran zu erinnern, dass es die “normale” Varianz <span class="math inline">\(S_1^2\)</span> und nicht die korrigierte Stichprobenvarianz <span class="math inline">\(s_1^2\)</span> ist. Entsprechend die nächste Zeile für die zweite Stichprobe.</p></li>
+<li><p>Hier wird <span class="math inline">\(s^2\)</span> ausgerechnet. Die Rechnung entspricht nicht der Standardformel, das Ergebnis ist aber dasselbe wegen <span class="math inline">\(nS^2=(n-1)s^2\)</span>. Der Vorteil des Rechnens mit <span class="math inline">\(S^2\)</span> ist der, dass hier auch eine Stichprobe einen Umfang von 1 haben kann, erst wenn beide Stichproben Umfang 1 haben, entsteht ein Problem. Ein Teil der Verbesserung könnte sein, dieses Problem abzufangen und durch eine print-Ausgabe darauf hinzuweisen.</p></li>
+<li><p>Der Vorfaktor im Nenner.</p></li>
+<li><p>Der Nenner.</p></li>
+<li><p>Der t-Bruch.</p></li>
+<li><p>Die Freiheitsgrade</p></li>
+<li><p>Ergebnis ist der p-Wert des rechtsseitigen Tests.</p></li>
+</ol>
+</details>
+<p>Aufgaben:</p>
+<ol style="list-style-type: decimal">
+<li><p>Stellen Sie sich vor, die Funktion würde nicht das richtige Ergebnis liefern. Fügen Sie Anweisungen ein, mit denen Sie die Zwischenresultate kontrollieren können um so einen möglichen Fehler zu finden!</p></li>
+<li><p>Kontrollieren Sie das Ergebnis des t-Tests auf Folie 73 der Einführung! Die Daten dazu sind nicht explizit gegeben, lassen sich aber aus den Histogrammen auf Folie 46 (bis auf die unwesentliche Reihenfolge) leicht rekonstruieren (beachte: es handelt sich jeweils um 20 Werte). Bei der Herstellung der Datenvektoren kann die Funktion <code>rep</code> nützlich sein, mit <code>my_dkw</code> können Sie die Kennwerte der Stichproben überprüfen. Achtung: die Konvention bei der Differenz der Mittelwerte ist auf den Folien anders als hier!</p></li>
+<li><p>Das Ergebnis ist unbefriedigend, da Sie ja nur am p-Wert erkennen können, ob der Test signifikant ist. Ändern Sie daher die Funktion geeignet ab, so dass weitere Kennwerte des Tests ausgegeben werden, benutzen Sie beispielsweise die Möglichkeiten einer Liste und/oder einer spezifischen <code>print</code>-Funktion.</p></li>
+<li><p>Unbefriedigend ist auch, dass nur ein rechtsseitiger Test gerechnet werden kann. Ändern Sie die Funktion daher weiter so ab, dass auch linksseitige oder zweiseitige Tests möglich sind (Sie müssen dann ein weiteres Argument hinzufügen, mit dem Sie der Funktion Ihre Wünsche bekanntgeben, in der Funktion können Sie dann beispielsweise mit if - else arbeiten).</p></li>
+<li><p>Schreiben Sie eine ähnliche Funktion für den Einstichproben-t-Test; hier ist als weiteres Argument der Erwartungswert unter H0 einzugeben, der vielleicht standardmäßig 0 ist.</p></li>
+<li><p>Schreiben Sie eine ähnliche Funktion für den Zweistichproben-t-Test mit abhängigen Stichproben. Hier könnte es sich empfehlen, die Daten in Form einer Matrix einzugeben. Sinnvollerweise benutzen Sie nach Differenzbildung dann die Funktion für den Einstichproben-t-Test aus (5).</p></li>
+</ol>
+<p>Kontrollieren Sie Ihre Funktionen immer an kleinen Datensätzen, in denen Sie auch von Hand rechnen können, beispielsweise können Sie Aufgaben aus QM2 benutzen.</p>
+<!-- <details> -->
+<!-- <summary>Antwort</summary> -->
+<!-- Die Funktion am Ende aller dieser Erweiterungen könnte so aussehen: -->
+<!-- ```{r} -->
+<!-- my_t_test0 <- function(x1,x2){       -->
+<!--   dkw1 <- my_dkw(x1)                 -->
+<!--   dkw2 <- my_dkw(x2) -->
+<!--   n1 <- dkw1$n                       -->
+<!--   n2 <- dkw2$n -->
+<!--   S1q <- dkw1$v                      -->
+<!--   S2q <- dkw2$v -->
+<!--   sq <- (n1 * S1q + n2 * S2q)/(n1+n2-2)     -->
+<!--   vf <- (n1+n2)/(n1*n2)              -->
+<!--   nenner <- sqrt(vf*sq)              -->
+<!--   t <- (dkw1$m-dkw2$m)/nenner        -->
+<!--   df <- n1+n2-2                      -->
+<!--   return(1-pt(t,df))                 -->
+<!-- } -->
+<!-- ``` -->
+<!-- </details> -->
+<div id="t-vertrauensintervall" class="section level3">
+<h3>t-Vertrauensintervall</h3>
+<p>Hier gleich die Funktion:</p>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="simulations-und-programmierübungen-in-r.html#cb288-1" aria-hidden="true" tabindex="-1"></a>my_t_vi <span class="ot">&lt;-</span> <span class="cf">function</span>(x,<span class="at">p=</span>.<span class="dv">95</span>){       <span class="co"># (1)</span></span>
+<span id="cb288-2"><a href="simulations-und-programmierübungen-in-r.html#cb288-2" aria-hidden="true" tabindex="-1"></a>  dkw <span class="ot">&lt;-</span> <span class="fu">my_dkw</span>(x, <span class="at">corrected =</span> T)   <span class="co"># (2)</span></span>
+<span id="cb288-3"><a href="simulations-und-programmierübungen-in-r.html#cb288-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> dkw<span class="sc">$</span>n                        <span class="co"># (3)</span></span>
+<span id="cb288-4"><a href="simulations-und-programmierübungen-in-r.html#cb288-4" aria-hidden="true" tabindex="-1"></a>  tfrak <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="dv">1</span><span class="sc">-</span>(<span class="dv">1</span><span class="sc">-</span>p)<span class="sc">/</span><span class="dv">2</span>, n<span class="dv">-1</span>)       <span class="co"># (4)</span></span>
+<span id="cb288-5"><a href="simulations-und-programmierübungen-in-r.html#cb288-5" aria-hidden="true" tabindex="-1"></a>  sem <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(dkw<span class="sc">$</span>v<span class="sc">/</span>n)              <span class="co"># (5)</span></span>
+<span id="cb288-6"><a href="simulations-und-programmierübungen-in-r.html#cb288-6" aria-hidden="true" tabindex="-1"></a>  hb <span class="ot">&lt;-</span> tfrak <span class="sc">*</span> sem                 <span class="co"># (6)</span></span>
+<span id="cb288-7"><a href="simulations-und-programmierübungen-in-r.html#cb288-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(dkw<span class="sc">$</span>m<span class="sc">-</span>hb,dkw<span class="sc">$</span>m<span class="sc">+</span>hb))      <span class="co"># (7)</span></span>
+<span id="cb288-8"><a href="simulations-und-programmierübungen-in-r.html#cb288-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Anmerkungen:</p>
+<ol style="list-style-type: decimal">
+<li><p>Argumente sind der Datenvektor x und das gewünschte Niveau p, hier mit .95 vorbelegt.</p></li>
+<li><p>Die Kennwerte der Daten, gleich wird mit der korrigierten Stichprobenvarianz gerechnet.</p></li>
+<li><p>Stichprobenumfang, kommt öfter vor, daher ist ein kürzerer Name praktisch.</p></li>
+<li><p>Das alpha/2-Fraktil (alpha ist 1-p).</p></li>
+<li><p>Der SEM.</p></li>
+<li><p>Die halbe Breite.</p></li>
+<li><p>Ergebnis: Vektor aus unterer und oberer Grenze des Vertrauensintervalls.</p></li>
+</ol>
+<p>Aufgabe: Prüfen Sie an bekannten Daten (beispielsweise Einleitung Folie 61) nach, ob die Funktion das richtige Intervall liefert!</p>
+</div>
+<div id="zufallsstichproben-mit-diskreten-werten" class="section level3">
+<h3>Zufallsstichproben mit diskreten Werten</h3>
+<p>Die passende Funktion ist hier sample. Beispiel:</p>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="simulations-und-programmierübungen-in-r.html#cb289-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="fu">seq</span>(<span class="dv">6</span>), <span class="dv">20</span>, <span class="at">replace =</span> T)</span></code></pre></div>
+<pre><code>##  [1] 5 4 6 6 2 5 6 4 1 3 6 1 1 4 4 4 1 4 2 5</code></pre>
+<p>Hier wird eine Zufallsstichprobe aus den Zahlen von 1 bis 6 gezogen (seq(6)), deren Umfang 20 ist, wobei Zahlen auch mehrfach gezogen werden können (replace = T, Achtung: Standardwert ist F, siehe Hilfe). Hier wird also eine zufällige Serie von 20 Würfelergebnissen erzeugt.</p>
+<p>Etwas komplizierter: Das Wahrnehmungsexperiment aus dem 1. Semester, die Wahrscheinlichkeiten der möglichen Fehlerzahlen von 0 bis 5 seien durch die W-Funktion Folie 77 gegeben. Es sollen 20 Werte erzeugt werden:</p>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="simulations-und-programmierübungen-in-r.html#cb291-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="fu">seq</span>(<span class="dv">6</span>)<span class="sc">-</span><span class="dv">1</span>, <span class="dv">20</span>, <span class="at">replace =</span> T, <span class="at">prob =</span> <span class="fu">c</span>(.<span class="dv">1</span>,.<span class="dv">15</span>,.<span class="dv">35</span>,.<span class="dv">25</span>,.<span class="dv">1</span>,.<span class="dv">05</span>))</span></code></pre></div>
+<pre><code>##  [1] 0 2 1 2 3 1 2 1 4 2 3 4 3 1 3 0 0 2 2 2</code></pre>
+<p>Hier sind die möglichen Werte die Zahlen von 0 bis 5, die man beispielsweise durch seq(6)-1 erhält. Möglich wäre auch</p>
+<p><code>seq(from = 0, to = 5)</code></p>
+<p>kürzer</p>
+<p><code>seq(0, 5)</code></p>
+<p>oder noch einfacher</p>
+<p><code>0:5</code></p>
+<p>Zusätzlich werden durch den Parameter prob die Wahrscheinlichkeiten dieser Zahlen angegeben.</p>
+<p>Wenn diese Verteilung öfter gebraucht wird, ist es sinnvoll, den Vektor der Wahrscheinlichkeiten unter einem geeigneten Namen abzuspeichern, um dann nur noch diesen Namen in die Anweisung einsetzen zu müssen, entsprechend für den Vektor möglicher Werte.</p>
+<p>Zu prüfen ist nun, ob die “Zufallsstichproben” auch den Forderungen entsprechen; dazu sollen bei einer großen derartigen Stichprobe die relativen Häufigkeiten der möglichen Werte ermittelt werden, die dann hoffentlich etwa gleich den vorgegebenen Wahrscheinlichkeiten sind.</p>
+<p>Obwohl R bessere Möglichkeiten zur Verfügung stellt, soll zur Übung das Auszählen mit primitive Mitteln bewerkstelligt werden. Zunächst: Wie oft kommt ein Element a in einem Vektor x vor?</p>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="simulations-und-programmierübungen-in-r.html#cb293-1" aria-hidden="true" tabindex="-1"></a>anzahl <span class="ot">&lt;-</span> <span class="cf">function</span>(a, x){        <span class="co"># (1)</span></span>
+<span id="cb293-2"><a href="simulations-und-programmierübungen-in-r.html#cb293-2" aria-hidden="true" tabindex="-1"></a>  l <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb293-3"><a href="simulations-und-programmierübungen-in-r.html#cb293-3" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="dv">0</span>                         <span class="co"># (2)</span></span>
+<span id="cb293-4"><a href="simulations-und-programmierübungen-in-r.html#cb293-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(l)){</span>
+<span id="cb293-5"><a href="simulations-und-programmierübungen-in-r.html#cb293-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(x[i] <span class="sc">==</span> a) z <span class="ot">&lt;-</span> z <span class="sc">+</span> <span class="dv">1</span>     <span class="co"># (3)</span></span>
+<span id="cb293-6"><a href="simulations-und-programmierübungen-in-r.html#cb293-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb293-7"><a href="simulations-und-programmierübungen-in-r.html#cb293-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(z)</span>
+<span id="cb293-8"><a href="simulations-und-programmierübungen-in-r.html#cb293-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Anmerkungen:</p>
+<ol style="list-style-type: decimal">
+<li><p>Die Argumente der Funktion sind das untersuchte Element a und der Vektor x.</p></li>
+<li><p>Eine Zählvariable z wird eingerichtet, der Wert dieses “Zählers” z wird auf 0 gesetzt</p></li>
+<li><p>Nacheinander werden die Komponenten von x untersucht, bei Übereinstimmung mit a wird der Zähler um 1 erhöht</p></li>
+</ol>
+<p>Tabelle der relativen Häufigkeiten:</p>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="simulations-und-programmierübungen-in-r.html#cb294-1" aria-hidden="true" tabindex="-1"></a>v2trh <span class="ot">&lt;-</span> <span class="cf">function</span>(w, x){         <span class="co"># (1)</span></span>
+<span id="cb294-2"><a href="simulations-und-programmierübungen-in-r.html#cb294-2" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb294-3"><a href="simulations-und-programmierübungen-in-r.html#cb294-3" aria-hidden="true" tabindex="-1"></a>  ah <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="fu">length</span>(w))         <span class="co"># (2)</span></span>
+<span id="cb294-4"><a href="simulations-und-programmierübungen-in-r.html#cb294-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(<span class="fu">length</span>(w)))</span>
+<span id="cb294-5"><a href="simulations-und-programmierübungen-in-r.html#cb294-5" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb294-6"><a href="simulations-und-programmierübungen-in-r.html#cb294-6" aria-hidden="true" tabindex="-1"></a>    ah[i] <span class="ot">&lt;-</span> <span class="fu">anzahl</span>(w[i],x)      <span class="co"># (3)</span></span>
+<span id="cb294-7"><a href="simulations-und-programmierübungen-in-r.html#cb294-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb294-8"><a href="simulations-und-programmierübungen-in-r.html#cb294-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rbind</span>(w,ah<span class="sc">/</span>n))          <span class="co"># (4)</span></span>
+<span id="cb294-9"><a href="simulations-und-programmierübungen-in-r.html#cb294-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Anmerkungen:</p>
+<ol style="list-style-type: decimal">
+<li><p>Name: Vektor zu Tabelle relativer Häufigkeiten, Argumente: w: mögliche Werte, x: untersuchter Vektor. Wichtig ist, dass w alle Werte enthält, die in x vorkommen können, sonst ist die Summe der “relativen Häufigkeiten” am Ende nicht 1.</p></li>
+<li><p>in ah werden die absoluten Häufigkeiten der Werte in w abgespeichert, Vorbelegung mit Nullen.</p></li>
+<li><p>Für jeden möglichen Wert wird in ah die Häufigkeit des Auftretens eingetragen.</p></li>
+<li><p>Das Ergebnis ist eine Matrix, die hier dadurch entsteht, dass man die beiden Vektoren w und ah/n als Zeilen (r: row) zusammenfügt.</p></li>
+</ol>
+<p>Beispiel:</p>
+<p>Funktioniert die Erzeugung von zufälligen Würfelergebnissen einigermaßen? Es soll 10000 Mal gewürfelt werden, die Tabelle der relativen Häufigkeiten ist dann zu untersuchen! Achtung: Es sollte unbedingt verhindert werden, dass das Ergebnis des Würfelns ausgegeben wird! Dazu wird das Ergebnis gleich in einer Variable abgespeichert.</p>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="simulations-und-programmierübungen-in-r.html#cb295-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">seq</span>(<span class="dv">6</span>),<span class="dv">10000</span>,<span class="at">replace =</span> T)</span>
+<span id="cb295-2"><a href="simulations-und-programmierübungen-in-r.html#cb295-2" aria-hidden="true" tabindex="-1"></a><span class="fu">v2trh</span>(<span class="fu">seq</span>(<span class="dv">6</span>),x)</span></code></pre></div>
+<pre><code>##    [,1]   [,2]   [,3]   [,4]   [,5]   [,6]
+## w 1.000 2.0000 3.0000 4.0000 5.0000 6.0000
+##   0.166 0.1713 0.1646 0.1651 0.1694 0.1636</code></pre>
+<p>Bemerkung: Ein erneuter Aufruf liefert natürlich wieder andere relative Häufigkeiten.</p>
+<p>Auch beim Umfang 100000 geht übrigens es sehr schnell!</p>
+<p>Aufgabe:</p>
+<p>Untersuchen Sie die gleiche Frage für das zweite Beispiel des Wahrnehmungsexperiments!</p>
+</div>
+<div id="eine-simulation-zum-vertrauensintervall" class="section level3">
+<h3>Eine Simulation zum Vertrauensintervall</h3>
+<p>Einführungsfolie 67: Wie wahrscheinlich ist es beim Würfeln, dass das t-Vertrauensintervall zum Niveau .95 auf der Basis von Stichproben vom Umfang 60 den Erwartungswert 3.5 enthält? Die Wahrscheinlichkeit soll durch Simulationen abgeschätzt werden (da die Würfelergebnisse nicht normalverteilt sind, ist eine der Voraussetzungen für das t-Vertrauensintervall eigentlich nicht gegeben).</p>
+<p>Vielleicht ist es praktisch, die Prüfung, ob eine Zahl in einem Intervall liegt, auszulagern:</p>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="simulations-und-programmierübungen-in-r.html#cb297-1" aria-hidden="true" tabindex="-1"></a>istin <span class="ot">&lt;-</span> <span class="cf">function</span>(x, i, <span class="at">gr =</span> F){       <span class="co"># (1)</span></span>
+<span id="cb297-2"><a href="simulations-und-programmierübungen-in-r.html#cb297-2" aria-hidden="true" tabindex="-1"></a>  ug <span class="ot">&lt;-</span> i[<span class="dv">1</span>]                           <span class="co"># (2)</span></span>
+<span id="cb297-3"><a href="simulations-und-programmierübungen-in-r.html#cb297-3" aria-hidden="true" tabindex="-1"></a>  og <span class="ot">&lt;-</span> i[<span class="dv">2</span>]</span>
+<span id="cb297-4"><a href="simulations-und-programmierübungen-in-r.html#cb297-4" aria-hidden="true" tabindex="-1"></a>  wug <span class="ot">&lt;-</span> <span class="cf">if</span>(gr) x <span class="sc">&gt;=</span> ug <span class="cf">else</span> x <span class="sc">&gt;</span> ug    <span class="co"># (3)</span></span>
+<span id="cb297-5"><a href="simulations-und-programmierübungen-in-r.html#cb297-5" aria-hidden="true" tabindex="-1"></a>  wog <span class="ot">&lt;-</span> <span class="cf">if</span>(gr) x <span class="sc">&lt;=</span> og <span class="cf">else</span> x <span class="sc">&lt;</span> og</span>
+<span id="cb297-6"><a href="simulations-und-programmierübungen-in-r.html#cb297-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(wug <span class="sc">&amp;</span> wog)                    <span class="co"># (4)</span></span>
+<span id="cb297-7"><a href="simulations-und-programmierübungen-in-r.html#cb297-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Anmerkungen;</p>
+<ol style="list-style-type: decimal">
+<li><p>x ist ein Wert, i ein Intervall, gegeben durch einen Vektor aus unterer und oberer Grenze. Es soll die Frage beantwortet werden, ob x in dem Intervall liegt. Der Parameter gr gibt an, ob die Grenzen zum Intervall dazugehören (T) oder nicht.</p></li>
+<li><p>Die untere Intervallgrenze, nächste Zeile die obere</p></li>
+<li><p>Die Variable wug enthält einen logischen Wert: T, wenn x größer bzw. größer/gleich der unteren Intervallgrenze ist, F sonst. Beachte: x&gt;=ug ist ein logischer Wert, T, wenn x&gt;= ug richtig ist, F sonst.</p></li>
+<li><p>Zurückgegeben wird die Und-Verknüpfung von wug und wog, die nur dann T ist, wenn wug und wog beide T sind, sonst F.</p></li>
+</ol>
+<p>Nun ist die Simulation einfach, der Umfang der Einzelstichproben und der Umfang der Simulation sind wählbar:</p>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="simulations-und-programmierübungen-in-r.html#cb298-1" aria-hidden="true" tabindex="-1"></a>w_vi_simul <span class="ot">&lt;-</span> <span class="cf">function</span>(n, N, <span class="at">p =</span> .<span class="dv">95</span>){    <span class="co"># (1)</span></span>
+<span id="cb298-2"><a href="simulations-und-programmierübungen-in-r.html#cb298-2" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="dv">0</span>                                  <span class="co"># (2)</span></span>
+<span id="cb298-3"><a href="simulations-und-programmierübungen-in-r.html#cb298-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(N)){                       <span class="co"># (3)</span></span>
+<span id="cb298-4"><a href="simulations-und-programmierübungen-in-r.html#cb298-4" aria-hidden="true" tabindex="-1"></a>    s <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">seq</span>(<span class="dv">6</span>),n,<span class="at">replace =</span> T)     <span class="co"># (4)</span></span>
+<span id="cb298-5"><a href="simulations-und-programmierübungen-in-r.html#cb298-5" aria-hidden="true" tabindex="-1"></a>    vi <span class="ot">&lt;-</span> <span class="fu">my_t_vi</span>(s,p)                    <span class="co"># (5)</span></span>
+<span id="cb298-6"><a href="simulations-und-programmierübungen-in-r.html#cb298-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">istin</span>(<span class="fl">3.5</span>,vi)) z <span class="ot">=</span> z <span class="sc">+</span> <span class="dv">1</span>           <span class="co"># (5)</span></span>
+<span id="cb298-7"><a href="simulations-und-programmierübungen-in-r.html#cb298-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb298-8"><a href="simulations-und-programmierübungen-in-r.html#cb298-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(z<span class="sc">/</span>N)                             <span class="co"># (7)</span></span>
+<span id="cb298-9"><a href="simulations-und-programmierübungen-in-r.html#cb298-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Anmerkungen:</p>
+<ol style="list-style-type: decimal">
+<li><p>Der Name soll für Würfel-Vertrauensintervall-Simulation stehen, n ist der Stichprobenumfang der Einzelstichproben, N ist der Umfang der Simulation, p ist das Niveau für das Vertrauensintervall.</p></li>
+<li><p>Wieder ein Zähler z.</p></li>
+<li><p>Die Schleife für die Gesamtsimulation vom Umfang N.</p></li>
+<li><p>Es wird jeweils eine Zufallsstichprobe s von n Würfelergebnissen erzeugt.</p></li>
+<li><p>Das t-Vertrauensintervall vi zum Niveau p wird gebildet.</p></li>
+<li><p>Wenn der (hier bekannte) Erwartungswert von 3.5 in dem Intervall liegt, wird z um 1 vergrößert.</p></li>
+<li><p>Ausgegeben wird die relative Häufigkeit der Fälle, in denen das Vertrauensintervall den Erwartungswert 3.5 enthält.</p></li>
+</ol>
+<p>Zahlen wie auf Folie 67 erhält man jetzt mit w_vi_simul(60,10000). Wieder kommt das Ergebnis ziemlich schnell.</p>
+<p>Wenn Sie die Funktion mit denselben Argumenten zweimal aufrufen, werden Sie praktisch immer unterschiedliche Ergebnisse bekommen, da ja jedes Mal neue Zufallsstichproben gezogen werden.</p>
+<p>Um schnell mehrere Ergebnisse zu erhalten, können Sie den Befehl unten in der Konsole eingeben; nachdem das Ergebnis bestimmt ist, holen Sie den Befehl mit Pfeiltaste nach oben wieder zurück und können ihn dann gleich noch einmal ausführen. Auch im Source-Fenster gibt es eine solche Möglichkeit: Ctrl-Alt-P führt den letzten Befehl noch einmal aus. Die Shortcuts finden Sie übrigens im Menü unter Help oder direkt mit Alt-Shift-K.</p>
+</div>
+<div id="simulationen-zum-wahrnehmungsexperiment" class="section level3">
+<h3>Simulationen zum Wahrnehmungsexperiment</h3>
+<p>Im ersten Semester wurden auch Simulationen zum Verhalten des t-Tests bei dem fiktiven Wahrnehmungsexperiment gemacht (Folie 78, dann ab Folie 82). Hier waren die Variablen (Fehlerzahl) diskret, daher ist es fraglich, ob man den t-Test dennoch verwenden kann (es geht also um die Robustheit).</p>
+<p>Hier zunächst eine neue Version des t-Tests:</p>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="simulations-und-programmierübungen-in-r.html#cb299-1" aria-hidden="true" tabindex="-1"></a>my_t_test1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x1,x2,n1,n2,df,vf){      <span class="co"># (1)</span></span>
+<span id="cb299-2"><a href="simulations-und-programmierübungen-in-r.html#cb299-2" aria-hidden="true" tabindex="-1"></a>  m1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(x1)<span class="sc">/</span>n1                              <span class="co"># (2)         </span></span>
+<span id="cb299-3"><a href="simulations-und-programmierübungen-in-r.html#cb299-3" aria-hidden="true" tabindex="-1"></a>  m2 <span class="ot">&lt;-</span> <span class="fu">sum</span>(x2)<span class="sc">/</span>n2</span>
+<span id="cb299-4"><a href="simulations-und-programmierübungen-in-r.html#cb299-4" aria-hidden="true" tabindex="-1"></a>  sqa1 <span class="ot">&lt;-</span> <span class="fu">sum</span>((x1<span class="sc">-</span>m1)<span class="sc">^</span><span class="dv">2</span>)                        <span class="co"># (3)           </span></span>
+<span id="cb299-5"><a href="simulations-und-programmierübungen-in-r.html#cb299-5" aria-hidden="true" tabindex="-1"></a>  sqa2 <span class="ot">&lt;-</span> <span class="fu">sum</span>((x2<span class="sc">-</span>m2)<span class="sc">^</span><span class="dv">2</span>)                 </span>
+<span id="cb299-6"><a href="simulations-und-programmierübungen-in-r.html#cb299-6" aria-hidden="true" tabindex="-1"></a>  sq <span class="ot">&lt;-</span> (sqa1 <span class="sc">+</span> sqa2)<span class="sc">/</span>df                        <span class="co"># (4)</span></span>
+<span id="cb299-7"><a href="simulations-und-programmierübungen-in-r.html#cb299-7" aria-hidden="true" tabindex="-1"></a>  nenner <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(vf<span class="sc">*</span>sq)         </span>
+<span id="cb299-8"><a href="simulations-und-programmierübungen-in-r.html#cb299-8" aria-hidden="true" tabindex="-1"></a>  t <span class="ot">&lt;-</span> (m1<span class="sc">-</span>m2)<span class="sc">/</span>nenner</span>
+<span id="cb299-9"><a href="simulations-und-programmierübungen-in-r.html#cb299-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(t)</span>
+<span id="cb299-10"><a href="simulations-und-programmierübungen-in-r.html#cb299-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Die Funktion ist von früher einigermaßen bekannt, es gibt aber Veränderungen und es fehlen Teile.</p>
+<p>Anmerkungen:</p>
+<ol style="list-style-type: decimal">
+<li><p>Die Argumente x1 und x2 stehen für die beiden Stichproben, als weitere Argumente werden die Stichprobengrößen n1 und n2, die Anzahl der Freiheitsgrade df und der Vorfaktor vf des Nenners übergeben. Diese Zahlen müssen also außerhalb der Funktion bestimmt werden. Das scheint erstmal nicht besonders sinnvoll zu sein. In der Simulation wird diese Funktion jedoch immer wieder aufgerufen, wobei die vier zusätzlichen Argumente immer gleich groß sind. Wenn diese Zahlen immer wieder neu bestimmt werden müssten, würde das Zeit kosten, daher sollen sie außerhalb der Funktion nur einmal berechnet und dann übergeben werden. Die Zeitersparnis ist in diesem Fall allerdings minimal, hier soll nur auf die Möglichkeit hingewiesen werden, dass man bei komplizierteren zeitintensiven Rechnungen, die immer wieder auftreten, auf diese Art manchmal merklich Zeit sparen kann.</p></li>
+<li><p>Die Mittelwerte werden jetzt in der Funktion berechnet, n1 wird als Argument übergeben.</p></li>
+<li><p>Auch die Summen der quadrierten Abweichungen vom Mittelwert werden in der Funktion berechnet, nicht aber die Varianzen. Die Varianzen werden ja eigentlich nicht gebraucht, da im Zähler von <span class="math inline">\(s^2\)</span> gerade die Summe dieser beiden Summen steht, wie man sich leicht überzeugt. Man erspart sich so die nutzlose Division und anschließende Multiplikation mit der jeweiligen Stichprobengröße (auch hier ist der Zeitgewinn minimal, es soll aber auf die Möglichkeit von Zeitersparnis in komplizierteren Situationen aufmerksam gemacht werden).</p></li>
+<li><p>Auch die Zahl df der in der Simulation immer gleichen Freiheitsgrade und der einheitliche Vorfaktor vf im Nenner (nächste Zeile) müssen außerhalb bestimmt und als Argumente übergeben werden.</p></li>
+</ol>
+<p>Aufgabe: Überzeugen Sie sich an einem Beispiel, dass der t-Wert korrekt bestimmt wird; Sie müssen dann vorher die Variablen n1, n2, df und vf korrekt belegen.</p>
+<p>Der Übersichtlichkeit halber kann man auch die Bildung der Zufallsstichproben zu einer eigenen Funktion machen:</p>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="simulations-und-programmierübungen-in-r.html#cb300-1" aria-hidden="true" tabindex="-1"></a>z_stpr_w <span class="ot">&lt;-</span> <span class="cf">function</span>(n, w){  </span>
+<span id="cb300-2"><a href="simulations-und-programmierübungen-in-r.html#cb300-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>, n, <span class="at">replace =</span> T, <span class="at">prob=</span>w)</span>
+<span id="cb300-3"><a href="simulations-und-programmierübungen-in-r.html#cb300-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Anmerkung: Da die Fehlerzahl immer eine Zahl zwischen 0 und 5 ist, kann dies Argument weggelassen werden. Als Argumente bleiben die Stichprobengröße n und der Vektor w der Wahrscheinlichkeiten dieser Zahlen. z_stpr_w soll Zufallsstichprobe Wahrnehmung abkürzen.</p>
+<p>Nun die Funktion, die mit Hilfe einer Simulation die Wahrscheinlichkeit eines signifikanten Ergebnisses zu schätzen versucht:</p>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="simulations-und-programmierübungen-in-r.html#cb301-1" aria-hidden="true" tabindex="-1"></a>we_t_simul <span class="ot">&lt;-</span> <span class="cf">function</span>(N,n1,w1,n2,w2,<span class="at">a =</span> .<span class="dv">05</span>){           <span class="co"># (1)</span></span>
+<span id="cb301-2"><a href="simulations-und-programmierübungen-in-r.html#cb301-2" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> n1 <span class="sc">+</span> n2 <span class="sc">-</span> <span class="dv">2</span>                                      <span class="co"># (2)</span></span>
+<span id="cb301-3"><a href="simulations-und-programmierübungen-in-r.html#cb301-3" aria-hidden="true" tabindex="-1"></a>  vf <span class="ot">&lt;-</span> (n1 <span class="sc">+</span> n2)<span class="sc">/</span>(n1 <span class="sc">*</span> n2)</span>
+<span id="cb301-4"><a href="simulations-und-programmierübungen-in-r.html#cb301-4" aria-hidden="true" tabindex="-1"></a>  kw <span class="ot">&lt;-</span> <span class="fu">qt</span>(a,df)                                         <span class="co"># (3)</span></span>
+<span id="cb301-5"><a href="simulations-und-programmierübungen-in-r.html#cb301-5" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="dv">0</span>                                                 <span class="co"># (4)</span></span>
+<span id="cb301-6"><a href="simulations-und-programmierübungen-in-r.html#cb301-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(N)){                                      <span class="co"># (5)</span></span>
+<span id="cb301-7"><a href="simulations-und-programmierübungen-in-r.html#cb301-7" aria-hidden="true" tabindex="-1"></a>    x1 <span class="ot">&lt;-</span> <span class="fu">z_stpr_w</span>(n1,w1)                                <span class="co"># (6)</span></span>
+<span id="cb301-8"><a href="simulations-und-programmierübungen-in-r.html#cb301-8" aria-hidden="true" tabindex="-1"></a>    x2 <span class="ot">&lt;-</span> <span class="fu">z_stpr_w</span>(n2,w2)</span>
+<span id="cb301-9"><a href="simulations-und-programmierübungen-in-r.html#cb301-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">my_t_test1</span>(x1,x2,n1,n2,df,vf) <span class="sc">&lt;=</span> kw) z <span class="ot">&lt;-</span> z <span class="sc">+</span> <span class="dv">1</span>   <span class="co"># (7)</span></span>
+<span id="cb301-10"><a href="simulations-und-programmierübungen-in-r.html#cb301-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb301-11"><a href="simulations-und-programmierübungen-in-r.html#cb301-11" aria-hidden="true" tabindex="-1"></a>  z<span class="sc">/</span>N                                                    <span class="co"># (8)</span></span>
+<span id="cb301-12"><a href="simulations-und-programmierübungen-in-r.html#cb301-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Anmerkungen:</p>
+<ol style="list-style-type: decimal">
+<li><p>Der Funktionsname steht für Wahrnehmungsexperiment-t-Test-Simulation. Die Argumente sind: Die Zahl N der Simulationen, der Umfang n1 der ersten Stichprobe (auf den Folien die Kontrollgruppe), die Verteilung w1 der möglichen Fehlerzahlen in der Kontrollgruppe, entsprechend n2 und w2 für die zweite Stichprobe (die Alkoholgruppe), außerdem das Signifikanzniveau a, standardmäßig .05.</p></li>
+<li><p>Die Zahl der Freiheitsgrade wird ein für alle Mal bestimmt, ebenso in der nächsten Zeile der Vorfaktor. Das bringt hier zwar keinen merklichen Vorteil, ähnliches Vorgehen in anderen Zusammenhängen manchmal schon.</p></li>
+<li><p>Der kritische Wert kw. Achtung: Im Gegensatz zu den Folien wird hier linksseitig getestet, da die Konventionen hier anders sind (Mittelwertdifferenz M1-M2 und nicht M2-M1).</p></li>
+<li><p>Es wird wieder ein Zähler eingerichtet und auf 0 gesetzt.</p></li>
+<li><p>Die Schleife der Simulation.</p></li>
+<li><p>Die erste Stichprobe (Kontrollgruppe), nächste Zeile die zweite.</p></li>
+<li><p>Der t-Test, wenn er linksseitig signifikant wird, wird der Zähler erhöht.</p></li>
+<li><p>Ausgabe der relativen Häufigkeit signifikanter Ergebnisse.</p></li>
+</ol>
+<p>Es folgen einige Verteilungen aus den Folien:</p>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="simulations-und-programmierübungen-in-r.html#cb302-1" aria-hidden="true" tabindex="-1"></a>w1 <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">1</span>,.<span class="dv">15</span>,.<span class="dv">35</span>,.<span class="dv">25</span>,.<span class="dv">1</span>,.<span class="dv">05</span>)</span>
+<span id="cb302-2"><a href="simulations-und-programmierübungen-in-r.html#cb302-2" aria-hidden="true" tabindex="-1"></a>w2 <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">05</span>,.<span class="dv">1</span>,.<span class="dv">25</span>,.<span class="dv">3</span>,.<span class="dv">2</span>,.<span class="dv">1</span>)</span>
+<span id="cb302-3"><a href="simulations-und-programmierübungen-in-r.html#cb302-3" aria-hidden="true" tabindex="-1"></a>w2a <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">05</span>,.<span class="dv">05</span>,.<span class="dv">1</span>,.<span class="dv">15</span>,.<span class="dv">25</span>,.<span class="dv">4</span>)</span></code></pre></div>
+<p>Simulation Folie 79:</p>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="simulations-und-programmierübungen-in-r.html#cb303-1" aria-hidden="true" tabindex="-1"></a><span class="fu">we_t_simul</span>(<span class="dv">10000</span>,<span class="dv">20</span>,w1,<span class="dv">20</span>,w1)</span></code></pre></div>
+<pre><code>## [1] 0.0484</code></pre>
+<p>Untersuchung von <span class="math inline">\(\beta\)</span> (Folie 82):</p>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="simulations-und-programmierübungen-in-r.html#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">-</span><span class="fu">we_t_simul</span>(<span class="dv">10000</span>,<span class="dv">20</span>,w1,<span class="dv">20</span>,w2)</span></code></pre></div>
+<pre><code>## [1] 0.6247</code></pre>
+<p>Hier geht es um die nichtsignifikanten Ergebnisse, daher “1-…”</p>
+<p>Erstes Beispiel Folie 83:</p>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="simulations-und-programmierübungen-in-r.html#cb307-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">-</span><span class="fu">we_t_simul</span>(<span class="dv">10000</span>,<span class="dv">20</span>,w1,<span class="dv">20</span>,w2,.<span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 0.4749</code></pre>
+<p>Aufgabe: Überzeugen Sie sich, dass die weiteren Ergebnisse auf den Folien zur Untersuchung von <span class="math inline">\(\beta\)</span> einigermaßen mit den Ergebnissen dieses Programms übereinstimmen!</p>
+<p>Interessant ist dann noch das Beispiel auf Folie 92, hier zunächst die Verteilungen:</p>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="simulations-und-programmierübungen-in-r.html#cb309-1" aria-hidden="true" tabindex="-1"></a>w1x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">5</span>,.<span class="dv">5</span>,<span class="dv">0</span>,.<span class="dv">0</span>)</span>
+<span id="cb309-2"><a href="simulations-und-programmierübungen-in-r.html#cb309-2" aria-hidden="true" tabindex="-1"></a>w2x <span class="ot">&lt;-</span> <span class="fu">c</span>(.<span class="dv">5</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">5</span>)</span></code></pre></div>
+<p>Das Ergebnis bekommen Sie mit</p>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="simulations-und-programmierübungen-in-r.html#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="fu">we_t_simul</span>(<span class="dv">10000</span>,<span class="dv">20</span>,w1x,<span class="dv">5</span>,w2x)</span></code></pre></div>
+<pre><code>## [1] 0.1872</code></pre>
 
+</div>
 </div>
 </div>
 <div class="footnotes">
@@ -822,6 +1110,7 @@ Antwort
 <ol start="7">
 <li id="fn7"><p>wenn Du nicht willst<a href="simulations-und-programmierübungen-in-r.html#fnref7" class="footnote-back">↩︎</a></p></li>
 <li id="fn8"><p>In unserem Fall müssen wir die Teststatistik mit der <span class="math inline">\(\chi^2_{(I-1)(J-1)}\)</span>-Verteilung vergleichen, die R-Funktion für das Finden eines gegebenen <span class="math inline">\(\chi^2\)</span>-Perzentils ist <code>pchisq()</code><a href="simulations-und-programmierübungen-in-r.html#fnref8" class="footnote-back">↩︎</a></p></li>
+<li id="fn9"><p>Länge des Vektors<a href="simulations-und-programmierübungen-in-r.html#fnref9" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
