@@ -173,7 +173,7 @@
 
 \title{Robustheit}
 \author{Max Brede und Johannes Andres}
-\date{2021-11-08}
+\date{2021-11-26}
 
 \begin{document}
 \maketitle
@@ -816,7 +816,7 @@ Mit diesen Funktionen können wir uns zum Beispiel jeweils 1000 zufällige Werte
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-32-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-35-1.pdf}
 
 \hypertarget{aufgabe-3}{%
 \subsection{Aufgabe}\label{aufgabe-3}}
@@ -989,7 +989,7 @@ Bei 10 Stellen ist der Unterschied noch nicht wirklich bemerkbar. Wenn wir jetzt
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 0.03683734 secs
+## Time difference of 0.03460836 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -999,7 +999,7 @@ Bei 10 Stellen ist der Unterschied noch nicht wirklich bemerkbar. Wenn wir jetzt
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 0.08184695 secs
+## Time difference of 0.07698274 secs
 \end{verbatim}
 
 Mehr als die Hälfte der Zeit geht für das Erstellen des neuen Vektors drauf!
@@ -1044,7 +1044,7 @@ Antwort
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-39-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-42-1.pdf}
 
 \hypertarget{listen}{%
 \chapter{Listen}\label{listen}}
@@ -2132,7 +2132,7 @@ Microbenchmarking heißt hier nichts anders, als dass wir die möglichen Impleme
 
 Die Ergebnisse dieses Testlaufs sehen so aus:
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-70-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-73-1.pdf}
 
 Dabei stellen die Linien die Median-Verläufe der jeweiligen Aufrufe dar. Vorsicht: Die Achsen sind logarithmisch skaliert. Ohne diese Skalierung sehen die Ergebnisse so aus:
 
@@ -2156,7 +2156,7 @@ Dabei stellen die Linien die Median-Verläufe der jeweiligen Aufrufe dar. Vorsic
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-71-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-74-1.pdf}
 
 \hypertarget{aufgabe-10}{%
 \subsection{Aufgabe}\label{aufgabe-10}}
@@ -2166,7 +2166,7 @@ Benutzt \texttt{bench::mark} um die folgenden drei Mittelwerts-Funktionen zu ver
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{my\_for\_mean }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x)\{}
-\NormalTok{  out }\OtherTok{\textless{}{-}} \FunctionTok{numeric}\NormalTok{(}\DecValTok{0}\NormalTok{)}
+\NormalTok{  out }\OtherTok{\textless{}{-}} \DecValTok{0}
   \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in}\NormalTok{ x)\{}
 \NormalTok{    out }\OtherTok{\textless{}{-}}\NormalTok{ out }\SpecialCharTok{+}\NormalTok{ i}
 \NormalTok{  \}}
@@ -2205,7 +2205,7 @@ Mit \texttt{autoplot(type\ =\ \textquotesingle{}violin\textquotesingle{})} lasse
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-75-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-78-1.pdf}
 
 \hypertarget{eigene-functionals}{%
 \section{Eigene Functionals}\label{eigene-functionals}}
@@ -2609,6 +2609,741 @@ Antwort
 
 \begin{verbatim}
 ## [1] 1
+\end{verbatim}
+
+\hypertarget{simulations--und-programmieruxfcbungen-in-r}{%
+\chapter{Simulations- und Programmierübungen in R}\label{simulations--und-programmieruxfcbungen-in-r}}
+
+Im Folgenden werden keine neuen Konzepte eingeführt, zum Üben der bisher eingeführten Konzepte werden aber eine Reihe von Aufgaben gestellt, die Schritt für Schritt mit statistischen Beispielen zu ersten eigenen und zunehmend komplexen Simulationen führen sollen.
+Zu jeder Aufgabe wird auch eine Musterlösung angeboten, wie immer ist diese aber zum Einen nicht die einzig mögliche Lösung und zum Anderen bitte erst zu konsultieren, wenn eine eigene Lösung versucht wurde.
+Der Lernfortschritt durch eigenes Programmieren (und Fehler machen) ist wesentlich größer als durch das einfache Lesen fertiger Skripte.
+
+\hypertarget{pascalsches-dreieck}{%
+\section{Pascalsches Dreieck}\label{pascalsches-dreieck}}
+
+Das Ziel soll sein, eine Funktion namens \texttt{binom\_mat} zu erstellen, die für eine gegebene Zahl n das Pascalsche Dreieck bis zur gegebenen Größe zurückgibt.
+Dieses Dreieck soll erstmal als Matrix zurückgegeben werden, die für die Zahl 5 zum Beispiel so aussehen könnte:
+
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    0    0    0    0
+## [2,]    1    1    0    0    0
+## [3,]    1    2    1    0    0
+## [4,]    1    3    3    1    0
+## [5,]    1    4    6    4    1
+\end{verbatim}
+
+Die erste Spalte der Matrix soll also die ``obere linke Flanke'' des Dreiecks repräsentieren.
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{binom\_mat }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(z)\{                    }\CommentTok{\# (1)}
+\NormalTok{  mat }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{,z,z)                       }\CommentTok{\# (2)}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(z))\{                          }\CommentTok{\# (3)}
+\NormalTok{    mat[i,}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{1}
+\NormalTok{  \}}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(}\DecValTok{2}\NormalTok{,z))\{                        }\CommentTok{\# (4)}
+    \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(}\DecValTok{2}\NormalTok{,i))\{                      }\CommentTok{\# (5)}
+\NormalTok{      mat[i,j] }\OtherTok{\textless{}{-}}\NormalTok{ mat[i}\DecValTok{{-}1}\NormalTok{,j}\DecValTok{{-}1}\NormalTok{] }\SpecialCharTok{+}\NormalTok{ mat[i}\DecValTok{{-}1}\NormalTok{,j]  }\CommentTok{\# (6)}
+\NormalTok{    \}}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(mat)                                }\CommentTok{\# (7)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Erläuterungen:
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\item
+  Die Matrix soll am Ende z Zeilen haben. Allerdings werden die Zeilen und Spalten einer Matrix beginnend mit 1 durchnummeriert, so dass die Zeilennummer nicht das n der Binomialkoeffizienten ist. Vielmehr stehen die Bionomialkoeffizienten \(n \choose k\) am Ende in der Zeile mit der Nummer n+1 und der Spalte mit der Nummer k+1.
+\item
+  Hier wird eine Matrix erzeugt, die den Namen mat bekommt. Die Matrix wird zunächst mit Nullen gefüllt. Sie soll z Zeilen und z Spalten haben.
+\item
+  Die linke Spalte der Matrix wird mit Einsen gefüllt. Hier ist zu bemerken, dass die Elemente einer Matrix mit Zeilen- und Spaltennummer in eckigen Klammern angesprochen werden.
+\item
+  Hier folgen verschachtelte Schleifen. In der äußeren Schleife werden die Zeilen der Matrix angesprochen, die der Reihe nach mit den richtigen Zahlen gefüllt werden sollen. Die erste Zeile der Matrix hat schon die Endgestalt, daher beginnt die Schleife mit i=2.
+\item
+  Hier kommt die innere Schleife; die Zeile mit der Nummer i ist erreicht, die vorherigen Zeilen sind schon richtig aufgefüllt worden. Die Elemente in dieser Zeile ergeben sich dadurch, dass man die Zahlen links darüber und direkt darüber addiert. Die erste Zahl 1 der Zeile wurde vorher schon eingefüllt, daher fängt die Schleife mit j=2 an; außerdem sind die Zahlen am Ende alle 0 (sofern sie außerhalb des Dreiecks liegen), daher geht die Schleife nur bis j=i (i ist an dieser Stelle eine feste Zahl).
+\item
+  Hier werden -- wie gerade beschrieben -- die Zahlen der i-ten Zeile eingefügt.
+\item
+  Die Matrix ist jetzt fertig ausgefüllt und wird an dieser Stelle zurückgegeben.
+\end{enumerate}
+
+Für manche Anwendungen wollen wir vielleicht eine Liste, keine Matrix als Output haben.
+
+Schreibe deswegen eine Funktion \texttt{binom\_list}, die eine Liste von Vektoren zurückgibt.
+
+Verpacke dann beide Funktionen in eine \texttt{binom\_pascal}-Funktion, in der mit einem optionalen Argument das Output-Format für das Pascalsche Dreieck angibt.
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{binom\_list }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(z) \{}
+\NormalTok{  out }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(z)) \{}
+\NormalTok{    out[[i]] }\OtherTok{\textless{}{-}} \DecValTok{1}
+    \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(i }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+} \DecValTok{1}\NormalTok{) \{}
+\NormalTok{      out[[i]][j] }\OtherTok{\textless{}{-}}
+\NormalTok{        out[[i }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{]][j }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{] }\SpecialCharTok{+} \FunctionTok{ifelse}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(out[[i }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{]][j]), }
+                                     \DecValTok{0}\NormalTok{, }
+\NormalTok{                                     out[[i }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{]][j])}
+\NormalTok{    \}}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(out)}
+\NormalTok{\}}
+
+\FunctionTok{binom\_list}\NormalTok{(}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 1 1
+## 
+## [[3]]
+## [1] 1 2 1
+## 
+## [[4]]
+## [1] 1 3 3 1
+## 
+## [[5]]
+## [1] 1 4 6 4 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{binom\_pascal }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(z, }\AttributeTok{format =} \StringTok{\textquotesingle{}m\textquotesingle{}}\NormalTok{)\{}
+  \ControlFlowTok{if}\NormalTok{(format }\SpecialCharTok{!=} \StringTok{\textquotesingle{}m\textquotesingle{}}\NormalTok{)\{}
+    \FunctionTok{return}\NormalTok{(}\FunctionTok{binom\_list}\NormalTok{(z))}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{binom\_mat}\NormalTok{(z))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Erweitere deine Listenfunktion so, dass die zurückgegebene Liste die Klasse \texttt{pascal} hat und die Anzahl der Zeilen des Dreiecks im \texttt{n}-Attribut abgelegt wird.
+
+Schreibe nun eine Erweiterung des \texttt{print}-Befehls, indem du eine Funktion \texttt{print.pascal} definierst, die die Argumente \texttt{x} und den \texttt{...}-Operator erwartet.
+
+Mit diesem Namen legst Du fest, dass die \texttt{pascal}-Klasse mit genau dieser Funktion geprintet werden soll, sobald also ein Objekt diese Klasse hat, wird diese Printfunktion aufgerufen.
+
+Der Output soll dabei so aussehen:
+
+\begin{verbatim}
+##     1
+##    1 1
+##   1 2 1
+##  1 3 3 1
+## 1 4 6 4 1
+\end{verbatim}
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{binom\_list }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(z) \{}
+\NormalTok{  out }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(z)) \{}
+\NormalTok{    out[[i]] }\OtherTok{\textless{}{-}} \DecValTok{1}
+    \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(i }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+} \DecValTok{1}\NormalTok{) \{}
+\NormalTok{      out[[i]][j] }\OtherTok{\textless{}{-}}
+\NormalTok{        out[[i }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{]][j }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{] }\SpecialCharTok{+} \FunctionTok{ifelse}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(out[[i }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{]][j]), }
+                                     \DecValTok{0}\NormalTok{, }
+\NormalTok{                                     out[[i }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{]][j])}
+\NormalTok{    \}}
+\NormalTok{  \}}
+  \FunctionTok{attributes}\NormalTok{(out)}\SpecialCharTok{$}\NormalTok{class }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}pascal\textquotesingle{}}
+  \FunctionTok{attributes}\NormalTok{(out)}\SpecialCharTok{$}\NormalTok{n }\OtherTok{\textless{}{-}}\NormalTok{ z}
+  \FunctionTok{return}\NormalTok{(out)}
+\NormalTok{\}}
+
+\DocumentationTok{\#\# für einfache Zahlen können wir die print{-}Funktion so schreiben:}
+\NormalTok{print.pascal }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x,...)\{}
+\NormalTok{  n }\OtherTok{\textless{}{-}} \FunctionTok{attributes}\NormalTok{(x)[[}\StringTok{\textquotesingle{}n\textquotesingle{}}\NormalTok{]]}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(n))\{}
+    \FunctionTok{cat}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\StringTok{\textquotesingle{} \textquotesingle{}}\NormalTok{, n}\SpecialCharTok{{-}}\NormalTok{i), }\AttributeTok{sep =} \StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{)}
+    \FunctionTok{cat}\NormalTok{(x[[i]])}
+    \FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+\DocumentationTok{\#\# funktioniert:}
+\FunctionTok{binom\_list}\NormalTok{(}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     1
+##    1 1
+##   1 2 1
+##  1 3 3 1
+## 1 4 6 4 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# geht bei mehr digits aber kaputt:}
+\FunctionTok{binom\_list}\NormalTok{(}\DecValTok{7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       1
+##      1 1
+##     1 2 1
+##    1 3 3 1
+##   1 4 6 4 1
+##  1 5 10 10 5 1
+## 1 6 15 20 15 6 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# mit einer Verallgemeinerung der eingefügten Leerzeichen klappt das aber auch:}
+\NormalTok{print.pascal }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x,...)\{}
+\NormalTok{  n }\OtherTok{\textless{}{-}} \FunctionTok{attr}\NormalTok{(x, }\StringTok{\textquotesingle{}n\textquotesingle{}}\NormalTok{)}
+\NormalTok{  nsp }\OtherTok{\textless{}{-}} \FunctionTok{nchar}\NormalTok{(}\FunctionTok{as.character}\NormalTok{(}\FunctionTok{max}\NormalTok{(x[[n]]))) }\CommentTok{\# guck wie viele Stellen die längste Zahl hat}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(n))\{}
+\NormalTok{    dummy }\OtherTok{\textless{}{-}} \FunctionTok{str\_pad}\NormalTok{(}\FunctionTok{as.character}\NormalTok{(x[[i]]), }\CommentTok{\# ergänze die Zahl als character auf die größte Länge}
+                     \AttributeTok{side =} \StringTok{\textquotesingle{}left\textquotesingle{}}\NormalTok{, }
+                     \AttributeTok{width =}\NormalTok{ nsp)}
+    \FunctionTok{cat}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\StringTok{\textquotesingle{} \textquotesingle{}}\NormalTok{, nsp }\SpecialCharTok{*}\NormalTok{ (n}\SpecialCharTok{{-}}\NormalTok{i)), }\AttributeTok{sep =} \StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{)}
+    \FunctionTok{cat}\NormalTok{(dummy, }\AttributeTok{sep =} \FunctionTok{paste0}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\StringTok{\textquotesingle{} \textquotesingle{}}\NormalTok{, nsp), }\AttributeTok{collapse =} \StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{))}
+    \FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\FunctionTok{binom\_list}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                              1
+##                           1     1
+##                        1     2     1
+##                     1     3     3     1
+##                  1     4     6     4     1
+##               1     5    10    10     5     1
+##            1     6    15    20    15     6     1
+##         1     7    21    35    35    21     7     1
+##      1     8    28    56    70    56    28     8     1
+##   1     9    36    84   126   126    84    36     9     1
+\end{verbatim}
+
+Als letztes wollen wir die Funktion nur noch praktisch nutzen.
+Dafür müssen wir noch eine Funktion \texttt{binom\_coeff} schreiben, die für gegebenes n und k den Wert des Binominialkoeffizienten ausgibt.
+
+Überlege Dir dazu, ob Du lieber \texttt{binom\_mat} oder \texttt{binom\_list} benutzen möchtest.
+Mit \texttt{choose(n,k)} kannst Du überprüfen, ob die in R angelegte Funktion für den Binomialkoeffizienten auf dieselbe Lösung kommt.
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{binom\_coeff }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(n,k)\{}
+  \ControlFlowTok{if}\NormalTok{(n}\SpecialCharTok{==}\DecValTok{0}\NormalTok{)\{                               }\CommentTok{\# (1)}
+    \ControlFlowTok{if}\NormalTok{(k}\SpecialCharTok{==}\DecValTok{0}\NormalTok{)\{}\FunctionTok{return}\NormalTok{(}\DecValTok{1}\NormalTok{)\} }\ControlFlowTok{else}\NormalTok{\{}\FunctionTok{return}\NormalTok{(}\DecValTok{0}\NormalTok{)\}}
+\NormalTok{  \}}
+\NormalTok{  mat }\OtherTok{\textless{}{-}} \FunctionTok{binom\_pascal}\NormalTok{(n}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)                }\CommentTok{\# (2)}
+  \FunctionTok{return}\NormalTok{(mat[n}\SpecialCharTok{+}\DecValTok{1}\NormalTok{,k}\SpecialCharTok{+}\DecValTok{1}\NormalTok{])                    }\CommentTok{\# (3)}
+\NormalTok{\}}
+
+\FunctionTok{binom\_coeff}\NormalTok{(}\DecValTok{10}\NormalTok{,}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 45
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{choose}\NormalTok{(}\DecValTok{10}\NormalTok{,}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 45
+\end{verbatim}
+
+Anmerkungen:
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\item
+  n = 0 muss abgefangen werden.
+\item
+  Wenn n nicht 0 ist, wird die Matrix erzeugt, die ausreichend groß ist, also n+1 Zeilen hat.
+\item
+  Der gesuchte Koeffizient steht dann in der Zeile n+1 und der Spalte k+1, da ja die Nummerierung der Zeilen und Spalten einer Matrix mit 1 beginnt und nicht mit 0.
+\end{enumerate}
+
+Aus Spaß können wir auch mal die beiden Implementationen vergleichen.
+Dazu bauen wir eine fast identische Funktion, die mit den Listen arbeitet und geben beide in \texttt{bench::mark}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{binom\_coeff\_l }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(n,k)\{}
+  \ControlFlowTok{if}\NormalTok{(n}\SpecialCharTok{==}\DecValTok{0}\NormalTok{)\{ }
+    \ControlFlowTok{if}\NormalTok{(k}\SpecialCharTok{==}\DecValTok{0}\NormalTok{)\{}\FunctionTok{return}\NormalTok{(}\DecValTok{1}\NormalTok{)\} }\ControlFlowTok{else}\NormalTok{\{}\FunctionTok{return}\NormalTok{(}\DecValTok{0}\NormalTok{)\}}
+\NormalTok{  \}}
+\NormalTok{  mat }\OtherTok{\textless{}{-}} \FunctionTok{binom\_pascal}\NormalTok{(n}\SpecialCharTok{+}\DecValTok{1}\NormalTok{, }\StringTok{\textquotesingle{}l\textquotesingle{}}\NormalTok{)}
+  \FunctionTok{return}\NormalTok{(mat[[n}\SpecialCharTok{+}\DecValTok{1}\NormalTok{]][k}\SpecialCharTok{+}\DecValTok{1}\NormalTok{])}
+\NormalTok{\}}
+
+\FunctionTok{library}\NormalTok{(bench)}
+
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{30}
+\NormalTok{k }\OtherTok{\textless{}{-}} \DecValTok{5}
+
+\NormalTok{bench}\SpecialCharTok{::}\FunctionTok{mark}\NormalTok{(}\AttributeTok{iterations =} \DecValTok{100}\NormalTok{,}
+            \AttributeTok{list =} \FunctionTok{binom\_coeff\_l}\NormalTok{(n,k),}
+            \AttributeTok{mat =} \FunctionTok{binom\_coeff}\NormalTok{(n,k)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{autoplot}\NormalTok{(}\AttributeTok{type =} \StringTok{\textquotesingle{}violin\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-98-1.pdf}
+
+Die Matritzen-Variante ist wesentlich schneller, probieren wir noch einmal wie sich das für verschieden große Matritzen verhält:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sim }\OtherTok{\textless{}{-}}\NormalTok{ bench}\SpecialCharTok{::}\FunctionTok{press}\NormalTok{(}
+  \AttributeTok{n =} \DecValTok{100} \SpecialCharTok{*} \DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{,}
+\NormalTok{  bench}\SpecialCharTok{::}\FunctionTok{mark}\NormalTok{(}\AttributeTok{iterations =} \DecValTok{100}\NormalTok{,}
+              \AttributeTok{list =} \FunctionTok{binom\_coeff\_l}\NormalTok{(n,k),}
+              \AttributeTok{mat =} \FunctionTok{binom\_coeff}\NormalTok{(n,k)) }
+\NormalTok{) }
+
+\FunctionTok{pmap\_dfr}\NormalTok{(}\FunctionTok{list}\NormalTok{(sim}\SpecialCharTok{$}\NormalTok{time,}
+              \FunctionTok{names}\NormalTok{(sim}\SpecialCharTok{$}\NormalTok{expression),}
+\NormalTok{              sim}\SpecialCharTok{$}\NormalTok{n),}
+         \SpecialCharTok{\textasciitilde{}}\FunctionTok{tibble}\NormalTok{(}\AttributeTok{times =} \FunctionTok{as.numeric}\NormalTok{(..}\DecValTok{1}\NormalTok{),}
+                 \AttributeTok{iterator =}\NormalTok{ ..}\DecValTok{2}\NormalTok{,}
+                 \AttributeTok{reps =} \DecValTok{100} \SpecialCharTok{*}\NormalTok{ ..}\DecValTok{3}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ reps,}
+             \AttributeTok{y =}\NormalTok{ times,}
+             \AttributeTok{color =}\NormalTok{ iterator)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =}\NormalTok{ .}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{stat\_summary}\NormalTok{(}\AttributeTok{geom=}\StringTok{\textquotesingle{}line\textquotesingle{}}\NormalTok{,}
+               \AttributeTok{fun =}\NormalTok{ median) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{y =} \StringTok{\textquotesingle{}Zeit [s]\textquotesingle{}}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{\textquotesingle{}Iterierte Werte\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{\textquotesingle{}Dark2\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{\textquotesingle{}lm\textquotesingle{}}\NormalTok{,}
+              \AttributeTok{formula =}\NormalTok{ y }\SpecialCharTok{\textasciitilde{}} \FunctionTok{poly}\NormalTok{(x, }\DecValTok{2}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+
+\FunctionTok{ggsave}\NormalTok{(}\StringTok{\textquotesingle{}imgs/list\_mat\_pascal.png\textquotesingle{}}\NormalTok{,}
+       \AttributeTok{scale =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=68.06in]{imgs/list_mat_pascal}
+
+\hypertarget{matrizen-und-chi2}{%
+\section{\texorpdfstring{Matrizen und \(\chi^2\)}{Matrizen und \textbackslash chi\^{}2}}\label{matrizen-und-chi2}}
+
+Beispiele für Matrizen sind Kontingenztafeln. Hier spielen die Randsummen eine wichtige Rolle, die \texttt{apply}-Funktion bietet die oben schon erwähnte Möglichkeit, solche Randsummen besonders einfach zu bilden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{), }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\NormalTok{m}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{apply}\NormalTok{(m, }\AttributeTok{MARGIN =} \DecValTok{1}\NormalTok{, }\AttributeTok{FUN =}\NormalTok{ sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4 6
+\end{verbatim}
+
+Die Argumente FUN und MARGIN müssen hier angegeben werden. Im Beispiel sollen Summen gebildet werden (FUN = sum), wobei ein Index festgehalten wird, hier Zeilenindex (MARGIN = 1). Der andere Index (hier dann der Spaltenindex) ist der Index, über den summiert wird. Sind die Einträge der Matix \(x_{ij}\), so werden also die Summen \(\sum_j x_{ij}\) gebildet, die Randsummen am rechten Rand.
+
+Dasselbe mit MARGIN = 2 liefert die Summen der Einträge in den jeweiligen Spalten, also die Randsummen am unteren Rand, ausprobieren!
+
+An der Stelle von sum können auch andere Funktionen eingesetzt werden, beispielsweise prod, wenn nicht Summen, sondern Produkte gebildet werden sollen (ausprobieren!).
+
+Alternativ sind in R mit \texttt{colSums} und \texttt{rowSums} Funktionen zur Bildung von Spalten- und Zeilensummen schon implementiert, außerdem könnten wir auch eine \texttt{for}-Schleife nutzen, um die Summen zu berechnen.
+
+Überlege zuerst, wie man Eine Funktion schreiben könnte, die mit denselben Argumenten wie \texttt{apply} mit Hilfe einer \texttt{for}-Schleife Zeilen- oder Spaltenweise Werte aggregiert.
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_apply }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(m,MARGIN,FUN, ...)\{}
+  \ControlFlowTok{if}\NormalTok{(MARGIN }\SpecialCharTok{==} \DecValTok{2}\NormalTok{)\{}
+\NormalTok{    m }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(m)}
+\NormalTok{  \}}
+\NormalTok{  out }\OtherTok{\textless{}{-}} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(m))}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(m))) \{}
+\NormalTok{    out[i] }\OtherTok{\textless{}{-}} \FunctionTok{FUN}\NormalTok{(m[i,], ...)}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(out)}
+\NormalTok{\}}
+\FunctionTok{my\_apply}\NormalTok{(m, }\DecValTok{2}\NormalTok{, sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3 7
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{apply}\NormalTok{(m, }\DecValTok{2}\NormalTok{, sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3 7
+\end{verbatim}
+
+Nutze jetzt deine \texttt{for}-\texttt{apply}-Alternative, \texttt{apply} und \texttt{rowSums} um mit bench::mark zu testen, welche dieser Funktionen am besten in 100 Tests auf Basis einer 100x100-Matrix performed.
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(bench)}
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10000}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{100}\NormalTok{)}
+\NormalTok{bmark }\OtherTok{\textless{}{-}} \FunctionTok{mark}\NormalTok{(}
+  \AttributeTok{iterations =} \DecValTok{100}\NormalTok{,}
+  \AttributeTok{for\_apply =} \FunctionTok{my\_apply}\NormalTok{(m, }\DecValTok{1}\NormalTok{, sum),}
+  \AttributeTok{apply =} \FunctionTok{apply}\NormalTok{(m, }\DecValTok{1}\NormalTok{, sum),}
+  \AttributeTok{rowSums =} \FunctionTok{rowSums}\NormalTok{(m)}
+\NormalTok{)}
+\NormalTok{bmark }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{autoplot}\NormalTok{(}\AttributeTok{type =} \StringTok{\textquotesingle{}violin\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-103-1.pdf}
+
+Eine dieser Funktionen können wir nun benutzen, um den chi-Quadrat-Wert einer Kontingenztafel zu bestimmen.
+
+Schreibe dazu eine Funktion, die für eine Matrix \texttt{x} einen chi-Quadrat-Wert nach der Formel \[\chi^2=\sum_{i,j}\frac{(f_{o,ij}-f_{e,ij})^2}{f_{e,ij}} = \sum_{i,j}\frac{\left(n_{ij}- \frac{n_{i\cdot} n_{\cdot j}}{n}\right)^2}{\frac{n_{i\cdot} n_{\cdot j}}{n}}\] berechnet.
+Für diese Funktion gibt es zwei Möglichkeiten zur Implementation. Zum Einen können geschachtelte \texttt{for}-Schleifen verwendet werden, zur anderen kann die \texttt{sweep}-Funktion benutzt werden.
+\texttt{sweep()} kann benutzt werden um eine Matrix zeilen-oder spaltenweise mit einem Vektor zu transformieren. Dabei kann ein arithmetsicher Operator (+,-,\ldots) genutzt werden um die Werte zu verrechnen. Hier ist ein einfaches Beispiel in dem mit \texttt{sweep} das kleine 1-mal-1 in einer 10x10-Matrix erstellt wird:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{,}\AttributeTok{each =} \DecValTok{10}\NormalTok{), }\AttributeTok{ncol =} \DecValTok{10}\NormalTok{)}
+\NormalTok{m}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]    1    2    3    4    5    6    7    8    9    10
+##  [2,]    1    2    3    4    5    6    7    8    9    10
+##  [3,]    1    2    3    4    5    6    7    8    9    10
+##  [4,]    1    2    3    4    5    6    7    8    9    10
+##  [5,]    1    2    3    4    5    6    7    8    9    10
+##  [6,]    1    2    3    4    5    6    7    8    9    10
+##  [7,]    1    2    3    4    5    6    7    8    9    10
+##  [8,]    1    2    3    4    5    6    7    8    9    10
+##  [9,]    1    2    3    4    5    6    7    8    9    10
+## [10,]    1    2    3    4    5    6    7    8    9    10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sweep}\NormalTok{(m, }\CommentTok{\# Matrix}
+      \AttributeTok{MARGIN =} \DecValTok{1}\NormalTok{, }\CommentTok{\# zeilenweise, also pro Zeile ein anderer Wert des Vektors}
+      \AttributeTok{STATS =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{, }\CommentTok{\# der Vektor mit dem multipliziert werden soll}
+      \AttributeTok{FUN =} \StringTok{\textquotesingle{}*\textquotesingle{}}\NormalTok{) }\CommentTok{\# Angabe dass multipliziert werden soll}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]    1    2    3    4    5    6    7    8    9    10
+##  [2,]    2    4    6    8   10   12   14   16   18    20
+##  [3,]    3    6    9   12   15   18   21   24   27    30
+##  [4,]    4    8   12   16   20   24   28   32   36    40
+##  [5,]    5   10   15   20   25   30   35   40   45    50
+##  [6,]    6   12   18   24   30   36   42   48   54    60
+##  [7,]    7   14   21   28   35   42   49   56   63    70
+##  [8,]    8   16   24   32   40   48   56   64   72    80
+##  [9,]    9   18   27   36   45   54   63   72   81    90
+## [10,]   10   20   30   40   50   60   70   80   90   100
+\end{verbatim}
+
+Suche Dir einen der beiden Wege aus und setze diesen um.
+Mit der \texttt{chisq.test}-Funktion könnt Ihr überprüfen, ob die bestehende Implementation auf dieselbe Lösung kommt.
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{for\_chisq }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(m)\{                   }\CommentTok{\# (1)}
+\NormalTok{  I }\OtherTok{\textless{}{-}} \FunctionTok{dim}\NormalTok{(m)[}\DecValTok{1}\NormalTok{]                            }\CommentTok{\# (2)}
+\NormalTok{  J }\OtherTok{\textless{}{-}} \FunctionTok{dim}\NormalTok{(m)[}\DecValTok{2}\NormalTok{]}
+\NormalTok{  n }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(m)                               }\CommentTok{\# (3)}
+\NormalTok{  e }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,I}\SpecialCharTok{*}\NormalTok{J),}\AttributeTok{nrow =}\NormalTok{ I)          }\CommentTok{\# (4)}
+\NormalTok{  nip }\OtherTok{\textless{}{-}} \FunctionTok{rowSums}\NormalTok{(m)                         }\CommentTok{\# (5)}
+\NormalTok{  npj }\OtherTok{\textless{}{-}} \FunctionTok{colSums}\NormalTok{(m)}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(I))\{                         }\CommentTok{\# (6)}
+    \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(J))\{}
+\NormalTok{      e[i,j] }\OtherTok{\textless{}{-}}\NormalTok{ nip[i] }\SpecialCharTok{*}\NormalTok{ npj[j]}\SpecialCharTok{/}\NormalTok{n}
+\NormalTok{    \}}
+\NormalTok{  \}}
+\NormalTok{  e1 }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,I}\SpecialCharTok{*}\NormalTok{J),}\AttributeTok{nrow =}\NormalTok{ I)         }\CommentTok{\# (7)}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(I))\{}
+    \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(J))\{}
+\NormalTok{      e1[i,j] }\OtherTok{\textless{}{-}}\NormalTok{ (m[i,j]}\SpecialCharTok{{-}}\NormalTok{e[i,j])}\SpecialCharTok{\^{}}\DecValTok{2}\SpecialCharTok{/}\NormalTok{e[i,j]   }\CommentTok{\# (8)}
+\NormalTok{    \}}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{sum}\NormalTok{(e1))                           }\CommentTok{\# (9)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Anmerkungen:
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\item
+  Die Matrix x ist die zu untersuchende Kontingenztafel mit absoluten Häufigkeiten. Zur Berechnung wird die Formel Folie 165 QM1 benutzt.
+\item
+  Die Zeilenzahl I der Matrix wird bestimmt (zur Erinnerung: R unterscheidet zwischen Groß- und Kleinbuchstaben), nächste Zeile: Spaltenzahl J.
+\item
+  Die Gesamtzahl n aller Beobachtungen.
+\item
+  In der Matrix e sollen nachher die erwarteten Häufigkeiten stehen, hier wird die Matrix angelegt und mit Nullen gefüllt.
+\item
+  Vektor der rechten Randsummen (\(n_{i.}\)), nächste Zeile untere Randsummen (\(n_{.j}\)).
+\item
+  Die Matrix e wird mit den erwarteten Häufigkeiten gefüllt.
+\item
+  In der Matrix e1 sollen nachher die Summanden für den chi-Quadrat-Koeffizienten stehen, hier wird sie mit Nullen gefüllt angelegt.
+\item
+  Die Matrix e1 wird mit den Summanden gefüllt.
+\item
+  Der chi-Quadrat-Koeffizient ist jetzt die Summe der Zahlen in der Matrix e1.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,]
+\NormalTok{mat\_chisq }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(m) \{}
+\NormalTok{  e }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\FunctionTok{colSums}\NormalTok{(m),   }
+                  \AttributeTok{each =} \FunctionTok{nrow}\NormalTok{(m)),}
+              \AttributeTok{nrow =} \FunctionTok{nrow}\NormalTok{(m))}
+  
+\NormalTok{  e }\OtherTok{\textless{}{-}} \FunctionTok{sweep}\NormalTok{(e, }
+             \FunctionTok{rowSums}\NormalTok{(m), }
+             \AttributeTok{MARGIN =} \DecValTok{1}\NormalTok{, }
+             \AttributeTok{FUN =} \StringTok{\textquotesingle{}*\textquotesingle{}}\NormalTok{) }
+\NormalTok{  e }\OtherTok{\textless{}{-}}\NormalTok{ e }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(m)}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{sum}\NormalTok{((m }\SpecialCharTok{{-}}\NormalTok{ e) }\SpecialCharTok{\^{}} \DecValTok{2} \SpecialCharTok{/}\NormalTok{ e))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{rl}
+\toprule
+Zeile & Was passiert?\\
+\midrule
+1 & \\
+2 & Matrix wird aufgefüllt mit Spaltensummen (wir erinnern uns dass Matrizen in R spaltenweise aufgefüllt werden)\\
+3 & und zwar wird jede Spaltensumme pro Spalte in jede Zeile geschrieben\\
+4 & und die Matrix soll dieselben Maße wie m haben.\\
+5 & \\
+\addlinespace
+6 & Wir nehmen die Matrix der Spaltensummen\\
+7 & und die Zeilensummen\\
+8 & gehen zeilenweise vor (jede Zeile eine Zeilensumme)\\
+9 & und multiplizieren die ni. und n.j in jeder Zelle.\\
+10 & Dann müssen wir die Zellen nur noch durch die Gesamtzahl der Beobachtungen teilen und haben die eij.\\
+\addlinespace
+11 & Als letztes quadrieren wir die Abweichungen der Matirx von den eij, teilen die Ergebnisse durch die eij und summieren alles auf.\\
+12 & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Kleine Zusatzaufgabe falls Interesse besteht:
+Benchmarke die zwei Implementationen (gerne die aus der Musterlösung, Du musst nicht noch selber die andere umsetzen\footnote{wenn Du nicht willst}) und die folgende Variante gegeneinander:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{unname}\NormalTok{(}\FunctionTok{chisq.test}\NormalTok{(m)}\SpecialCharTok{$}\NormalTok{statistic)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in chisq.test(m): Chi-squared approximation may be incorrect
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+Was kommt raus?
+Hast Du eine Idee, warum das Ergebnis so aussieht wie es aussieht?
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10000}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{100}\NormalTok{)}
+\NormalTok{bmark }\OtherTok{\textless{}{-}}\NormalTok{ bench}\SpecialCharTok{::}\FunctionTok{mark}\NormalTok{(}
+  \AttributeTok{iterations =} \DecValTok{1000}\NormalTok{,}
+  \AttributeTok{forX2 =} \FunctionTok{for\_chisq}\NormalTok{(m),}
+  \AttributeTok{matX2 =} \FunctionTok{mat\_chisq}\NormalTok{(m),}
+  \AttributeTok{RX2 =} \FunctionTok{unname}\NormalTok{(}\FunctionTok{chisq.test}\NormalTok{(m)}\SpecialCharTok{$}\NormalTok{statistic)}
+\NormalTok{)}
+\NormalTok{bmark }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{autoplot}\NormalTok{(}\AttributeTok{type =} \StringTok{\textquotesingle{}violin\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-108-1.pdf}
+
+Als letztes baue einen chi-Quadrat-Test auf Unabhängigkeit mit der \(\chi^2\)-Statistik aus unseren Funktionen durchführt und die Originalmatrix mit Randsummen, die Gesamtzahl an Beobachtungen, die Teststatistik, die Freiheitsgrade und das p\footnote{In unserem Fall müssen wir die Teststatistik mit der \(\chi^2_{(I-1)(J-1)}\)-Verteilung vergleichen, die R-Funktion für das Finden eines gegebenen \(\chi^2\)-Perzentils ist \texttt{pchisq()}} zurückgibt.
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_chisq.test }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(m)\{}
+\NormalTok{  out }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{statistic =} \FunctionTok{mat\_chisq}\NormalTok{(m))}
+\NormalTok{  mat }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(m, }\FunctionTok{colSums}\NormalTok{(m))}
+\NormalTok{  mat }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(mat, }\FunctionTok{rowSums}\NormalTok{(mat))}
+\NormalTok{  out}\SpecialCharTok{$}\NormalTok{mat }\OtherTok{\textless{}{-}}\NormalTok{ mat}
+\NormalTok{  out}\SpecialCharTok{$}\NormalTok{n }\OtherTok{\textless{}{-}}\NormalTok{ mat[}\FunctionTok{nrow}\NormalTok{(mat), }\FunctionTok{ncol}\NormalTok{(mat)]}
+\NormalTok{  out}\SpecialCharTok{$}\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ (}\FunctionTok{nrow}\NormalTok{(m)}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (}\FunctionTok{ncol}\NormalTok{(m) }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{)}
+\NormalTok{  out}\SpecialCharTok{$}\NormalTok{p }\OtherTok{\textless{}{-}} \FunctionTok{pchisq}\NormalTok{(out}\SpecialCharTok{$}\NormalTok{statistic,}
+                  \AttributeTok{df =}\NormalTok{ out}\SpecialCharTok{$}\NormalTok{df,}
+                  \AttributeTok{lower.tail =}\NormalTok{ F)}
+  \FunctionTok{return}\NormalTok{(out)}
+\NormalTok{\}}
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{9}\NormalTok{,}\AttributeTok{ncol =} \DecValTok{3}\NormalTok{)}
+\FunctionTok{my\_chisq.test}\NormalTok{(m)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $statistic
+## [1] 0.46875
+## 
+## $mat
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    4    7   12
+## [2,]    2    5    8   15
+## [3,]    3    6    9   18
+## [4,]    6   15   24   45
+## 
+## $n
+## [1] 45
+## 
+## $df
+## [1] 4
+## 
+## $p
+## [1] 0.976471
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{chisq.test}\NormalTok{(m)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in chisq.test(m): Chi-squared approximation may be incorrect
+\end{verbatim}
+
+\begin{verbatim}
+## 
+##  Pearson's Chi-squared test
+## 
+## data:  m
+## X-squared = 0.46875, df = 4, p-value = 0.9765
+\end{verbatim}
+
+Als kleinen Zusatz könnt Ihr Euch noch überlegen, wie Ihr eine eigene print-Funktion für Euren Test schreiben könntet.
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_chisq.test }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(m)\{}
+\NormalTok{  out }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{statistic =} \FunctionTok{mat\_chisq}\NormalTok{(m))}
+\NormalTok{  mat }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(m, }\FunctionTok{colSums}\NormalTok{(m))}
+\NormalTok{  mat }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(mat, }\FunctionTok{rowSums}\NormalTok{(mat))}
+\NormalTok{  out}\SpecialCharTok{$}\NormalTok{mat }\OtherTok{\textless{}{-}}\NormalTok{ mat}
+\NormalTok{  out}\SpecialCharTok{$}\NormalTok{n }\OtherTok{\textless{}{-}}\NormalTok{ mat[}\FunctionTok{nrow}\NormalTok{(mat), }\FunctionTok{ncol}\NormalTok{(mat)]}
+\NormalTok{  out}\SpecialCharTok{$}\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ (}\FunctionTok{nrow}\NormalTok{(m)}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*}\NormalTok{ (}\FunctionTok{ncol}\NormalTok{(m) }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{)}
+\NormalTok{  out}\SpecialCharTok{$}\NormalTok{p }\OtherTok{\textless{}{-}} \FunctionTok{pchisq}\NormalTok{(out}\SpecialCharTok{$}\NormalTok{statistic,}
+                  \AttributeTok{df =}\NormalTok{ out}\SpecialCharTok{$}\NormalTok{df,}
+                  \AttributeTok{lower.tail =}\NormalTok{ F)}
+  \FunctionTok{attributes}\NormalTok{(out)}\SpecialCharTok{$}\NormalTok{class }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}my\_chisqtest\textquotesingle{}}
+  \FunctionTok{return}\NormalTok{(out)}
+\NormalTok{\}}
+
+\NormalTok{print.my\_chisqtest }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, ...)\{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}Chi{-}Quadrat{-}Test auf Unabhängigkeit\textquotesingle{}}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}Chi\^{}2\_(\textquotesingle{}}\NormalTok{,x}\SpecialCharTok{$}\NormalTok{df,}\StringTok{\textquotesingle{}) = \textquotesingle{}}\NormalTok{,x}\SpecialCharTok{$}\NormalTok{statistic,}\StringTok{\textquotesingle{}; p = \textquotesingle{}}\NormalTok{,x}\SpecialCharTok{$}\NormalTok{p, }\AttributeTok{sep =} \StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{\textquotesingle{}Der Test ist damit auf 5\%{-}Niveau\textquotesingle{}}\NormalTok{,}
+      \FunctionTok{ifelse}\NormalTok{(x}\SpecialCharTok{$}\NormalTok{p}\SpecialCharTok{\textless{}}\NormalTok{.}\DecValTok{05}\NormalTok{,}\StringTok{\textquotesingle{} \textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{} nicht \textquotesingle{}}\NormalTok{),}
+      \StringTok{\textquotesingle{}signifikant!\textquotesingle{}}\NormalTok{, }\AttributeTok{sep =} \StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{)}
+\NormalTok{\}}
+
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{9}\NormalTok{,}\AttributeTok{ncol =} \DecValTok{3}\NormalTok{)}
+\FunctionTok{my\_chisq.test}\NormalTok{(m)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Chi-Quadrat-Test auf Unabhängigkeit
+## Chi^2_(4) = 0.46875; p = 0.976471
+## 
+## Der Test ist damit auf 5%-Niveau nicht signifikant!
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{chisq.test}\NormalTok{(m)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in chisq.test(m): Chi-squared approximation may be incorrect
+\end{verbatim}
+
+\begin{verbatim}
+## 
+##  Pearson's Chi-squared test
+## 
+## data:  m
+## X-squared = 0.46875, df = 4, p-value = 0.9765
 \end{verbatim}
 
   \bibliography{book.bib}

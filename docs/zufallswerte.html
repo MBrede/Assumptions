@@ -24,7 +24,7 @@
 <meta name="author" content="Max Brede und Johannes Andres" />
 
 
-<meta name="date" content="2021-11-08" />
+<meta name="date" content="2021-11-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -188,6 +188,11 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#eigene-functionals"><i class="fa fa-check"></i>Eigene Functionals</a></li>
 <li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#argumente-durchreichen"><i class="fa fa-check"></i>Argumente durchreichen</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html"><i class="fa fa-check"></i>Simulations- und Programmierübungen in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html#pascalsches-dreieck"><i class="fa fa-check"></i>Pascalsches Dreieck</a></li>
+<li><a href="simulations-und-programmierübungen-in-r.html#matrizen-und-chi2">Matrizen und <span class="math inline">\(\chi^2\)</span></a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
 <li class="divider"></li>
 <li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></li>
@@ -229,7 +234,7 @@ div.csl-indent {
 <span id="cb56-12"><a href="zufallswerte.html#cb56-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">&#39;black&#39;</span>,</span>
 <span id="cb56-13"><a href="zufallswerte.html#cb56-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">bins =</span> <span class="dv">40</span>) <span class="sc">+</span></span>
 <span id="cb56-14"><a href="zufallswerte.html#cb56-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>dist,<span class="at">scales =</span> <span class="st">&#39;free_x&#39;</span>)</span></code></pre></div>
-<p><img src="Robustheit_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <div id="aufgabe-3" class="section level3">
 <h3>Aufgabe</h3>
 <p>Erstelle eine Funktion <code>gen_distributed_values</code>, die mit Hilfe von <code>if</code>-Statements anhand eines Arguments <code>distribution</code> und eines Arguments <code>n</code> einen Vektor an Zufallszahlen generiert. Dabei soll <code>distribution</code> angeben, welche aus drei möglichen Verteilungen genutzt wird. Denke außerdem an mögliche Verteilungseigenschaften der genutzten Funktionen und füge sie als optionale Argumente zur Funktion hinzu.</p>

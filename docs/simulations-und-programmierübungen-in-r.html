@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Simulations- und Programmierübungen in R | Robustheit</title>
+  <meta name="description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Simulations- und Programmierübungen in R | Robustheit" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Simulations- und Programmierübungen in R | Robustheit" />
+  
+  <meta name="twitter:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  
+
+<meta name="author" content="Max Brede und Johannes Andres" />
+
+
+<meta name="date" content="2021-11-26" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="functionals.html"/>
+<link rel="next" href="literatur.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Robustheit und Voraussetzungstests</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Vorwort</a></li>
+<li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html"><i class="fa fa-check"></i>Lehrplan</a>
+<ul>
+<li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html#semesterplan"><i class="fa fa-check"></i>Semesterplan</a></li>
+</ul></li>
+<li class="part"><span><b>I Programmieren in R</b></span></li>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html"><i class="fa fa-check"></i>Funktionen</a>
+<ul>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html#geschachtelte-funktionen"><i class="fa fa-check"></i>Geschachtelte Funktionen</a></li>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html#optionale-argumente"><i class="fa fa-check"></i>Optionale Argumente</a></li>
+</ul></li>
+<li><a href="if-statements.html#if-statements"><code>if</code>-Statements</a></li>
+<li class="chapter" data-level="" data-path="zufallswerte.html"><a href="zufallswerte.html"><i class="fa fa-check"></i>Zufallswerte</a></li>
+<li class="chapter" data-level="" data-path="schleifen.html"><a href="schleifen.html"><i class="fa fa-check"></i>Schleifen</a></li>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html"><i class="fa fa-check"></i>Listen</a>
+<ul>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html#listen-und-datensätze"><i class="fa fa-check"></i>Listen und Datensätze</a></li>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html#arbeiten-mit-listen"><i class="fa fa-check"></i>Arbeiten mit Listen</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="attribute.html"><a href="attribute.html"><i class="fa fa-check"></i>Attribute</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html"><i class="fa fa-check"></i>Functionals</a>
+<ul>
+<li><a href="functionals.html#purrrmap"><code>purrr::map</code></a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#exkurs-iteratoren-vergleich-und-microbenchmarking"><i class="fa fa-check"></i>Exkurs: Iteratoren-Vergleich und Microbenchmarking</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#eigene-functionals"><i class="fa fa-check"></i>Eigene Functionals</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#argumente-durchreichen"><i class="fa fa-check"></i>Argumente durchreichen</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html"><i class="fa fa-check"></i>Simulations- und Programmierübungen in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html#pascalsches-dreieck"><i class="fa fa-check"></i>Pascalsches Dreieck</a></li>
+<li><a href="simulations-und-programmierübungen-in-r.html#matrizen-und-chi2">Matrizen und <span class="math inline">\(\chi^2\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
+<li class="divider"></li>
+<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Robustheit</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="simulations--und-programmierübungen-in-r" class="section level1">
+<h1>Simulations- und Programmierübungen in R</h1>
+<p>Im Folgenden werden keine neuen Konzepte eingeführt, zum Üben der bisher eingeführten Konzepte werden aber eine Reihe von Aufgaben gestellt, die Schritt für Schritt mit statistischen Beispielen zu ersten eigenen und zunehmend komplexen Simulationen führen sollen.
+Zu jeder Aufgabe wird auch eine Musterlösung angeboten, wie immer ist diese aber zum Einen nicht die einzig mögliche Lösung und zum Anderen bitte erst zu konsultieren, wenn eine eigene Lösung versucht wurde.
+Der Lernfortschritt durch eigenes Programmieren (und Fehler machen) ist wesentlich größer als durch das einfache Lesen fertiger Skripte.</p>
+<style>
+pre.numberSource code > span > a:first-child::before {
+  left: -0.3em;
+}
+</style>
+<div id="pascalsches-dreieck" class="section level2">
+<h2>Pascalsches Dreieck</h2>
+<p>Das Ziel soll sein, eine Funktion namens <code>binom_mat</code> zu erstellen, die für eine gegebene Zahl n das Pascalsche Dreieck bis zur gegebenen Größe zurückgibt.
+Dieses Dreieck soll erstmal als Matrix zurückgegeben werden, die für die Zahl 5 zum Beispiel so aussehen könnte:</p>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    0    0    0    0
+## [2,]    1    1    0    0    0
+## [3,]    1    2    1    0    0
+## [4,]    1    3    3    1    0
+## [5,]    1    4    6    4    1</code></pre>
+<p>Die erste Spalte der Matrix soll also die “obere linke Flanke” des Dreiecks repräsentieren.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="simulations-und-programmierübungen-in-r.html#cb242-1" aria-hidden="true" tabindex="-1"></a>binom_mat <span class="ot">&lt;-</span> <span class="cf">function</span>(z){                    <span class="co"># (1)</span></span>
+<span id="cb242-2"><a href="simulations-und-programmierübungen-in-r.html#cb242-2" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>,z,z)                       <span class="co"># (2)</span></span>
+<span id="cb242-3"><a href="simulations-und-programmierübungen-in-r.html#cb242-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(z)){                          <span class="co"># (3)</span></span>
+<span id="cb242-4"><a href="simulations-und-programmierübungen-in-r.html#cb242-4" aria-hidden="true" tabindex="-1"></a>    mat[i,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb242-5"><a href="simulations-und-programmierübungen-in-r.html#cb242-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb242-6"><a href="simulations-und-programmierübungen-in-r.html#cb242-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">2</span>,z)){                        <span class="co"># (4)</span></span>
+<span id="cb242-7"><a href="simulations-und-programmierübungen-in-r.html#cb242-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">2</span>,i)){                      <span class="co"># (5)</span></span>
+<span id="cb242-8"><a href="simulations-und-programmierübungen-in-r.html#cb242-8" aria-hidden="true" tabindex="-1"></a>      mat[i,j] <span class="ot">&lt;-</span> mat[i<span class="dv">-1</span>,j<span class="dv">-1</span>] <span class="sc">+</span> mat[i<span class="dv">-1</span>,j]  <span class="co"># (6)</span></span>
+<span id="cb242-9"><a href="simulations-und-programmierübungen-in-r.html#cb242-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb242-10"><a href="simulations-und-programmierübungen-in-r.html#cb242-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb242-11"><a href="simulations-und-programmierübungen-in-r.html#cb242-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(mat)                                <span class="co"># (7)</span></span>
+<span id="cb242-12"><a href="simulations-und-programmierübungen-in-r.html#cb242-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Erläuterungen:</p>
+<ol style="list-style-type: decimal">
+<li><p>Die Matrix soll am Ende z Zeilen haben. Allerdings werden die Zeilen und Spalten einer Matrix beginnend mit 1 durchnummeriert, so dass die Zeilennummer nicht das n der Binomialkoeffizienten ist. Vielmehr stehen die Bionomialkoeffizienten <span class="math inline">\(n \choose k\)</span> am Ende in der Zeile mit der Nummer n+1 und der Spalte mit der Nummer k+1.</p></li>
+<li><p>Hier wird eine Matrix erzeugt, die den Namen mat bekommt. Die Matrix wird zunächst mit Nullen gefüllt. Sie soll z Zeilen und z Spalten haben.</p></li>
+<li><p>Die linke Spalte der Matrix wird mit Einsen gefüllt. Hier ist zu bemerken, dass die Elemente einer Matrix mit Zeilen- und Spaltennummer in eckigen Klammern angesprochen werden.</p></li>
+<li><p>Hier folgen verschachtelte Schleifen. In der äußeren Schleife werden die Zeilen der Matrix angesprochen, die der Reihe nach mit den richtigen Zahlen gefüllt werden sollen. Die erste Zeile der Matrix hat schon die Endgestalt, daher beginnt die Schleife mit i=2.</p></li>
+<li><p>Hier kommt die innere Schleife; die Zeile mit der Nummer i ist erreicht, die vorherigen Zeilen sind schon richtig aufgefüllt worden. Die Elemente in dieser Zeile ergeben sich dadurch, dass man die Zahlen links darüber und direkt darüber addiert. Die erste Zahl 1 der Zeile wurde vorher schon eingefüllt, daher fängt die Schleife mit j=2 an; außerdem sind die Zahlen am Ende alle 0 (sofern sie außerhalb des Dreiecks liegen), daher geht die Schleife nur bis j=i (i ist an dieser Stelle eine feste Zahl).</p></li>
+<li><p>Hier werden – wie gerade beschrieben – die Zahlen der i-ten Zeile eingefügt.</p></li>
+<li><p>Die Matrix ist jetzt fertig ausgefüllt und wird an dieser Stelle zurückgegeben.</p></li>
+</ol>
+</details>
+<p>Für manche Anwendungen wollen wir vielleicht eine Liste, keine Matrix als Output haben.</p>
+<p>Schreibe deswegen eine Funktion <code>binom_list</code>, die eine Liste von Vektoren zurückgibt.</p>
+<p>Verpacke dann beide Funktionen in eine <code>binom_pascal</code>-Funktion, in der mit einem optionalen Argument das Output-Format für das Pascalsche Dreieck angibt.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="simulations-und-programmierübungen-in-r.html#cb243-1" aria-hidden="true" tabindex="-1"></a>binom_list <span class="ot">&lt;-</span> <span class="cf">function</span>(z) {</span>
+<span id="cb243-2"><a href="simulations-und-programmierübungen-in-r.html#cb243-2" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb243-3"><a href="simulations-und-programmierübungen-in-r.html#cb243-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(z)) {</span>
+<span id="cb243-4"><a href="simulations-und-programmierübungen-in-r.html#cb243-4" aria-hidden="true" tabindex="-1"></a>    out[[i]] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb243-5"><a href="simulations-und-programmierübungen-in-r.html#cb243-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_len</span>(i <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="dv">1</span>) {</span>
+<span id="cb243-6"><a href="simulations-und-programmierübungen-in-r.html#cb243-6" aria-hidden="true" tabindex="-1"></a>      out[[i]][j] <span class="ot">&lt;-</span></span>
+<span id="cb243-7"><a href="simulations-und-programmierübungen-in-r.html#cb243-7" aria-hidden="true" tabindex="-1"></a>        out[[i <span class="sc">-</span> <span class="dv">1</span>]][j <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">+</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(out[[i <span class="sc">-</span> <span class="dv">1</span>]][j]), </span>
+<span id="cb243-8"><a href="simulations-und-programmierübungen-in-r.html#cb243-8" aria-hidden="true" tabindex="-1"></a>                                     <span class="dv">0</span>, </span>
+<span id="cb243-9"><a href="simulations-und-programmierübungen-in-r.html#cb243-9" aria-hidden="true" tabindex="-1"></a>                                     out[[i <span class="sc">-</span> <span class="dv">1</span>]][j])</span>
+<span id="cb243-10"><a href="simulations-und-programmierübungen-in-r.html#cb243-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb243-11"><a href="simulations-und-programmierübungen-in-r.html#cb243-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb243-12"><a href="simulations-und-programmierübungen-in-r.html#cb243-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb243-13"><a href="simulations-und-programmierübungen-in-r.html#cb243-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb243-14"><a href="simulations-und-programmierübungen-in-r.html#cb243-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb243-15"><a href="simulations-und-programmierübungen-in-r.html#cb243-15" aria-hidden="true" tabindex="-1"></a><span class="fu">binom_list</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 1 1
+## 
+## [[3]]
+## [1] 1 2 1
+## 
+## [[4]]
+## [1] 1 3 3 1
+## 
+## [[5]]
+## [1] 1 4 6 4 1</code></pre>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="simulations-und-programmierübungen-in-r.html#cb245-1" aria-hidden="true" tabindex="-1"></a>binom_pascal <span class="ot">&lt;-</span> <span class="cf">function</span>(z, <span class="at">format =</span> <span class="st">&#39;m&#39;</span>){</span>
+<span id="cb245-2"><a href="simulations-und-programmierübungen-in-r.html#cb245-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(format <span class="sc">!=</span> <span class="st">&#39;m&#39;</span>){</span>
+<span id="cb245-3"><a href="simulations-und-programmierübungen-in-r.html#cb245-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">binom_list</span>(z))</span>
+<span id="cb245-4"><a href="simulations-und-programmierübungen-in-r.html#cb245-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb245-5"><a href="simulations-und-programmierübungen-in-r.html#cb245-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">binom_mat</span>(z))</span>
+<span id="cb245-6"><a href="simulations-und-programmierübungen-in-r.html#cb245-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</details>
+<p>Erweitere deine Listenfunktion so, dass die zurückgegebene Liste die Klasse <code>pascal</code> hat und die Anzahl der Zeilen des Dreiecks im <code>n</code>-Attribut abgelegt wird.</p>
+<p>Schreibe nun eine Erweiterung des <code>print</code>-Befehls, indem du eine Funktion <code>print.pascal</code> definierst, die die Argumente <code>x</code> und den <code>...</code>-Operator erwartet.</p>
+<p>Mit diesem Namen legst Du fest, dass die <code>pascal</code>-Klasse mit genau dieser Funktion geprintet werden soll, sobald also ein Objekt diese Klasse hat, wird diese Printfunktion aufgerufen.</p>
+<p>Der Output soll dabei so aussehen:</p>
+<pre><code>##     1
+##    1 1
+##   1 2 1
+##  1 3 3 1
+## 1 4 6 4 1</code></pre>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="simulations-und-programmierübungen-in-r.html#cb247-1" aria-hidden="true" tabindex="-1"></a>binom_list <span class="ot">&lt;-</span> <span class="cf">function</span>(z) {</span>
+<span id="cb247-2"><a href="simulations-und-programmierübungen-in-r.html#cb247-2" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb247-3"><a href="simulations-und-programmierübungen-in-r.html#cb247-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(z)) {</span>
+<span id="cb247-4"><a href="simulations-und-programmierübungen-in-r.html#cb247-4" aria-hidden="true" tabindex="-1"></a>    out[[i]] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb247-5"><a href="simulations-und-programmierübungen-in-r.html#cb247-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_len</span>(i <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="dv">1</span>) {</span>
+<span id="cb247-6"><a href="simulations-und-programmierübungen-in-r.html#cb247-6" aria-hidden="true" tabindex="-1"></a>      out[[i]][j] <span class="ot">&lt;-</span></span>
+<span id="cb247-7"><a href="simulations-und-programmierübungen-in-r.html#cb247-7" aria-hidden="true" tabindex="-1"></a>        out[[i <span class="sc">-</span> <span class="dv">1</span>]][j <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">+</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(out[[i <span class="sc">-</span> <span class="dv">1</span>]][j]), </span>
+<span id="cb247-8"><a href="simulations-und-programmierübungen-in-r.html#cb247-8" aria-hidden="true" tabindex="-1"></a>                                     <span class="dv">0</span>, </span>
+<span id="cb247-9"><a href="simulations-und-programmierübungen-in-r.html#cb247-9" aria-hidden="true" tabindex="-1"></a>                                     out[[i <span class="sc">-</span> <span class="dv">1</span>]][j])</span>
+<span id="cb247-10"><a href="simulations-und-programmierübungen-in-r.html#cb247-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb247-11"><a href="simulations-und-programmierübungen-in-r.html#cb247-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb247-12"><a href="simulations-und-programmierübungen-in-r.html#cb247-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attributes</span>(out)<span class="sc">$</span>class <span class="ot">&lt;-</span> <span class="st">&#39;pascal&#39;</span></span>
+<span id="cb247-13"><a href="simulations-und-programmierübungen-in-r.html#cb247-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attributes</span>(out)<span class="sc">$</span>n <span class="ot">&lt;-</span> z</span>
+<span id="cb247-14"><a href="simulations-und-programmierübungen-in-r.html#cb247-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb247-15"><a href="simulations-und-programmierübungen-in-r.html#cb247-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb247-16"><a href="simulations-und-programmierübungen-in-r.html#cb247-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb247-17"><a href="simulations-und-programmierübungen-in-r.html#cb247-17" aria-hidden="true" tabindex="-1"></a><span class="do">## für einfache Zahlen können wir die print-Funktion so schreiben:</span></span>
+<span id="cb247-18"><a href="simulations-und-programmierübungen-in-r.html#cb247-18" aria-hidden="true" tabindex="-1"></a>print.pascal <span class="ot">&lt;-</span> <span class="cf">function</span>(x,...){</span>
+<span id="cb247-19"><a href="simulations-und-programmierübungen-in-r.html#cb247-19" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">attributes</span>(x)[[<span class="st">&#39;n&#39;</span>]]</span>
+<span id="cb247-20"><a href="simulations-und-programmierübungen-in-r.html#cb247-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(n)){</span>
+<span id="cb247-21"><a href="simulations-und-programmierübungen-in-r.html#cb247-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">rep</span>(<span class="st">&#39; &#39;</span>, n<span class="sc">-</span>i), <span class="at">sep =</span> <span class="st">&#39;&#39;</span>)</span>
+<span id="cb247-22"><a href="simulations-und-programmierübungen-in-r.html#cb247-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(x[[i]])</span>
+<span id="cb247-23"><a href="simulations-und-programmierübungen-in-r.html#cb247-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span>)</span>
+<span id="cb247-24"><a href="simulations-und-programmierübungen-in-r.html#cb247-24" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb247-25"><a href="simulations-und-programmierübungen-in-r.html#cb247-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb247-26"><a href="simulations-und-programmierübungen-in-r.html#cb247-26" aria-hidden="true" tabindex="-1"></a><span class="do">## funktioniert:</span></span>
+<span id="cb247-27"><a href="simulations-und-programmierübungen-in-r.html#cb247-27" aria-hidden="true" tabindex="-1"></a><span class="fu">binom_list</span>(<span class="dv">5</span>)</span></code></pre></div>
+<pre><code>##     1
+##    1 1
+##   1 2 1
+##  1 3 3 1
+## 1 4 6 4 1</code></pre>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="simulations-und-programmierübungen-in-r.html#cb249-1" aria-hidden="true" tabindex="-1"></a><span class="do">## geht bei mehr digits aber kaputt:</span></span>
+<span id="cb249-2"><a href="simulations-und-programmierübungen-in-r.html#cb249-2" aria-hidden="true" tabindex="-1"></a><span class="fu">binom_list</span>(<span class="dv">7</span>)</span></code></pre></div>
+<pre><code>##       1
+##      1 1
+##     1 2 1
+##    1 3 3 1
+##   1 4 6 4 1
+##  1 5 10 10 5 1
+## 1 6 15 20 15 6 1</code></pre>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="simulations-und-programmierübungen-in-r.html#cb251-1" aria-hidden="true" tabindex="-1"></a><span class="do">## mit einer Verallgemeinerung der eingefügten Leerzeichen klappt das aber auch:</span></span>
+<span id="cb251-2"><a href="simulations-und-programmierübungen-in-r.html#cb251-2" aria-hidden="true" tabindex="-1"></a>print.pascal <span class="ot">&lt;-</span> <span class="cf">function</span>(x,...){</span>
+<span id="cb251-3"><a href="simulations-und-programmierübungen-in-r.html#cb251-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">attr</span>(x, <span class="st">&#39;n&#39;</span>)</span>
+<span id="cb251-4"><a href="simulations-und-programmierübungen-in-r.html#cb251-4" aria-hidden="true" tabindex="-1"></a>  nsp <span class="ot">&lt;-</span> <span class="fu">nchar</span>(<span class="fu">as.character</span>(<span class="fu">max</span>(x[[n]]))) <span class="co"># guck wie viele Stellen die längste Zahl hat</span></span>
+<span id="cb251-5"><a href="simulations-und-programmierübungen-in-r.html#cb251-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_len</span>(n)){</span>
+<span id="cb251-6"><a href="simulations-und-programmierübungen-in-r.html#cb251-6" aria-hidden="true" tabindex="-1"></a>    dummy <span class="ot">&lt;-</span> <span class="fu">str_pad</span>(<span class="fu">as.character</span>(x[[i]]), <span class="co"># ergänze die Zahl als character auf die größte Länge</span></span>
+<span id="cb251-7"><a href="simulations-und-programmierübungen-in-r.html#cb251-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">side =</span> <span class="st">&#39;left&#39;</span>, </span>
+<span id="cb251-8"><a href="simulations-und-programmierübungen-in-r.html#cb251-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">width =</span> nsp)</span>
+<span id="cb251-9"><a href="simulations-und-programmierübungen-in-r.html#cb251-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="fu">rep</span>(<span class="st">&#39; &#39;</span>, nsp <span class="sc">*</span> (n<span class="sc">-</span>i)), <span class="at">sep =</span> <span class="st">&#39;&#39;</span>)</span>
+<span id="cb251-10"><a href="simulations-und-programmierübungen-in-r.html#cb251-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(dummy, <span class="at">sep =</span> <span class="fu">paste0</span>(<span class="fu">rep</span>(<span class="st">&#39; &#39;</span>, nsp), <span class="at">collapse =</span> <span class="st">&#39;&#39;</span>))</span>
+<span id="cb251-11"><a href="simulations-und-programmierübungen-in-r.html#cb251-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span>)</span>
+<span id="cb251-12"><a href="simulations-und-programmierübungen-in-r.html#cb251-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb251-13"><a href="simulations-und-programmierübungen-in-r.html#cb251-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb251-14"><a href="simulations-und-programmierübungen-in-r.html#cb251-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb251-15"><a href="simulations-und-programmierübungen-in-r.html#cb251-15" aria-hidden="true" tabindex="-1"></a><span class="fu">binom_list</span>(<span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##                              1
+##                           1     1
+##                        1     2     1
+##                     1     3     3     1
+##                  1     4     6     4     1
+##               1     5    10    10     5     1
+##            1     6    15    20    15     6     1
+##         1     7    21    35    35    21     7     1
+##      1     8    28    56    70    56    28     8     1
+##   1     9    36    84   126   126    84    36     9     1</code></pre>
+</details>
+<p>Als letztes wollen wir die Funktion nur noch praktisch nutzen.
+Dafür müssen wir noch eine Funktion <code>binom_coeff</code> schreiben, die für gegebenes n und k den Wert des Binominialkoeffizienten ausgibt.</p>
+<p>Überlege Dir dazu, ob Du lieber <code>binom_mat</code> oder <code>binom_list</code> benutzen möchtest.
+Mit <code>choose(n,k)</code> kannst Du überprüfen, ob die in R angelegte Funktion für den Binomialkoeffizienten auf dieselbe Lösung kommt.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="simulations-und-programmierübungen-in-r.html#cb253-1" aria-hidden="true" tabindex="-1"></a>binom_coeff <span class="ot">&lt;-</span> <span class="cf">function</span>(n,k){</span>
+<span id="cb253-2"><a href="simulations-und-programmierübungen-in-r.html#cb253-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(n<span class="sc">==</span><span class="dv">0</span>){                               <span class="co"># (1)</span></span>
+<span id="cb253-3"><a href="simulations-und-programmierübungen-in-r.html#cb253-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(k<span class="sc">==</span><span class="dv">0</span>){<span class="fu">return</span>(<span class="dv">1</span>)} <span class="cf">else</span>{<span class="fu">return</span>(<span class="dv">0</span>)}</span>
+<span id="cb253-4"><a href="simulations-und-programmierübungen-in-r.html#cb253-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb253-5"><a href="simulations-und-programmierübungen-in-r.html#cb253-5" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">binom_pascal</span>(n<span class="sc">+</span><span class="dv">1</span>)                <span class="co"># (2)</span></span>
+<span id="cb253-6"><a href="simulations-und-programmierübungen-in-r.html#cb253-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(mat[n<span class="sc">+</span><span class="dv">1</span>,k<span class="sc">+</span><span class="dv">1</span>])                    <span class="co"># (3)</span></span>
+<span id="cb253-7"><a href="simulations-und-programmierübungen-in-r.html#cb253-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb253-8"><a href="simulations-und-programmierübungen-in-r.html#cb253-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb253-9"><a href="simulations-und-programmierübungen-in-r.html#cb253-9" aria-hidden="true" tabindex="-1"></a><span class="fu">binom_coeff</span>(<span class="dv">10</span>,<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 45</code></pre>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="simulations-und-programmierübungen-in-r.html#cb255-1" aria-hidden="true" tabindex="-1"></a><span class="fu">choose</span>(<span class="dv">10</span>,<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 45</code></pre>
+<p>Anmerkungen:</p>
+<ol style="list-style-type: decimal">
+<li><p>n = 0 muss abgefangen werden.</p></li>
+<li><p>Wenn n nicht 0 ist, wird die Matrix erzeugt, die ausreichend groß ist, also n+1 Zeilen hat.</p></li>
+<li><p>Der gesuchte Koeffizient steht dann in der Zeile n+1 und der Spalte k+1, da ja die Nummerierung der Zeilen und Spalten einer Matrix mit 1 beginnt und nicht mit 0.</p></li>
+</ol>
+<p>Aus Spaß können wir auch mal die beiden Implementationen vergleichen.
+Dazu bauen wir eine fast identische Funktion, die mit den Listen arbeitet und geben beide in <code>bench::mark</code>:</p>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="simulations-und-programmierübungen-in-r.html#cb257-1" aria-hidden="true" tabindex="-1"></a>binom_coeff_l <span class="ot">&lt;-</span> <span class="cf">function</span>(n,k){</span>
+<span id="cb257-2"><a href="simulations-und-programmierübungen-in-r.html#cb257-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(n<span class="sc">==</span><span class="dv">0</span>){ </span>
+<span id="cb257-3"><a href="simulations-und-programmierübungen-in-r.html#cb257-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(k<span class="sc">==</span><span class="dv">0</span>){<span class="fu">return</span>(<span class="dv">1</span>)} <span class="cf">else</span>{<span class="fu">return</span>(<span class="dv">0</span>)}</span>
+<span id="cb257-4"><a href="simulations-und-programmierübungen-in-r.html#cb257-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb257-5"><a href="simulations-und-programmierübungen-in-r.html#cb257-5" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">binom_pascal</span>(n<span class="sc">+</span><span class="dv">1</span>, <span class="st">&#39;l&#39;</span>)</span>
+<span id="cb257-6"><a href="simulations-und-programmierübungen-in-r.html#cb257-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(mat[[n<span class="sc">+</span><span class="dv">1</span>]][k<span class="sc">+</span><span class="dv">1</span>])</span>
+<span id="cb257-7"><a href="simulations-und-programmierübungen-in-r.html#cb257-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb257-8"><a href="simulations-und-programmierübungen-in-r.html#cb257-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb257-9"><a href="simulations-und-programmierübungen-in-r.html#cb257-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bench)</span>
+<span id="cb257-10"><a href="simulations-und-programmierübungen-in-r.html#cb257-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb257-11"><a href="simulations-und-programmierübungen-in-r.html#cb257-11" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb257-12"><a href="simulations-und-programmierübungen-in-r.html#cb257-12" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb257-13"><a href="simulations-und-programmierübungen-in-r.html#cb257-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb257-14"><a href="simulations-und-programmierübungen-in-r.html#cb257-14" aria-hidden="true" tabindex="-1"></a>bench<span class="sc">::</span><span class="fu">mark</span>(<span class="at">iterations =</span> <span class="dv">100</span>,</span>
+<span id="cb257-15"><a href="simulations-und-programmierübungen-in-r.html#cb257-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">list =</span> <span class="fu">binom_coeff_l</span>(n,k),</span>
+<span id="cb257-16"><a href="simulations-und-programmierübungen-in-r.html#cb257-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">mat =</span> <span class="fu">binom_coeff</span>(n,k)) <span class="sc">%&gt;%</span> </span>
+<span id="cb257-17"><a href="simulations-und-programmierübungen-in-r.html#cb257-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">type =</span> <span class="st">&#39;violin&#39;</span>)</span></code></pre></div>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-98-1.png" width="672" /></p>
+<p>Die Matritzen-Variante ist wesentlich schneller, probieren wir noch einmal wie sich das für verschieden große Matritzen verhält:</p>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="simulations-und-programmierübungen-in-r.html#cb258-1" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> bench<span class="sc">::</span><span class="fu">press</span>(</span>
+<span id="cb258-2"><a href="simulations-und-programmierübungen-in-r.html#cb258-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">100</span> <span class="sc">*</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb258-3"><a href="simulations-und-programmierübungen-in-r.html#cb258-3" aria-hidden="true" tabindex="-1"></a>  bench<span class="sc">::</span><span class="fu">mark</span>(<span class="at">iterations =</span> <span class="dv">100</span>,</span>
+<span id="cb258-4"><a href="simulations-und-programmierübungen-in-r.html#cb258-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">list =</span> <span class="fu">binom_coeff_l</span>(n,k),</span>
+<span id="cb258-5"><a href="simulations-und-programmierübungen-in-r.html#cb258-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">mat =</span> <span class="fu">binom_coeff</span>(n,k)) </span>
+<span id="cb258-6"><a href="simulations-und-programmierübungen-in-r.html#cb258-6" aria-hidden="true" tabindex="-1"></a>) </span>
+<span id="cb258-7"><a href="simulations-und-programmierübungen-in-r.html#cb258-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb258-8"><a href="simulations-und-programmierübungen-in-r.html#cb258-8" aria-hidden="true" tabindex="-1"></a><span class="fu">pmap_dfr</span>(<span class="fu">list</span>(sim<span class="sc">$</span>time,</span>
+<span id="cb258-9"><a href="simulations-und-programmierübungen-in-r.html#cb258-9" aria-hidden="true" tabindex="-1"></a>              <span class="fu">names</span>(sim<span class="sc">$</span>expression),</span>
+<span id="cb258-10"><a href="simulations-und-programmierübungen-in-r.html#cb258-10" aria-hidden="true" tabindex="-1"></a>              sim<span class="sc">$</span>n),</span>
+<span id="cb258-11"><a href="simulations-und-programmierübungen-in-r.html#cb258-11" aria-hidden="true" tabindex="-1"></a>         <span class="sc">~</span><span class="fu">tibble</span>(<span class="at">times =</span> <span class="fu">as.numeric</span>(..<span class="dv">1</span>),</span>
+<span id="cb258-12"><a href="simulations-und-programmierübungen-in-r.html#cb258-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">iterator =</span> ..<span class="dv">2</span>,</span>
+<span id="cb258-13"><a href="simulations-und-programmierübungen-in-r.html#cb258-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">reps =</span> <span class="dv">100</span> <span class="sc">*</span> ..<span class="dv">3</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb258-14"><a href="simulations-und-programmierübungen-in-r.html#cb258-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> reps,</span>
+<span id="cb258-15"><a href="simulations-und-programmierübungen-in-r.html#cb258-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> times,</span>
+<span id="cb258-16"><a href="simulations-und-programmierübungen-in-r.html#cb258-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> iterator)) <span class="sc">+</span></span>
+<span id="cb258-17"><a href="simulations-und-programmierübungen-in-r.html#cb258-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb258-18"><a href="simulations-und-programmierübungen-in-r.html#cb258-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">geom=</span><span class="st">&#39;line&#39;</span>,</span>
+<span id="cb258-19"><a href="simulations-und-programmierübungen-in-r.html#cb258-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">fun =</span> median) <span class="sc">+</span></span>
+<span id="cb258-20"><a href="simulations-und-programmierübungen-in-r.html#cb258-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&#39;Zeit [s]&#39;</span>,</span>
+<span id="cb258-21"><a href="simulations-und-programmierübungen-in-r.html#cb258-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&#39;Iterierte Werte&#39;</span>) <span class="sc">+</span></span>
+<span id="cb258-22"><a href="simulations-und-programmierübungen-in-r.html#cb258-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">&#39;Dark2&#39;</span>) <span class="sc">+</span></span>
+<span id="cb258-23"><a href="simulations-und-programmierübungen-in-r.html#cb258-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&#39;lm&#39;</span>,</span>
+<span id="cb258-24"><a href="simulations-und-programmierübungen-in-r.html#cb258-24" aria-hidden="true" tabindex="-1"></a>              <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb258-25"><a href="simulations-und-programmierübungen-in-r.html#cb258-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb258-26"><a href="simulations-und-programmierübungen-in-r.html#cb258-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb258-27"><a href="simulations-und-programmierübungen-in-r.html#cb258-27" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&#39;imgs/list_mat_pascal.png&#39;</span>,</span>
+<span id="cb258-28"><a href="simulations-und-programmierübungen-in-r.html#cb258-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">scale =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="imgs/list_mat_pascal.png" width="2450" /></p>
+</details>
+</div>
+<div id="matrizen-und-chi2" class="section level2">
+<h2>Matrizen und <span class="math inline">\(\chi^2\)</span></h2>
+<p>Beispiele für Matrizen sind Kontingenztafeln. Hier spielen die Randsummen eine wichtige Rolle, die <code>apply</code>-Funktion bietet die oben schon erwähnte Möglichkeit, solche Randsummen besonders einfach zu bilden:</p>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="simulations-und-programmierübungen-in-r.html#cb259-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb259-2"><a href="simulations-und-programmierübungen-in-r.html#cb259-2" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4</code></pre>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="simulations-und-programmierübungen-in-r.html#cb261-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(m, <span class="at">MARGIN =</span> <span class="dv">1</span>, <span class="at">FUN =</span> sum)</span></code></pre></div>
+<pre><code>## [1] 4 6</code></pre>
+<p>Die Argumente FUN und MARGIN müssen hier angegeben werden. Im Beispiel sollen Summen gebildet werden (FUN = sum), wobei ein Index festgehalten wird, hier Zeilenindex (MARGIN = 1). Der andere Index (hier dann der Spaltenindex) ist der Index, über den summiert wird. Sind die Einträge der Matix <span class="math inline">\(x_{ij}\)</span>, so werden also die Summen <span class="math inline">\(\sum_j x_{ij}\)</span> gebildet, die Randsummen am rechten Rand.</p>
+<p>Dasselbe mit MARGIN = 2 liefert die Summen der Einträge in den jeweiligen Spalten, also die Randsummen am unteren Rand, ausprobieren!</p>
+<p>An der Stelle von sum können auch andere Funktionen eingesetzt werden, beispielsweise prod, wenn nicht Summen, sondern Produkte gebildet werden sollen (ausprobieren!).</p>
+<p>Alternativ sind in R mit <code>colSums</code> und <code>rowSums</code> Funktionen zur Bildung von Spalten- und Zeilensummen schon implementiert, außerdem könnten wir auch eine <code>for</code>-Schleife nutzen, um die Summen zu berechnen.</p>
+<p>Überlege zuerst, wie man Eine Funktion schreiben könnte, die mit denselben Argumenten wie <code>apply</code> mit Hilfe einer <code>for</code>-Schleife Zeilen- oder Spaltenweise Werte aggregiert.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="simulations-und-programmierübungen-in-r.html#cb263-1" aria-hidden="true" tabindex="-1"></a>my_apply <span class="ot">&lt;-</span> <span class="cf">function</span>(m,MARGIN,FUN, ...){</span>
+<span id="cb263-2"><a href="simulations-und-programmierübungen-in-r.html#cb263-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(MARGIN <span class="sc">==</span> <span class="dv">2</span>){</span>
+<span id="cb263-3"><a href="simulations-und-programmierübungen-in-r.html#cb263-3" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">&lt;-</span> <span class="fu">t</span>(m)</span>
+<span id="cb263-4"><a href="simulations-und-programmierübungen-in-r.html#cb263-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb263-5"><a href="simulations-und-programmierübungen-in-r.html#cb263-5" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">nrow</span>(m))</span>
+<span id="cb263-6"><a href="simulations-und-programmierübungen-in-r.html#cb263-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(m))) {</span>
+<span id="cb263-7"><a href="simulations-und-programmierübungen-in-r.html#cb263-7" aria-hidden="true" tabindex="-1"></a>    out[i] <span class="ot">&lt;-</span> <span class="fu">FUN</span>(m[i,], ...)</span>
+<span id="cb263-8"><a href="simulations-und-programmierübungen-in-r.html#cb263-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb263-9"><a href="simulations-und-programmierübungen-in-r.html#cb263-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb263-10"><a href="simulations-und-programmierübungen-in-r.html#cb263-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb263-11"><a href="simulations-und-programmierübungen-in-r.html#cb263-11" aria-hidden="true" tabindex="-1"></a><span class="fu">my_apply</span>(m, <span class="dv">2</span>, sum)</span></code></pre></div>
+<pre><code>## [1] 3 7</code></pre>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="simulations-und-programmierübungen-in-r.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(m, <span class="dv">2</span>, sum)</span></code></pre></div>
+<pre><code>## [1] 3 7</code></pre>
+</details>
+<p>Nutze jetzt deine <code>for</code>-<code>apply</code>-Alternative, <code>apply</code> und <code>rowSums</code> um mit bench::mark zu testen, welche dieser Funktionen am besten in 100 Tests auf Basis einer 100x100-Matrix performed.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="simulations-und-programmierübungen-in-r.html#cb267-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bench)</span>
+<span id="cb267-2"><a href="simulations-und-programmierübungen-in-r.html#cb267-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>, <span class="at">ncol =</span> <span class="dv">100</span>)</span>
+<span id="cb267-3"><a href="simulations-und-programmierübungen-in-r.html#cb267-3" aria-hidden="true" tabindex="-1"></a>bmark <span class="ot">&lt;-</span> <span class="fu">mark</span>(</span>
+<span id="cb267-4"><a href="simulations-und-programmierübungen-in-r.html#cb267-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">iterations =</span> <span class="dv">100</span>,</span>
+<span id="cb267-5"><a href="simulations-und-programmierübungen-in-r.html#cb267-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">for_apply =</span> <span class="fu">my_apply</span>(m, <span class="dv">1</span>, sum),</span>
+<span id="cb267-6"><a href="simulations-und-programmierübungen-in-r.html#cb267-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">apply =</span> <span class="fu">apply</span>(m, <span class="dv">1</span>, sum),</span>
+<span id="cb267-7"><a href="simulations-und-programmierübungen-in-r.html#cb267-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">rowSums =</span> <span class="fu">rowSums</span>(m)</span>
+<span id="cb267-8"><a href="simulations-und-programmierübungen-in-r.html#cb267-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb267-9"><a href="simulations-und-programmierübungen-in-r.html#cb267-9" aria-hidden="true" tabindex="-1"></a>bmark <span class="sc">%&gt;%</span> </span>
+<span id="cb267-10"><a href="simulations-und-programmierübungen-in-r.html#cb267-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">type =</span> <span class="st">&#39;violin&#39;</span>)</span></code></pre></div>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-103-1.png" width="672" /></p>
+</details>
+<p>Eine dieser Funktionen können wir nun benutzen, um den chi-Quadrat-Wert einer Kontingenztafel zu bestimmen.</p>
+<p>Schreibe dazu eine Funktion, die für eine Matrix <code>x</code> einen chi-Quadrat-Wert nach der Formel <span class="math display">\[\chi^2=\sum_{i,j}\frac{(f_{o,ij}-f_{e,ij})^2}{f_{e,ij}} = \sum_{i,j}\frac{\left(n_{ij}- \frac{n_{i\cdot} n_{\cdot j}}{n}\right)^2}{\frac{n_{i\cdot} n_{\cdot j}}{n}}\]</span> berechnet.
+Für diese Funktion gibt es zwei Möglichkeiten zur Implementation. Zum Einen können geschachtelte <code>for</code>-Schleifen verwendet werden, zur anderen kann die <code>sweep</code>-Funktion benutzt werden.
+<code>sweep()</code> kann benutzt werden um eine Matrix zeilen-oder spaltenweise mit einem Vektor zu transformieren. Dabei kann ein arithmetsicher Operator (+,-,…) genutzt werden um die Werte zu verrechnen. Hier ist ein einfaches Beispiel in dem mit <code>sweep</code> das kleine 1-mal-1 in einer 10x10-Matrix erstellt wird:</p>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="simulations-und-programmierübungen-in-r.html#cb268-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="at">each =</span> <span class="dv">10</span>), <span class="at">ncol =</span> <span class="dv">10</span>)</span>
+<span id="cb268-2"><a href="simulations-und-programmierübungen-in-r.html#cb268-2" aria-hidden="true" tabindex="-1"></a>m</span></code></pre></div>
+<pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]    1    2    3    4    5    6    7    8    9    10
+##  [2,]    1    2    3    4    5    6    7    8    9    10
+##  [3,]    1    2    3    4    5    6    7    8    9    10
+##  [4,]    1    2    3    4    5    6    7    8    9    10
+##  [5,]    1    2    3    4    5    6    7    8    9    10
+##  [6,]    1    2    3    4    5    6    7    8    9    10
+##  [7,]    1    2    3    4    5    6    7    8    9    10
+##  [8,]    1    2    3    4    5    6    7    8    9    10
+##  [9,]    1    2    3    4    5    6    7    8    9    10
+## [10,]    1    2    3    4    5    6    7    8    9    10</code></pre>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="simulations-und-programmierübungen-in-r.html#cb270-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sweep</span>(m, <span class="co"># Matrix</span></span>
+<span id="cb270-2"><a href="simulations-und-programmierübungen-in-r.html#cb270-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">MARGIN =</span> <span class="dv">1</span>, <span class="co"># zeilenweise, also pro Zeile ein anderer Wert des Vektors</span></span>
+<span id="cb270-3"><a href="simulations-und-programmierübungen-in-r.html#cb270-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">STATS =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="co"># der Vektor mit dem multipliziert werden soll</span></span>
+<span id="cb270-4"><a href="simulations-und-programmierübungen-in-r.html#cb270-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">FUN =</span> <span class="st">&#39;*&#39;</span>) <span class="co"># Angabe dass multipliziert werden soll</span></span></code></pre></div>
+<pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]    1    2    3    4    5    6    7    8    9    10
+##  [2,]    2    4    6    8   10   12   14   16   18    20
+##  [3,]    3    6    9   12   15   18   21   24   27    30
+##  [4,]    4    8   12   16   20   24   28   32   36    40
+##  [5,]    5   10   15   20   25   30   35   40   45    50
+##  [6,]    6   12   18   24   30   36   42   48   54    60
+##  [7,]    7   14   21   28   35   42   49   56   63    70
+##  [8,]    8   16   24   32   40   48   56   64   72    80
+##  [9,]    9   18   27   36   45   54   63   72   81    90
+## [10,]   10   20   30   40   50   60   70   80   90   100</code></pre>
+<p>Suche Dir einen der beiden Wege aus und setze diesen um.
+Mit der <code>chisq.test</code>-Funktion könnt Ihr überprüfen, ob die bestehende Implementation auf dieselbe Lösung kommt.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="simulations-und-programmierübungen-in-r.html#cb272-1" aria-hidden="true" tabindex="-1"></a>for_chisq <span class="ot">&lt;-</span> <span class="cf">function</span>(m){                   <span class="co"># (1)</span></span>
+<span id="cb272-2"><a href="simulations-und-programmierübungen-in-r.html#cb272-2" aria-hidden="true" tabindex="-1"></a>  I <span class="ot">&lt;-</span> <span class="fu">dim</span>(m)[<span class="dv">1</span>]                            <span class="co"># (2)</span></span>
+<span id="cb272-3"><a href="simulations-und-programmierübungen-in-r.html#cb272-3" aria-hidden="true" tabindex="-1"></a>  J <span class="ot">&lt;-</span> <span class="fu">dim</span>(m)[<span class="dv">2</span>]</span>
+<span id="cb272-4"><a href="simulations-und-programmierübungen-in-r.html#cb272-4" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">sum</span>(m)                               <span class="co"># (3)</span></span>
+<span id="cb272-5"><a href="simulations-und-programmierübungen-in-r.html#cb272-5" aria-hidden="true" tabindex="-1"></a>  e <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,I<span class="sc">*</span>J),<span class="at">nrow =</span> I)          <span class="co"># (4)</span></span>
+<span id="cb272-6"><a href="simulations-und-programmierübungen-in-r.html#cb272-6" aria-hidden="true" tabindex="-1"></a>  nip <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(m)                         <span class="co"># (5)</span></span>
+<span id="cb272-7"><a href="simulations-und-programmierübungen-in-r.html#cb272-7" aria-hidden="true" tabindex="-1"></a>  npj <span class="ot">&lt;-</span> <span class="fu">colSums</span>(m)</span>
+<span id="cb272-8"><a href="simulations-und-programmierübungen-in-r.html#cb272-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(I)){                         <span class="co"># (6)</span></span>
+<span id="cb272-9"><a href="simulations-und-programmierübungen-in-r.html#cb272-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">seq</span>(J)){</span>
+<span id="cb272-10"><a href="simulations-und-programmierübungen-in-r.html#cb272-10" aria-hidden="true" tabindex="-1"></a>      e[i,j] <span class="ot">&lt;-</span> nip[i] <span class="sc">*</span> npj[j]<span class="sc">/</span>n</span>
+<span id="cb272-11"><a href="simulations-und-programmierübungen-in-r.html#cb272-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb272-12"><a href="simulations-und-programmierübungen-in-r.html#cb272-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb272-13"><a href="simulations-und-programmierübungen-in-r.html#cb272-13" aria-hidden="true" tabindex="-1"></a>  e1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="dv">0</span>,I<span class="sc">*</span>J),<span class="at">nrow =</span> I)         <span class="co"># (7)</span></span>
+<span id="cb272-14"><a href="simulations-und-programmierübungen-in-r.html#cb272-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(I)){</span>
+<span id="cb272-15"><a href="simulations-und-programmierübungen-in-r.html#cb272-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="fu">seq</span>(J)){</span>
+<span id="cb272-16"><a href="simulations-und-programmierübungen-in-r.html#cb272-16" aria-hidden="true" tabindex="-1"></a>      e1[i,j] <span class="ot">&lt;-</span> (m[i,j]<span class="sc">-</span>e[i,j])<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>e[i,j]   <span class="co"># (8)</span></span>
+<span id="cb272-17"><a href="simulations-und-programmierübungen-in-r.html#cb272-17" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb272-18"><a href="simulations-und-programmierübungen-in-r.html#cb272-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb272-19"><a href="simulations-und-programmierübungen-in-r.html#cb272-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(e1))                           <span class="co"># (9)</span></span>
+<span id="cb272-20"><a href="simulations-und-programmierübungen-in-r.html#cb272-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Anmerkungen:</p>
+<ol style="list-style-type: decimal">
+<li><p>Die Matrix x ist die zu untersuchende Kontingenztafel mit absoluten Häufigkeiten. Zur Berechnung wird die Formel Folie 165 QM1 benutzt.</p></li>
+<li><p>Die Zeilenzahl I der Matrix wird bestimmt (zur Erinnerung: R unterscheidet zwischen Groß- und Kleinbuchstaben), nächste Zeile: Spaltenzahl J.</p></li>
+<li><p>Die Gesamtzahl n aller Beobachtungen.</p></li>
+<li><p>In der Matrix e sollen nachher die erwarteten Häufigkeiten stehen, hier wird die Matrix angelegt und mit Nullen gefüllt.</p></li>
+<li><p>Vektor der rechten Randsummen (<span class="math inline">\(n_{i.}\)</span>), nächste Zeile untere Randsummen (<span class="math inline">\(n_{.j}\)</span>).</p></li>
+<li><p>Die Matrix e wird mit den erwarteten Häufigkeiten gefüllt.</p></li>
+<li><p>In der Matrix e1 sollen nachher die Summanden für den chi-Quadrat-Koeffizienten stehen, hier wird sie mit Nullen gefüllt angelegt.</p></li>
+<li><p>Die Matrix e1 wird mit den Summanden gefüllt.</p></li>
+<li><p>Der chi-Quadrat-Koeffizient ist jetzt die Summe der Zahlen in der Matrix e1.</p></li>
+</ol>
+<div class="sourceCode" id="cb273"><pre class="sourceCode numberSource r numberLines"><code class="sourceCode r"><span id="cb273-1"><a href="simulations-und-programmierübungen-in-r.html#cb273-1"></a>mat_chisq <span class="ot">&lt;-</span> <span class="cf">function</span>(m) {</span>
+<span id="cb273-2"><a href="simulations-und-programmierübungen-in-r.html#cb273-2"></a>  e <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rep</span>(<span class="fu">colSums</span>(m),   </span>
+<span id="cb273-3"><a href="simulations-und-programmierübungen-in-r.html#cb273-3"></a>                  <span class="at">each =</span> <span class="fu">nrow</span>(m)),</span>
+<span id="cb273-4"><a href="simulations-und-programmierübungen-in-r.html#cb273-4"></a>              <span class="at">nrow =</span> <span class="fu">nrow</span>(m))</span>
+<span id="cb273-5"><a href="simulations-und-programmierübungen-in-r.html#cb273-5"></a>  </span>
+<span id="cb273-6"><a href="simulations-und-programmierübungen-in-r.html#cb273-6"></a>  e <span class="ot">&lt;-</span> <span class="fu">sweep</span>(e, </span>
+<span id="cb273-7"><a href="simulations-und-programmierübungen-in-r.html#cb273-7"></a>             <span class="fu">rowSums</span>(m), </span>
+<span id="cb273-8"><a href="simulations-und-programmierübungen-in-r.html#cb273-8"></a>             <span class="at">MARGIN =</span> <span class="dv">1</span>, </span>
+<span id="cb273-9"><a href="simulations-und-programmierübungen-in-r.html#cb273-9"></a>             <span class="at">FUN =</span> <span class="st">&#39;*&#39;</span>) </span>
+<span id="cb273-10"><a href="simulations-und-programmierübungen-in-r.html#cb273-10"></a>  e <span class="ot">&lt;-</span> e <span class="sc">/</span> <span class="fu">sum</span>(m)</span>
+<span id="cb273-11"><a href="simulations-und-programmierübungen-in-r.html#cb273-11"></a>  <span class="fu">return</span>(<span class="fu">sum</span>((m <span class="sc">-</span> e) <span class="sc">^</span> <span class="dv">2</span> <span class="sc">/</span> e))</span>
+<span id="cb273-12"><a href="simulations-und-programmierübungen-in-r.html#cb273-12"></a>}</span></code></pre></div>
+<table class=" lightable-classic lightable-classic-2" style="font-size: 15px; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Zeile
+</th>
+<th style="text-align:left;">
+Was passiert?
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Matrix wird aufgefüllt mit Spaltensummen (wir erinnern uns dass Matrizen in R spaltenweise aufgefüllt werden)
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+und zwar wird jede Spaltensumme pro Spalte in jede Zeile geschrieben
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+und die Matrix soll dieselben Maße wie m haben.
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Wir nehmen die Matrix der Spaltensummen
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+und die Zeilensummen
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+gehen zeilenweise vor (jede Zeile eine Zeilensumme)
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+und multiplizieren die ni. und n.j in jeder Zelle.
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Dann müssen wir die Zellen nur noch durch die Gesamtzahl der Beobachtungen teilen und haben die eij.
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+Als letztes quadrieren wir die Abweichungen der Matirx von den eij, teilen die Ergebnisse durch die eij und summieren alles auf.
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+</tbody>
+</table>
+</details>
+<p>Kleine Zusatzaufgabe falls Interesse besteht:
+Benchmarke die zwei Implementationen (gerne die aus der Musterlösung, Du musst nicht noch selber die andere umsetzen<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>) und die folgende Variante gegeneinander:</p>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="simulations-und-programmierübungen-in-r.html#cb274-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unname</span>(<span class="fu">chisq.test</span>(m)<span class="sc">$</span>statistic)</span></code></pre></div>
+<pre><code>## Warning in chisq.test(m): Chi-squared approximation may be incorrect</code></pre>
+<pre><code>## [1] 0</code></pre>
+Was kommt raus?
+Hast Du eine Idee, warum das Ergebnis so aussieht wie es aussieht?
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="simulations-und-programmierübungen-in-r.html#cb277-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>, <span class="at">ncol =</span> <span class="dv">100</span>)</span>
+<span id="cb277-2"><a href="simulations-und-programmierübungen-in-r.html#cb277-2" aria-hidden="true" tabindex="-1"></a>bmark <span class="ot">&lt;-</span> bench<span class="sc">::</span><span class="fu">mark</span>(</span>
+<span id="cb277-3"><a href="simulations-und-programmierübungen-in-r.html#cb277-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">iterations =</span> <span class="dv">1000</span>,</span>
+<span id="cb277-4"><a href="simulations-und-programmierübungen-in-r.html#cb277-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">forX2 =</span> <span class="fu">for_chisq</span>(m),</span>
+<span id="cb277-5"><a href="simulations-und-programmierübungen-in-r.html#cb277-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">matX2 =</span> <span class="fu">mat_chisq</span>(m),</span>
+<span id="cb277-6"><a href="simulations-und-programmierübungen-in-r.html#cb277-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">RX2 =</span> <span class="fu">unname</span>(<span class="fu">chisq.test</span>(m)<span class="sc">$</span>statistic)</span>
+<span id="cb277-7"><a href="simulations-und-programmierübungen-in-r.html#cb277-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb277-8"><a href="simulations-und-programmierübungen-in-r.html#cb277-8" aria-hidden="true" tabindex="-1"></a>bmark <span class="sc">%&gt;%</span> </span>
+<span id="cb277-9"><a href="simulations-und-programmierübungen-in-r.html#cb277-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">type =</span> <span class="st">&#39;violin&#39;</span>)</span></code></pre></div>
+<img src="Robustheit_files/figure-html/unnamed-chunk-108-1.png" width="672" />
+</details>
+<p>Als letztes baue einen chi-Quadrat-Test auf Unabhängigkeit mit der <span class="math inline">\(\chi^2\)</span>-Statistik aus unseren Funktionen durchführt und die Originalmatrix mit Randsummen, die Gesamtzahl an Beobachtungen, die Teststatistik, die Freiheitsgrade und das p<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a> zurückgibt.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="simulations-und-programmierübungen-in-r.html#cb278-1" aria-hidden="true" tabindex="-1"></a>my_chisq.test <span class="ot">&lt;-</span> <span class="cf">function</span>(m){</span>
+<span id="cb278-2"><a href="simulations-und-programmierübungen-in-r.html#cb278-2" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">statistic =</span> <span class="fu">mat_chisq</span>(m))</span>
+<span id="cb278-3"><a href="simulations-und-programmierübungen-in-r.html#cb278-3" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">rbind</span>(m, <span class="fu">colSums</span>(m))</span>
+<span id="cb278-4"><a href="simulations-und-programmierübungen-in-r.html#cb278-4" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(mat, <span class="fu">rowSums</span>(mat))</span>
+<span id="cb278-5"><a href="simulations-und-programmierübungen-in-r.html#cb278-5" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>mat <span class="ot">&lt;-</span> mat</span>
+<span id="cb278-6"><a href="simulations-und-programmierübungen-in-r.html#cb278-6" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>n <span class="ot">&lt;-</span> mat[<span class="fu">nrow</span>(mat), <span class="fu">ncol</span>(mat)]</span>
+<span id="cb278-7"><a href="simulations-und-programmierübungen-in-r.html#cb278-7" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>df <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(m)<span class="sc">-</span><span class="dv">1</span>) <span class="sc">*</span> (<span class="fu">ncol</span>(m) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb278-8"><a href="simulations-und-programmierübungen-in-r.html#cb278-8" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>p <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(out<span class="sc">$</span>statistic,</span>
+<span id="cb278-9"><a href="simulations-und-programmierübungen-in-r.html#cb278-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">df =</span> out<span class="sc">$</span>df,</span>
+<span id="cb278-10"><a href="simulations-und-programmierübungen-in-r.html#cb278-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">lower.tail =</span> F)</span>
+<span id="cb278-11"><a href="simulations-und-programmierübungen-in-r.html#cb278-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb278-12"><a href="simulations-und-programmierübungen-in-r.html#cb278-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb278-13"><a href="simulations-und-programmierübungen-in-r.html#cb278-13" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>,<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb278-14"><a href="simulations-und-programmierübungen-in-r.html#cb278-14" aria-hidden="true" tabindex="-1"></a><span class="fu">my_chisq.test</span>(m)</span></code></pre></div>
+<pre><code>## $statistic
+## [1] 0.46875
+## 
+## $mat
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    4    7   12
+## [2,]    2    5    8   15
+## [3,]    3    6    9   18
+## [4,]    6   15   24   45
+## 
+## $n
+## [1] 45
+## 
+## $df
+## [1] 4
+## 
+## $p
+## [1] 0.976471</code></pre>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="simulations-und-programmierübungen-in-r.html#cb280-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(m)</span></code></pre></div>
+<pre><code>## Warning in chisq.test(m): Chi-squared approximation may be incorrect</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  m
+## X-squared = 0.46875, df = 4, p-value = 0.9765</code></pre>
+</details>
+<p>Als kleinen Zusatz könnt Ihr Euch noch überlegen, wie Ihr eine eigene print-Funktion für Euren Test schreiben könntet.</p>
+<details>
+<summary>
+Antwort
+</summary>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="simulations-und-programmierübungen-in-r.html#cb283-1" aria-hidden="true" tabindex="-1"></a>my_chisq.test <span class="ot">&lt;-</span> <span class="cf">function</span>(m){</span>
+<span id="cb283-2"><a href="simulations-und-programmierübungen-in-r.html#cb283-2" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">statistic =</span> <span class="fu">mat_chisq</span>(m))</span>
+<span id="cb283-3"><a href="simulations-und-programmierübungen-in-r.html#cb283-3" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">rbind</span>(m, <span class="fu">colSums</span>(m))</span>
+<span id="cb283-4"><a href="simulations-und-programmierübungen-in-r.html#cb283-4" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(mat, <span class="fu">rowSums</span>(mat))</span>
+<span id="cb283-5"><a href="simulations-und-programmierübungen-in-r.html#cb283-5" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>mat <span class="ot">&lt;-</span> mat</span>
+<span id="cb283-6"><a href="simulations-und-programmierübungen-in-r.html#cb283-6" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>n <span class="ot">&lt;-</span> mat[<span class="fu">nrow</span>(mat), <span class="fu">ncol</span>(mat)]</span>
+<span id="cb283-7"><a href="simulations-und-programmierübungen-in-r.html#cb283-7" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>df <span class="ot">&lt;-</span> (<span class="fu">nrow</span>(m)<span class="sc">-</span><span class="dv">1</span>) <span class="sc">*</span> (<span class="fu">ncol</span>(m) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb283-8"><a href="simulations-und-programmierübungen-in-r.html#cb283-8" aria-hidden="true" tabindex="-1"></a>  out<span class="sc">$</span>p <span class="ot">&lt;-</span> <span class="fu">pchisq</span>(out<span class="sc">$</span>statistic,</span>
+<span id="cb283-9"><a href="simulations-und-programmierübungen-in-r.html#cb283-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">df =</span> out<span class="sc">$</span>df,</span>
+<span id="cb283-10"><a href="simulations-und-programmierübungen-in-r.html#cb283-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">lower.tail =</span> F)</span>
+<span id="cb283-11"><a href="simulations-und-programmierübungen-in-r.html#cb283-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attributes</span>(out)<span class="sc">$</span>class <span class="ot">&lt;-</span> <span class="st">&#39;my_chisqtest&#39;</span></span>
+<span id="cb283-12"><a href="simulations-und-programmierübungen-in-r.html#cb283-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb283-13"><a href="simulations-und-programmierübungen-in-r.html#cb283-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb283-14"><a href="simulations-und-programmierübungen-in-r.html#cb283-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb283-15"><a href="simulations-und-programmierübungen-in-r.html#cb283-15" aria-hidden="true" tabindex="-1"></a>print.my_chisqtest <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...){</span>
+<span id="cb283-16"><a href="simulations-und-programmierübungen-in-r.html#cb283-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;Chi-Quadrat-Test auf Unabhängigkeit&#39;</span>)</span>
+<span id="cb283-17"><a href="simulations-und-programmierübungen-in-r.html#cb283-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span>)</span>
+<span id="cb283-18"><a href="simulations-und-programmierübungen-in-r.html#cb283-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;Chi^2_(&#39;</span>,x<span class="sc">$</span>df,<span class="st">&#39;) = &#39;</span>,x<span class="sc">$</span>statistic,<span class="st">&#39;; p = &#39;</span>,x<span class="sc">$</span>p, <span class="at">sep =</span> <span class="st">&#39;&#39;</span>)</span>
+<span id="cb283-19"><a href="simulations-und-programmierübungen-in-r.html#cb283-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;</span><span class="sc">\n\n</span><span class="st">&#39;</span>)</span>
+<span id="cb283-20"><a href="simulations-und-programmierübungen-in-r.html#cb283-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&#39;Der Test ist damit auf 5%-Niveau&#39;</span>,</span>
+<span id="cb283-21"><a href="simulations-und-programmierübungen-in-r.html#cb283-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(x<span class="sc">$</span>p<span class="sc">&lt;</span>.<span class="dv">05</span>,<span class="st">&#39; &#39;</span>,<span class="st">&#39; nicht &#39;</span>),</span>
+<span id="cb283-22"><a href="simulations-und-programmierübungen-in-r.html#cb283-22" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39;signifikant!&#39;</span>, <span class="at">sep =</span> <span class="st">&#39;&#39;</span>)</span>
+<span id="cb283-23"><a href="simulations-und-programmierübungen-in-r.html#cb283-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb283-24"><a href="simulations-und-programmierübungen-in-r.html#cb283-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb283-25"><a href="simulations-und-programmierübungen-in-r.html#cb283-25" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>,<span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb283-26"><a href="simulations-und-programmierübungen-in-r.html#cb283-26" aria-hidden="true" tabindex="-1"></a><span class="fu">my_chisq.test</span>(m)</span></code></pre></div>
+<pre><code>## Chi-Quadrat-Test auf Unabhängigkeit
+## Chi^2_(4) = 0.46875; p = 0.976471
+## 
+## Der Test ist damit auf 5%-Niveau nicht signifikant!</code></pre>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="simulations-und-programmierübungen-in-r.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(m)</span></code></pre></div>
+<pre><code>## Warning in chisq.test(m): Chi-squared approximation may be incorrect</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  m
+## X-squared = 0.46875, df = 4, p-value = 0.9765</code></pre>
+</details>
+
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="7">
+<li id="fn7"><p>wenn Du nicht willst<a href="simulations-und-programmierübungen-in-r.html#fnref7" class="footnote-back">↩︎</a></p></li>
+<li id="fn8"><p>In unserem Fall müssen wir die Teststatistik mit der <span class="math inline">\(\chi^2_{(I-1)(J-1)}\)</span>-Verteilung vergleichen, die R-Funktion für das Finden eines gegebenen <span class="math inline">\(\chi^2\)</span>-Perzentils ist <code>pchisq()</code><a href="simulations-und-programmierübungen-in-r.html#fnref8" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="functionals.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="literatur.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Robustheit.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

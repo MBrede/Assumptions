@@ -24,7 +24,7 @@
 <meta name="author" content="Max Brede und Johannes Andres" />
 
 
-<meta name="date" content="2021-11-08" />
+<meta name="date" content="2021-11-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="attribute.html"/>
-<link rel="next" href="literatur.html"/>
+<link rel="next" href="simulations-und-programmierübungen-in-r.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -187,6 +187,11 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#exkurs-iteratoren-vergleich-und-microbenchmarking"><i class="fa fa-check"></i>Exkurs: Iteratoren-Vergleich und Microbenchmarking</a></li>
 <li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#eigene-functionals"><i class="fa fa-check"></i>Eigene Functionals</a></li>
 <li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#argumente-durchreichen"><i class="fa fa-check"></i>Argumente durchreichen</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html"><i class="fa fa-check"></i>Simulations- und Programmierübungen in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html#pascalsches-dreieck"><i class="fa fa-check"></i>Pascalsches Dreieck</a></li>
+<li><a href="simulations-und-programmierübungen-in-r.html#matrizen-und-chi2">Matrizen und <span class="math inline">\(\chi^2\)</span></a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
 <li class="divider"></li>
@@ -420,7 +425,7 @@ Microbenchmarking heißt hier nichts anders, als dass wir die möglichen Impleme
 <span id="cb189-43"><a href="functionals.html#cb189-43" aria-hidden="true" tabindex="-1"></a>                          )</span>
 <span id="cb189-44"><a href="functionals.html#cb189-44" aria-hidden="true" tabindex="-1"></a>                        })</span></code></pre></div>
 <p>Die Ergebnisse dieses Testlaufs sehen so aus:</p>
-<p><img src="Robustheit_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
 <p>Dabei stellen die Linien die Median-Verläufe der jeweiligen Aufrufe dar. Vorsicht: Die Achsen sind logarithmisch skaliert. Ohne diese Skalierung sehen die Ergebnisse so aus:</p>
 <div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="functionals.html#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pmap_dfr</span>(<span class="fu">list</span>(sim_data<span class="sc">$</span>time,</span>
 <span id="cb190-2"><a href="functionals.html#cb190-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">names</span>(sim_data<span class="sc">$</span>expression),</span>
@@ -437,12 +442,12 @@ Microbenchmarking heißt hier nichts anders, als dass wir die möglichen Impleme
 <span id="cb190-13"><a href="functionals.html#cb190-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&#39;Zeit [s]&#39;</span>,</span>
 <span id="cb190-14"><a href="functionals.html#cb190-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&#39;Iterierte Werte&#39;</span>) <span class="sc">+</span></span>
 <span id="cb190-15"><a href="functionals.html#cb190-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">&#39;Dark2&#39;</span>)</span></code></pre></div>
-<p><img src="Robustheit_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
 <div id="aufgabe-10" class="section level3">
 <h3>Aufgabe</h3>
 <p>Benutzt <code>bench::mark</code> um die folgenden drei Mittelwerts-Funktionen zu vergleichen:</p>
 <div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="functionals.html#cb191-1" aria-hidden="true" tabindex="-1"></a>my_for_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb191-2"><a href="functionals.html#cb191-2" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">0</span>)</span>
+<span id="cb191-2"><a href="functionals.html#cb191-2" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb191-3"><a href="functionals.html#cb191-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> x){</span>
 <span id="cb191-4"><a href="functionals.html#cb191-4" aria-hidden="true" tabindex="-1"></a>    out <span class="ot">&lt;-</span> out <span class="sc">+</span> i</span>
 <span id="cb191-5"><a href="functionals.html#cb191-5" aria-hidden="true" tabindex="-1"></a>  }</span>
@@ -468,7 +473,7 @@ Antwort
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="functionals.html#cb193-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bench)</span>
 <span id="cb193-2"><a href="functionals.html#cb193-2" aria-hidden="true" tabindex="-1"></a>bmark <span class="sc">%&gt;%</span> </span>
 <span id="cb193-3"><a href="functionals.html#cb193-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">type =</span> <span class="st">&#39;violin&#39;</span>)</span></code></pre></div>
-<p><img src="Robustheit_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
 </details>
 </div>
 </div>
@@ -687,7 +692,7 @@ Antwort
         </div>
       </div>
 <a href="attribute.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="literatur.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="simulations-und-programmierübungen-in-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
