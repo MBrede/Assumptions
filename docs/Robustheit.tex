@@ -173,7 +173,7 @@
 
 \title{Robustheit}
 \author{Max Brede und Johannes Andres}
-\date{2021-11-26}
+\date{2021-12-01}
 
 \begin{document}
 \maketitle
@@ -989,7 +989,7 @@ Bei 10 Stellen ist der Unterschied noch nicht wirklich bemerkbar. Wenn wir jetzt
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 0.03624272 secs
+## Time difference of 0.0363276 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -999,7 +999,7 @@ Bei 10 Stellen ist der Unterschied noch nicht wirklich bemerkbar. Wenn wir jetzt
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 0.07664776 secs
+## Time difference of 0.07765317 secs
 \end{verbatim}
 
 Mehr als die Hälfte der Zeit geht für das Erstellen des neuen Vektors drauf!
@@ -3361,6 +3361,10 @@ Antwort
 
 Mit Hilfe der vorangehenden Funktion soll nun ein rechtsseitiger Zwei-Stichproben-t-Test für unabhängige Stichproben bei vorausgesetzter Varianzhomogenität geschrieben werden.
 
+Zur Erinnerung hier die Formel:
+
+\[t={\frac {{M_2}-{M_1}}{\sqrt{\frac{\vphantom{(s_1^2}n_1+n_2}{n_1n_2}}\sqrt{{\frac  {(n_1-1)s_{1}^{2}+(n_2-1)s_{2}^{2}}{\vphantom{n^2}n_1+n_2-2}}}}}\]
+
 Als Argumente werden die Vektoren der beiden Stichproben eingegeben, die zu testende Vermutung soll sein, dass der zur ersten Stichprobe gehörende Erwartungswert größer ist als der zur zweiten Stichprobe gehörende.
 
 Antwort
@@ -3391,7 +3395,7 @@ Anmerkungen:
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
 \item
-  Als Argumente werden die beiden Stichprobenvektoren eingegeben. Der Test ist in dieser Form nicht richtig befriedigend, daher die 0 am Namen. Ihre Aufgabe ist es später, die Funktion so zu modifizieren (dann mit einem anderen Namen), dass sie Ihren Wünschen entspricht. In der Funktion werden die einzelnen Bestandteile des t-Bruchs ermittelt umd am Ende zusammengebaut.
+  Als Argumente werden die beiden Stichprobenvektoren eingegeben. Der Test ist in dieser Form nicht richtig befriedigend, daher die 0 am Namen. Ihre Aufgabe ist es später, die Funktion so zu modifizieren (dann mit einem anderen Namen), dass sie Ihren Wünschen entspricht. In der Funktion werden die einzelnen Bestandteile des t-Bruchs ermittelt und am Ende zusammengebaut.
 \item
   Die Kennwerte der ersten Stichprobe werden ermittelt, in der nächsten Zeile die der zweiten.
 \item
@@ -3416,429 +3420,319 @@ Aufgaben:
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
+\tightlist
 \item
   Stellen Sie sich vor, die Funktion würde nicht das richtige Ergebnis liefern. Fügen Sie Anweisungen ein, mit denen Sie die Zwischenresultate kontrollieren können um so einen möglichen Fehler zu finden!
+\end{enumerate}
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_t\_test0 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x1,x2)\{      }
+\NormalTok{  dkw1 }\OtherTok{\textless{}{-}} \FunctionTok{my\_dkw}\NormalTok{(x1)                }
+\NormalTok{  dkw2 }\OtherTok{\textless{}{-}} \FunctionTok{my\_dkw}\NormalTok{(x2)}
+\NormalTok{  n1 }\OtherTok{\textless{}{-}}\NormalTok{ dkw1}\SpecialCharTok{$}\NormalTok{n                      }
+\NormalTok{  n2 }\OtherTok{\textless{}{-}}\NormalTok{ dkw2}\SpecialCharTok{$}\NormalTok{n}
+\NormalTok{  S1q }\OtherTok{\textless{}{-}}\NormalTok{ dkw1}\SpecialCharTok{$}\NormalTok{v                     }
+\NormalTok{  S2q }\OtherTok{\textless{}{-}}\NormalTok{ dkw2}\SpecialCharTok{$}\NormalTok{v}
+\NormalTok{  sq }\OtherTok{\textless{}{-}}\NormalTok{ (n1 }\SpecialCharTok{*}\NormalTok{ S1q }\SpecialCharTok{+}\NormalTok{ n2 }\SpecialCharTok{*}\NormalTok{ S2q)}\SpecialCharTok{/}\NormalTok{(n1}\SpecialCharTok{+}\NormalTok{n2}\DecValTok{{-}2}\NormalTok{)    }
+  \FunctionTok{print}\NormalTok{(sq)}
+\NormalTok{  vf }\OtherTok{\textless{}{-}}\NormalTok{ (n1}\SpecialCharTok{+}\NormalTok{n2)}\SpecialCharTok{/}\NormalTok{(n1}\SpecialCharTok{*}\NormalTok{n2)             }
+  \FunctionTok{print}\NormalTok{(vf)}
+\NormalTok{  nenner }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(vf}\SpecialCharTok{*}\NormalTok{sq)             }
+  \FunctionTok{print}\NormalTok{(nenner)}
+\NormalTok{  t }\OtherTok{\textless{}{-}}\NormalTok{ (dkw1}\SpecialCharTok{$}\NormalTok{m}\SpecialCharTok{{-}}\NormalTok{dkw2}\SpecialCharTok{$}\NormalTok{m)}\SpecialCharTok{/}\NormalTok{nenner       }
+  \FunctionTok{print}\NormalTok{(t)}
+\NormalTok{  df }\OtherTok{\textless{}{-}}\NormalTok{ n1}\SpecialCharTok{+}\NormalTok{n2}\DecValTok{{-}2}                     
+  \FunctionTok{return}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\FunctionTok{pt}\NormalTok{(t,df))                }
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
 \item
-  Kontrollieren Sie das Ergebnis des t-Tests auf Folie 73 der Einführung! Die Daten dazu sind nicht explizit gegeben, lassen sich aber aus den Histogrammen auf Folie 46 (bis auf die unwesentliche Reihenfolge) leicht rekonstruieren (beachte: es handelt sich jeweils um 20 Werte). Bei der Herstellung der Datenvektoren kann die Funktion \texttt{rep} nützlich sein, mit \texttt{my\_dkw} können Sie die Kennwerte der Stichproben überprüfen. Achtung: die Konvention bei der Differenz der Mittelwerte ist auf den Folien anders als hier!
+  Kontrollieren Sie das Ergebnis des t-Tests auf Folie 73 der Einführung! Die Daten dazu sind nicht explizit gegeben, lassen sich aber aus den Histogrammen auf Folie 46 (bis auf die unwesentliche Reihenfolge) leicht rekonstruieren (beachte: es handelt sich jeweils um 20 Werte). Bei der Herstellung der Datenvektoren kann der Ausdruck \texttt{rep(bin\_value,\ times\ =\ n\_per\_bin)} nützlich sein, mit \texttt{my\_dkw} können Sie die Kennwerte der Stichproben überprüfen. Achtung: die Konvention bei der Differenz der Mittelwerte ist auf den Folien anders als hier!
+\end{enumerate}
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{4}\NormalTok{, }\FunctionTok{c}\NormalTok{(.}\DecValTok{05}\NormalTok{,.}\DecValTok{2}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{15}\NormalTok{,.}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*} \DecValTok{20}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{5}\NormalTok{, }\FunctionTok{c}\NormalTok{(.}\DecValTok{1}\NormalTok{,.}\DecValTok{05}\NormalTok{,.}\DecValTok{25}\NormalTok{,.}\DecValTok{2}\NormalTok{,.}\DecValTok{3}\NormalTok{,.}\DecValTok{1}\NormalTok{) }\SpecialCharTok{*} \DecValTok{20}\NormalTok{)}
+\FunctionTok{my\_dkw}\NormalTok{(x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $n
+## [1] 20
+## 
+## $m
+## [1] 2.05
+## 
+## $v
+## [1] 0.9475
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{my\_dkw}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $n
+## [1] 20
+## 
+## $m
+## [1] 2.85
+## 
+## $v
+## [1] 2.0275
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{my\_t\_test0}\NormalTok{(y,x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.565789
+## [1] 0.1
+## [1] 0.3957006
+## [1] 2.021731
+\end{verbatim}
+
+\begin{verbatim}
+## [1] 0.02514363
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
 \item
-  Das Ergebnis ist unbefriedigend, da Sie ja nur am p-Wert erkennen können, ob der Test signifikant ist. Ändern Sie daher die Funktion geeignet ab, so dass weitere Kennwerte des Tests ausgegeben werden, benutzen Sie beispielsweise die Möglichkeiten einer Liste und/oder einer spezifischen \texttt{print}-Funktion.
+  Das Ergebnis ist unbefriedigend, da Sie ja nur am p-Wert erkennen können, ob der Test signifikant ist. Ändern Sie daher die Funktion geeignet ab, so dass weitere Kennwerte des Tests ausgegeben werden, benutzen Sie beispielsweise die Möglichkeiten einer Liste.
+\end{enumerate}
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_t\_test0 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x1,x2)\{      }
+\NormalTok{  dkw1 }\OtherTok{\textless{}{-}} \FunctionTok{my\_dkw}\NormalTok{(x1)                }
+\NormalTok{  dkw2 }\OtherTok{\textless{}{-}} \FunctionTok{my\_dkw}\NormalTok{(x2)}
+\NormalTok{  n1 }\OtherTok{\textless{}{-}}\NormalTok{ dkw1}\SpecialCharTok{$}\NormalTok{n                      }
+\NormalTok{  n2 }\OtherTok{\textless{}{-}}\NormalTok{ dkw2}\SpecialCharTok{$}\NormalTok{n}
+\NormalTok{  S1q }\OtherTok{\textless{}{-}}\NormalTok{ dkw1}\SpecialCharTok{$}\NormalTok{v                     }
+\NormalTok{  S2q }\OtherTok{\textless{}{-}}\NormalTok{ dkw2}\SpecialCharTok{$}\NormalTok{v}
+\NormalTok{  sq }\OtherTok{\textless{}{-}}\NormalTok{ (n1 }\SpecialCharTok{*}\NormalTok{ S1q }\SpecialCharTok{+}\NormalTok{ n2 }\SpecialCharTok{*}\NormalTok{ S2q)}\SpecialCharTok{/}\NormalTok{(n1}\SpecialCharTok{+}\NormalTok{n2}\DecValTok{{-}2}\NormalTok{)    }
+\NormalTok{  vf }\OtherTok{\textless{}{-}}\NormalTok{ (n1}\SpecialCharTok{+}\NormalTok{n2)}\SpecialCharTok{/}\NormalTok{(n1}\SpecialCharTok{*}\NormalTok{n2)    }
+\NormalTok{  nenner }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(vf}\SpecialCharTok{*}\NormalTok{sq)    }
+\NormalTok{  t }\OtherTok{\textless{}{-}}\NormalTok{ (dkw1}\SpecialCharTok{$}\NormalTok{m}\SpecialCharTok{{-}}\NormalTok{dkw2}\SpecialCharTok{$}\NormalTok{m)}\SpecialCharTok{/}\NormalTok{nenner  }
+\NormalTok{  df }\OtherTok{\textless{}{-}}\NormalTok{ n1}\SpecialCharTok{+}\NormalTok{n2}\DecValTok{{-}2}                     
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\AttributeTok{p =} \DecValTok{1}\SpecialCharTok{{-}}\FunctionTok{pt}\NormalTok{(t,df),}
+              \AttributeTok{t =}\NormalTok{ t,}
+              \AttributeTok{df =}\NormalTok{ df))                }
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{3}
+\tightlist
 \item
   Unbefriedigend ist auch, dass nur ein rechtsseitiger Test gerechnet werden kann. Ändern Sie die Funktion daher weiter so ab, dass auch linksseitige oder zweiseitige Tests möglich sind (Sie müssen dann ein weiteres Argument hinzufügen, mit dem Sie der Funktion Ihre Wünsche bekanntgeben, in der Funktion können Sie dann beispielsweise mit if - else arbeiten).
+\end{enumerate}
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,]
+\NormalTok{my\_t\_test0 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x1,x2, }\AttributeTok{alternative =} \StringTok{\textquotesingle{}two.sided\textquotesingle{}}\NormalTok{)\{      }
+\NormalTok{  dkw1 }\OtherTok{\textless{}{-}} \FunctionTok{my\_dkw}\NormalTok{(x1)                }
+\NormalTok{  dkw2 }\OtherTok{\textless{}{-}} \FunctionTok{my\_dkw}\NormalTok{(x2)}
+\NormalTok{  n1 }\OtherTok{\textless{}{-}}\NormalTok{ dkw1}\SpecialCharTok{$}\NormalTok{n                      }
+\NormalTok{  n2 }\OtherTok{\textless{}{-}}\NormalTok{ dkw2}\SpecialCharTok{$}\NormalTok{n}
+\NormalTok{  S1q }\OtherTok{\textless{}{-}}\NormalTok{ dkw1}\SpecialCharTok{$}\NormalTok{v                     }
+\NormalTok{  S2q }\OtherTok{\textless{}{-}}\NormalTok{ dkw2}\SpecialCharTok{$}\NormalTok{v}
+\NormalTok{  sq }\OtherTok{\textless{}{-}}\NormalTok{ (n1 }\SpecialCharTok{*}\NormalTok{ S1q }\SpecialCharTok{+}\NormalTok{ n2 }\SpecialCharTok{*}\NormalTok{ S2q)}\SpecialCharTok{/}\NormalTok{(n1}\SpecialCharTok{+}\NormalTok{n2}\DecValTok{{-}2}\NormalTok{)    }
+\NormalTok{  vf }\OtherTok{\textless{}{-}}\NormalTok{ (n1}\SpecialCharTok{+}\NormalTok{n2)}\SpecialCharTok{/}\NormalTok{(n1}\SpecialCharTok{*}\NormalTok{n2)    }
+\NormalTok{  nenner }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(vf}\SpecialCharTok{*}\NormalTok{sq)    }
+\NormalTok{  t }\OtherTok{\textless{}{-}}\NormalTok{ (dkw1}\SpecialCharTok{$}\NormalTok{m}\SpecialCharTok{{-}}\NormalTok{dkw2}\SpecialCharTok{$}\NormalTok{m)}\SpecialCharTok{/}\NormalTok{nenner  }
+\NormalTok{  df }\OtherTok{\textless{}{-}}\NormalTok{ n1}\SpecialCharTok{+}\NormalTok{n2}\DecValTok{{-}2}   
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{substr}\NormalTok{(alternative,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{) }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}t\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}T\textquotesingle{}}\NormalTok{))\{}
+\NormalTok{    p }\OtherTok{\textless{}{-}} \DecValTok{2} \SpecialCharTok{*} \FunctionTok{pt}\NormalTok{(}\FunctionTok{abs}\NormalTok{(t),df,}\AttributeTok{lower.tail =}\NormalTok{ F)}
+\NormalTok{  \}}\ControlFlowTok{else}\NormalTok{\{ }
+\NormalTok{    p }\OtherTok{\textless{}{-}} \FunctionTok{pt}\NormalTok{(t,df,}
+            \AttributeTok{lower.tail =} \FunctionTok{substr}\NormalTok{(alternative,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{) }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}l\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}L\textquotesingle{}}\NormalTok{))}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\AttributeTok{p =}\NormalTok{ p,}
+              \AttributeTok{t =}\NormalTok{ t,}
+              \AttributeTok{df =}\NormalTok{ df))                }
+\NormalTok{\}}
+\FunctionTok{my\_t\_test0}\NormalTok{(x,y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $p
+## [1] 0.05028725
+## 
+## $t
+## [1] -2.021731
+## 
+## $df
+## [1] 38
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,]
+\FunctionTok{t.test}\NormalTok{(x,y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  x and y
+## t = -2.0217, df = 33.575, p-value = 0.05123
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -1.604535247  0.004535247
+## sample estimates:
+## mean of x mean of y 
+##      2.05      2.85
+\end{verbatim}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{ll}
+\toprule
+Zeile & Was passiert?\\
+\midrule
+1-12 & Alles wie gehabt, nur die p-Wert-Berechnung ändert sich\\
+13 & Wenn der erste Buchstabe t oder T ist, soll...\\
+14 & ...der rechsseitige-Wert des Betrags von t verdoppelt zurückgegeben werden.\\
+15 & Sonst...\\
+16 & .. soll der p-Wert (mit Vorzeichen) genommen werden...\\
+\addlinespace
+17 & ...und bei der t-Verteilung links abgeschnitten werden wenn die alternative mit l oder L anfängt. Als anderen Fall bleibt ja nur eine rechtsseitige Hypothese übrig, was lower.tail=F entspricht.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{4}
+\tightlist
 \item
-  Schreiben Sie eine ähnliche Funktion für den Einstichproben-t-Test; hier ist als weiteres Argument der Erwartungswert unter H0 einzugeben, der vielleicht standardmäßig 0 ist.
+  Schreiben Sie eine ähnliche Funktion für den Einstichproben-t-Test\footnote{Als Erinnerung, die Formel für die unter der \(H_0\) \(t_{n-1}\)-verteilte Teststatistik ist \(t = \frac{M_x - \mu_0}{s_x/\sqrt{n}}\)}; hier ist als weiteres Argument der Erwartungswert unter H0 einzugeben, der vielleicht standardmäßig 0 ist.
+\end{enumerate}
+
+Antwort
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_t\_test1 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, }\AttributeTok{mu0 =} \DecValTok{0}\NormalTok{, }\AttributeTok{alternative =} \StringTok{\textquotesingle{}two.sided\textquotesingle{}}\NormalTok{)\{      }
+\NormalTok{  n }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(x)}
+\NormalTok{  m }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(x)}
+\NormalTok{  t }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(n) }\SpecialCharTok{*}\NormalTok{ (m}\SpecialCharTok{{-}}\NormalTok{mu0)}\SpecialCharTok{/}\FunctionTok{sd}\NormalTok{(x)}
+\NormalTok{  df }\OtherTok{\textless{}{-}}\NormalTok{ n}\DecValTok{{-}1}  
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{substr}\NormalTok{(alternative,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{) }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}t\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}T\textquotesingle{}}\NormalTok{))\{}
+\NormalTok{    p }\OtherTok{\textless{}{-}} \DecValTok{2} \SpecialCharTok{*} \FunctionTok{pt}\NormalTok{(}\FunctionTok{abs}\NormalTok{(t),df,}\AttributeTok{lower.tail =}\NormalTok{ F)}
+\NormalTok{  \}}\ControlFlowTok{else}\NormalTok{\{ }
+\NormalTok{    p }\OtherTok{\textless{}{-}} \FunctionTok{pt}\NormalTok{(t,df,}
+            \AttributeTok{lower.tail =} \FunctionTok{substr}\NormalTok{(alternative,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{) }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}l\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}L\textquotesingle{}}\NormalTok{))}
+\NormalTok{  \}}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\AttributeTok{p =}\NormalTok{ p,}
+              \AttributeTok{t =}\NormalTok{ t,}
+              \AttributeTok{df =}\NormalTok{ df))                }
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{5}
+\tightlist
 \item
   Schreiben Sie eine ähnliche Funktion für den Zweistichproben-t-Test mit abhängigen Stichproben. Hier könnte es sich empfehlen, die Daten in Form einer Matrix einzugeben. Sinnvollerweise benutzen Sie nach Differenzbildung dann die Funktion für den Einstichproben-t-Test aus (5).
 \end{enumerate}
 
-Kontrollieren Sie Ihre Funktionen immer an kleinen Datensätzen, in denen Sie auch von Hand rechnen können, beispielsweise können Sie Aufgaben aus QM2 benutzen.
-
-\hypertarget{t-vertrauensintervall}{%
-\subsection{t-Vertrauensintervall}\label{t-vertrauensintervall}}
-
-Hier gleich die Funktion:
+Antwort
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{my\_t\_vi }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x,}\AttributeTok{p=}\NormalTok{.}\DecValTok{95}\NormalTok{)\{       }\CommentTok{\# (1)}
-\NormalTok{  dkw }\OtherTok{\textless{}{-}} \FunctionTok{my\_dkw}\NormalTok{(x, }\AttributeTok{corrected =}\NormalTok{ T)   }\CommentTok{\# (2)}
-\NormalTok{  n }\OtherTok{\textless{}{-}}\NormalTok{ dkw}\SpecialCharTok{$}\NormalTok{n                        }\CommentTok{\# (3)}
-\NormalTok{  tfrak }\OtherTok{\textless{}{-}} \FunctionTok{qt}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p)}\SpecialCharTok{/}\DecValTok{2}\NormalTok{, n}\DecValTok{{-}1}\NormalTok{)       }\CommentTok{\# (4)}
-\NormalTok{  sem }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(dkw}\SpecialCharTok{$}\NormalTok{v}\SpecialCharTok{/}\NormalTok{n)              }\CommentTok{\# (5)}
-\NormalTok{  hb }\OtherTok{\textless{}{-}}\NormalTok{ tfrak }\SpecialCharTok{*}\NormalTok{ sem                 }\CommentTok{\# (6)}
-  \FunctionTok{return}\NormalTok{(}\FunctionTok{c}\NormalTok{(dkw}\SpecialCharTok{$}\NormalTok{m}\SpecialCharTok{{-}}\NormalTok{hb,dkw}\SpecialCharTok{$}\NormalTok{m}\SpecialCharTok{+}\NormalTok{hb))      }\CommentTok{\# (7)}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Anmerkungen:
-
-\begin{enumerate}
-\def\labelenumi{(\arabic{enumi})}
-\item
-  Argumente sind der Datenvektor x und das gewünschte Niveau p, hier mit .95 vorbelegt.
-\item
-  Die Kennwerte der Daten, gleich wird mit der korrigierten Stichprobenvarianz gerechnet.
-\item
-  Stichprobenumfang, kommt öfter vor, daher ist ein kürzerer Name praktisch.
-\item
-  Das alpha/2-Fraktil (alpha ist 1-p).
-\item
-  Der SEM.
-\item
-  Die halbe Breite.
-\item
-  Ergebnis: Vektor aus unterer und oberer Grenze des Vertrauensintervalls.
-\end{enumerate}
-
-Aufgabe: Prüfen Sie an bekannten Daten (beispielsweise Einleitung Folie 61) nach, ob die Funktion das richtige Intervall liefert!
-
-\hypertarget{zufallsstichproben-mit-diskreten-werten}{%
-\subsection{Zufallsstichproben mit diskreten Werten}\label{zufallsstichproben-mit-diskreten-werten}}
-
-Die passende Funktion ist hier sample. Beispiel:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{sample}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{6}\NormalTok{), }\DecValTok{20}\NormalTok{, }\AttributeTok{replace =}\NormalTok{ T)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##  [1] 5 4 6 6 2 5 6 4 1 3 6 1 1 4 4 4 1 4 2 5
-\end{verbatim}
-
-Hier wird eine Zufallsstichprobe aus den Zahlen von 1 bis 6 gezogen (seq(6)), deren Umfang 20 ist, wobei Zahlen auch mehrfach gezogen werden können (replace = T, Achtung: Standardwert ist F, siehe Hilfe). Hier wird also eine zufällige Serie von 20 Würfelergebnissen erzeugt.
-
-Etwas komplizierter: Das Wahrnehmungsexperiment aus dem 1. Semester, die Wahrscheinlichkeiten der möglichen Fehlerzahlen von 0 bis 5 seien durch die W-Funktion Folie 77 gegeben. Es sollen 20 Werte erzeugt werden:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{sample}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{6}\NormalTok{)}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\DecValTok{20}\NormalTok{, }\AttributeTok{replace =}\NormalTok{ T, }\AttributeTok{prob =} \FunctionTok{c}\NormalTok{(.}\DecValTok{1}\NormalTok{,.}\DecValTok{15}\NormalTok{,.}\DecValTok{35}\NormalTok{,.}\DecValTok{25}\NormalTok{,.}\DecValTok{1}\NormalTok{,.}\DecValTok{05}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##  [1] 0 2 1 2 3 1 2 1 4 2 3 4 3 1 3 0 0 2 2 2
-\end{verbatim}
-
-Hier sind die möglichen Werte die Zahlen von 0 bis 5, die man beispielsweise durch seq(6)-1 erhält. Möglich wäre auch
-
-\texttt{seq(from\ =\ 0,\ to\ =\ 5)}
-
-kürzer
-
-\texttt{seq(0,\ 5)}
-
-oder noch einfacher
-
-\texttt{0:5}
-
-Zusätzlich werden durch den Parameter prob die Wahrscheinlichkeiten dieser Zahlen angegeben.
-
-Wenn diese Verteilung öfter gebraucht wird, ist es sinnvoll, den Vektor der Wahrscheinlichkeiten unter einem geeigneten Namen abzuspeichern, um dann nur noch diesen Namen in die Anweisung einsetzen zu müssen, entsprechend für den Vektor möglicher Werte.
-
-Zu prüfen ist nun, ob die ``Zufallsstichproben'' auch den Forderungen entsprechen; dazu sollen bei einer großen derartigen Stichprobe die relativen Häufigkeiten der möglichen Werte ermittelt werden, die dann hoffentlich etwa gleich den vorgegebenen Wahrscheinlichkeiten sind.
-
-Obwohl R bessere Möglichkeiten zur Verfügung stellt, soll zur Übung das Auszählen mit primitive Mitteln bewerkstelligt werden. Zunächst: Wie oft kommt ein Element a in einem Vektor x vor?
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{anzahl }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(a, x)\{        }\CommentTok{\# (1)}
-\NormalTok{  l }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(x)}
-\NormalTok{  z }\OtherTok{\textless{}{-}} \DecValTok{0}                         \CommentTok{\# (2)}
-  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(l))\{}
-    \ControlFlowTok{if}\NormalTok{(x[i] }\SpecialCharTok{==}\NormalTok{ a) z }\OtherTok{\textless{}{-}}\NormalTok{ z }\SpecialCharTok{+} \DecValTok{1}     \CommentTok{\# (3)}
+\NormalTok{my\_t\_test1 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, }\AttributeTok{mu0 =} \DecValTok{0}\NormalTok{, }\AttributeTok{alternative =} \StringTok{\textquotesingle{}two.sided\textquotesingle{}}\NormalTok{)\{ }
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.matrix}\NormalTok{(x) }\SpecialCharTok{|} \FunctionTok{is.data.frame}\NormalTok{(x))\{}
+\NormalTok{    x }\OtherTok{\textless{}{-}}\NormalTok{ x[,}\DecValTok{1}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ x[,}\DecValTok{2}\NormalTok{]}
 \NormalTok{  \}}
-  \FunctionTok{return}\NormalTok{(z)}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Anmerkungen:
-
-\begin{enumerate}
-\def\labelenumi{(\arabic{enumi})}
-\item
-  Die Argumente der Funktion sind das untersuchte Element a und der Vektor x.
-\item
-  Eine Zählvariable z wird eingerichtet, der Wert dieses ``Zählers'' z wird auf 0 gesetzt
-\item
-  Nacheinander werden die Komponenten von x untersucht, bei Übereinstimmung mit a wird der Zähler um 1 erhöht
-\end{enumerate}
-
-Tabelle der relativen Häufigkeiten:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{v2trh }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(w, x)\{         }\CommentTok{\# (1)}
 \NormalTok{  n }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(x)}
-\NormalTok{  ah }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,}\FunctionTok{length}\NormalTok{(w))         }\CommentTok{\# (2)}
-  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(}\FunctionTok{length}\NormalTok{(w)))}
-\NormalTok{    \{}
-\NormalTok{    ah[i] }\OtherTok{\textless{}{-}} \FunctionTok{anzahl}\NormalTok{(w[i],x)      }\CommentTok{\# (3)}
+\NormalTok{  m }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(x)}
+\NormalTok{  t }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(n) }\SpecialCharTok{*}\NormalTok{ (m}\SpecialCharTok{{-}}\NormalTok{mu0)}\SpecialCharTok{/}\FunctionTok{sd}\NormalTok{(x)}
+\NormalTok{  df }\OtherTok{\textless{}{-}}\NormalTok{ n}\DecValTok{{-}1}  
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{substr}\NormalTok{(alternative,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{) }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}t\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}T\textquotesingle{}}\NormalTok{))\{}
+\NormalTok{    p }\OtherTok{\textless{}{-}} \DecValTok{2} \SpecialCharTok{*} \FunctionTok{pt}\NormalTok{(}\FunctionTok{abs}\NormalTok{(t),df,}\AttributeTok{lower.tail =}\NormalTok{ F)}
+\NormalTok{  \}}\ControlFlowTok{else}\NormalTok{\{ }
+\NormalTok{    p }\OtherTok{\textless{}{-}} \FunctionTok{pt}\NormalTok{(t,df,}
+            \AttributeTok{lower.tail =} \FunctionTok{substr}\NormalTok{(alternative,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{) }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}l\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}L\textquotesingle{}}\NormalTok{))}
 \NormalTok{  \}}
-  \FunctionTok{return}\NormalTok{(}\FunctionTok{rbind}\NormalTok{(w,ah}\SpecialCharTok{/}\NormalTok{n))          }\CommentTok{\# (4)}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\AttributeTok{p =}\NormalTok{ p,}
+              \AttributeTok{t =}\NormalTok{ t,}
+              \AttributeTok{df =}\NormalTok{ df))                }
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
-Anmerkungen:
-
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{6}
+\tightlist
 \item
-  Name: Vektor zu Tabelle relativer Häufigkeiten, Argumente: w: mögliche Werte, x: untersuchter Vektor. Wichtig ist, dass w alle Werte enthält, die in x vorkommen können, sonst ist die Summe der ``relativen Häufigkeiten'' am Ende nicht 1.
-\item
-  in ah werden die absoluten Häufigkeiten der Werte in w abgespeichert, Vorbelegung mit Nullen.
-\item
-  Für jeden möglichen Wert wird in ah die Häufigkeit des Auftretens eingetragen.
-\item
-  Das Ergebnis ist eine Matrix, die hier dadurch entsteht, dass man die beiden Vektoren w und ah/n als Zeilen (r: row) zusammenfügt.
+  {[}Zusatz{]} Schreiben Sie eine Wrapper-Funktion, die auf eine von Ihnen gewählte Variante (Argumente, besonderes Input-Format,\ldots) den zu rechnenden t-Test aus den gerade erstellten Funktionen auswählt und durchführt. Richten Sie Ihre Funktion so ein, dass sie sowohl mit Datensätzen als auch mit Matrizen und Vektoren für x umgehen kann. Wenn x zwei Dimensionen hat, soll y ignoriert werden. Außerdem soll ein Argument übergeben werden, dass für zwei Eingaben angibt, ob der Test abhängig oder unabhängig durchgeführt werden soll.
 \end{enumerate}
 
-Beispiel:
-
-Funktioniert die Erzeugung von zufälligen Würfelergebnissen einigermaßen? Es soll 10000 Mal gewürfelt werden, die Tabelle der relativen Häufigkeiten ist dann zu untersuchen! Achtung: Es sollte unbedingt verhindert werden, dass das Ergebnis des Würfelns ausgegeben wird! Dazu wird das Ergebnis gleich in einer Variable abgespeichert.
+Antwort
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{6}\NormalTok{),}\DecValTok{10000}\NormalTok{,}\AttributeTok{replace =}\NormalTok{ T)}
-\FunctionTok{v2trh}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{6}\NormalTok{),x)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##    [,1]   [,2]   [,3]   [,4]   [,5]   [,6]
-## w 1.000 2.0000 3.0000 4.0000 5.0000 6.0000
-##   0.166 0.1713 0.1646 0.1651 0.1694 0.1636
-\end{verbatim}
-
-Bemerkung: Ein erneuter Aufruf liefert natürlich wieder andere relative Häufigkeiten.
-
-Auch beim Umfang 100000 geht übrigens es sehr schnell!
-
-Aufgabe:
-
-Untersuchen Sie die gleiche Frage für das zweite Beispiel des Wahrnehmungsexperiments!
-
-\hypertarget{eine-simulation-zum-vertrauensintervall}{%
-\subsection{Eine Simulation zum Vertrauensintervall}\label{eine-simulation-zum-vertrauensintervall}}
-
-Einführungsfolie 67: Wie wahrscheinlich ist es beim Würfeln, dass das t-Vertrauensintervall zum Niveau .95 auf der Basis von Stichproben vom Umfang 60 den Erwartungswert 3.5 enthält? Die Wahrscheinlichkeit soll durch Simulationen abgeschätzt werden (da die Würfelergebnisse nicht normalverteilt sind, ist eine der Voraussetzungen für das t-Vertrauensintervall eigentlich nicht gegeben).
-
-Vielleicht ist es praktisch, die Prüfung, ob eine Zahl in einem Intervall liegt, auszulagern:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{istin }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, i, }\AttributeTok{gr =}\NormalTok{ F)\{       }\CommentTok{\# (1)}
-\NormalTok{  ug }\OtherTok{\textless{}{-}}\NormalTok{ i[}\DecValTok{1}\NormalTok{]                           }\CommentTok{\# (2)}
-\NormalTok{  og }\OtherTok{\textless{}{-}}\NormalTok{ i[}\DecValTok{2}\NormalTok{]}
-\NormalTok{  wug }\OtherTok{\textless{}{-}} \ControlFlowTok{if}\NormalTok{(gr) x }\SpecialCharTok{\textgreater{}=}\NormalTok{ ug }\ControlFlowTok{else}\NormalTok{ x }\SpecialCharTok{\textgreater{}}\NormalTok{ ug    }\CommentTok{\# (3)}
-\NormalTok{  wog }\OtherTok{\textless{}{-}} \ControlFlowTok{if}\NormalTok{(gr) x }\SpecialCharTok{\textless{}=}\NormalTok{ og }\ControlFlowTok{else}\NormalTok{ x }\SpecialCharTok{\textless{}}\NormalTok{ og}
-  \FunctionTok{return}\NormalTok{(wug }\SpecialCharTok{\&}\NormalTok{ wog)                    }\CommentTok{\# (4)}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Anmerkungen;
-
-\begin{enumerate}
-\def\labelenumi{(\arabic{enumi})}
-\item
-  x ist ein Wert, i ein Intervall, gegeben durch einen Vektor aus unterer und oberer Grenze. Es soll die Frage beantwortet werden, ob x in dem Intervall liegt. Der Parameter gr gibt an, ob die Grenzen zum Intervall dazugehören (T) oder nicht.
-\item
-  Die untere Intervallgrenze, nächste Zeile die obere
-\item
-  Die Variable wug enthält einen logischen Wert: T, wenn x größer bzw. größer/gleich der unteren Intervallgrenze ist, F sonst. Beachte: x\textgreater=ug ist ein logischer Wert, T, wenn x\textgreater= ug richtig ist, F sonst.
-\item
-  Zurückgegeben wird die Und-Verknüpfung von wug und wog, die nur dann T ist, wenn wug und wog beide T sind, sonst F.
-\end{enumerate}
-
-Nun ist die Simulation einfach, der Umfang der Einzelstichproben und der Umfang der Simulation sind wählbar:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{w\_vi\_simul }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(n, N, }\AttributeTok{p =}\NormalTok{ .}\DecValTok{95}\NormalTok{)\{    }\CommentTok{\# (1)}
-\NormalTok{  z }\OtherTok{\textless{}{-}} \DecValTok{0}                                  \CommentTok{\# (2)}
-  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(N))\{                       }\CommentTok{\# (3)}
-\NormalTok{    s }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\FunctionTok{seq}\NormalTok{(}\DecValTok{6}\NormalTok{),n,}\AttributeTok{replace =}\NormalTok{ T)     }\CommentTok{\# (4)}
-\NormalTok{    vi }\OtherTok{\textless{}{-}} \FunctionTok{my\_t\_vi}\NormalTok{(s,p)                    }\CommentTok{\# (5)}
-    \ControlFlowTok{if}\NormalTok{(}\FunctionTok{istin}\NormalTok{(}\FloatTok{3.5}\NormalTok{,vi)) z }\OtherTok{=}\NormalTok{ z }\SpecialCharTok{+} \DecValTok{1}           \CommentTok{\# (5)}
+\NormalTok{my\_t\_test }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x,}
+                      \AttributeTok{y =} \ConstantTok{NULL}\NormalTok{,}
+                      \AttributeTok{mu0 =} \DecValTok{0}\NormalTok{,}
+                      \AttributeTok{alternative =} \StringTok{\textquotesingle{}two.sided\textquotesingle{}}\NormalTok{, }
+                      \AttributeTok{paired =}\NormalTok{ F)\{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.matrix}\NormalTok{(x) }\SpecialCharTok{|} \FunctionTok{is.data.frame}\NormalTok{(x))\{}
+    \ControlFlowTok{if}\NormalTok{(paired)\{}
+      \FunctionTok{my\_t\_test1}\NormalTok{(x, }\AttributeTok{mu0 =}\NormalTok{ mu0, }\AttributeTok{alternative =}\NormalTok{ alternative)}
+\NormalTok{    \}}\ControlFlowTok{else}\NormalTok{\{}
+      \FunctionTok{my\_t\_test0}\NormalTok{(x[,}\DecValTok{1}\NormalTok{], x[,}\DecValTok{2}\NormalTok{],}\AttributeTok{alternative =}\NormalTok{ alternative)}
+\NormalTok{    \}}
+\NormalTok{  \}}\ControlFlowTok{else}\NormalTok{\{}
+    \ControlFlowTok{if}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.null}\NormalTok{(y))\{}
+      \ControlFlowTok{if}\NormalTok{(paired)\{}
+        \FunctionTok{my\_t\_test1}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(x,y), }\AttributeTok{alternative =}\NormalTok{ alternative)}
+\NormalTok{      \}}\ControlFlowTok{else}\NormalTok{\{}
+        \FunctionTok{my\_t\_test0}\NormalTok{(x, y,}\AttributeTok{alternative =}\NormalTok{ alternative)}
+\NormalTok{      \}}
+\NormalTok{    \}}\ControlFlowTok{else}\NormalTok{\{}
+      \FunctionTok{my\_t\_test1}\NormalTok{(x, }\AttributeTok{mu0 =}\NormalTok{ mu0, }\AttributeTok{alternative =}\NormalTok{ alternative)}
+\NormalTok{    \}}
 \NormalTok{  \}}
-  \FunctionTok{return}\NormalTok{(z}\SpecialCharTok{/}\NormalTok{N)                             }\CommentTok{\# (7)}
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
 
-Anmerkungen:
-
-\begin{enumerate}
-\def\labelenumi{(\arabic{enumi})}
-\item
-  Der Name soll für Würfel-Vertrauensintervall-Simulation stehen, n ist der Stichprobenumfang der Einzelstichproben, N ist der Umfang der Simulation, p ist das Niveau für das Vertrauensintervall.
-\item
-  Wieder ein Zähler z.
-\item
-  Die Schleife für die Gesamtsimulation vom Umfang N.
-\item
-  Es wird jeweils eine Zufallsstichprobe s von n Würfelergebnissen erzeugt.
-\item
-  Das t-Vertrauensintervall vi zum Niveau p wird gebildet.
-\item
-  Wenn der (hier bekannte) Erwartungswert von 3.5 in dem Intervall liegt, wird z um 1 vergrößert.
-\item
-  Ausgegeben wird die relative Häufigkeit der Fälle, in denen das Vertrauensintervall den Erwartungswert 3.5 enthält.
-\end{enumerate}
-
-Zahlen wie auf Folie 67 erhält man jetzt mit w\_vi\_simul(60,10000). Wieder kommt das Ergebnis ziemlich schnell.
-
-Wenn Sie die Funktion mit denselben Argumenten zweimal aufrufen, werden Sie praktisch immer unterschiedliche Ergebnisse bekommen, da ja jedes Mal neue Zufallsstichproben gezogen werden.
-
-Um schnell mehrere Ergebnisse zu erhalten, können Sie den Befehl unten in der Konsole eingeben; nachdem das Ergebnis bestimmt ist, holen Sie den Befehl mit Pfeiltaste nach oben wieder zurück und können ihn dann gleich noch einmal ausführen. Auch im Source-Fenster gibt es eine solche Möglichkeit: Ctrl-Alt-P führt den letzten Befehl noch einmal aus. Die Shortcuts finden Sie übrigens im Menü unter Help oder direkt mit Alt-Shift-K.
-
-\hypertarget{simulationen-zum-wahrnehmungsexperiment}{%
-\subsection{Simulationen zum Wahrnehmungsexperiment}\label{simulationen-zum-wahrnehmungsexperiment}}
-
-Im ersten Semester wurden auch Simulationen zum Verhalten des t-Tests bei dem fiktiven Wahrnehmungsexperiment gemacht (Folie 78, dann ab Folie 82). Hier waren die Variablen (Fehlerzahl) diskret, daher ist es fraglich, ob man den t-Test dennoch verwenden kann (es geht also um die Robustheit).
-
-Hier zunächst eine neue Version des t-Tests:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{my\_t\_test1 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x1,x2,n1,n2,df,vf)\{      }\CommentTok{\# (1)}
-\NormalTok{  m1 }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(x1)}\SpecialCharTok{/}\NormalTok{n1                              }\CommentTok{\# (2)         }
-\NormalTok{  m2 }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(x2)}\SpecialCharTok{/}\NormalTok{n2}
-\NormalTok{  sqa1 }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((x1}\SpecialCharTok{{-}}\NormalTok{m1)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)                        }\CommentTok{\# (3)           }
-\NormalTok{  sqa2 }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((x2}\SpecialCharTok{{-}}\NormalTok{m2)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)                 }
-\NormalTok{  sq }\OtherTok{\textless{}{-}}\NormalTok{ (sqa1 }\SpecialCharTok{+}\NormalTok{ sqa2)}\SpecialCharTok{/}\NormalTok{df                        }\CommentTok{\# (4)}
-\NormalTok{  nenner }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(vf}\SpecialCharTok{*}\NormalTok{sq)         }
-\NormalTok{  t }\OtherTok{\textless{}{-}}\NormalTok{ (m1}\SpecialCharTok{{-}}\NormalTok{m2)}\SpecialCharTok{/}\NormalTok{nenner}
-  \FunctionTok{return}\NormalTok{(t)}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Die Funktion ist von früher einigermaßen bekannt, es gibt aber Veränderungen und es fehlen Teile.
-
-Anmerkungen:
-
-\begin{enumerate}
-\def\labelenumi{(\arabic{enumi})}
-\item
-  Die Argumente x1 und x2 stehen für die beiden Stichproben, als weitere Argumente werden die Stichprobengrößen n1 und n2, die Anzahl der Freiheitsgrade df und der Vorfaktor vf des Nenners übergeben. Diese Zahlen müssen also außerhalb der Funktion bestimmt werden. Das scheint erstmal nicht besonders sinnvoll zu sein. In der Simulation wird diese Funktion jedoch immer wieder aufgerufen, wobei die vier zusätzlichen Argumente immer gleich groß sind. Wenn diese Zahlen immer wieder neu bestimmt werden müssten, würde das Zeit kosten, daher sollen sie außerhalb der Funktion nur einmal berechnet und dann übergeben werden. Die Zeitersparnis ist in diesem Fall allerdings minimal, hier soll nur auf die Möglichkeit hingewiesen werden, dass man bei komplizierteren zeitintensiven Rechnungen, die immer wieder auftreten, auf diese Art manchmal merklich Zeit sparen kann.
-\item
-  Die Mittelwerte werden jetzt in der Funktion berechnet, n1 wird als Argument übergeben.
-\item
-  Auch die Summen der quadrierten Abweichungen vom Mittelwert werden in der Funktion berechnet, nicht aber die Varianzen. Die Varianzen werden ja eigentlich nicht gebraucht, da im Zähler von \(s^2\) gerade die Summe dieser beiden Summen steht, wie man sich leicht überzeugt. Man erspart sich so die nutzlose Division und anschließende Multiplikation mit der jeweiligen Stichprobengröße (auch hier ist der Zeitgewinn minimal, es soll aber auf die Möglichkeit von Zeitersparnis in komplizierteren Situationen aufmerksam gemacht werden).
-\item
-  Auch die Zahl df der in der Simulation immer gleichen Freiheitsgrade und der einheitliche Vorfaktor vf im Nenner (nächste Zeile) müssen außerhalb bestimmt und als Argumente übergeben werden.
-\end{enumerate}
-
-Aufgabe: Überzeugen Sie sich an einem Beispiel, dass der t-Wert korrekt bestimmt wird; Sie müssen dann vorher die Variablen n1, n2, df und vf korrekt belegen.
-
-Der Übersichtlichkeit halber kann man auch die Bildung der Zufallsstichproben zu einer eigenen Funktion machen:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{z\_stpr\_w }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(n, w)\{  }
-  \FunctionTok{sample}\NormalTok{(}\DecValTok{0}\SpecialCharTok{:}\DecValTok{5}\NormalTok{, n, }\AttributeTok{replace =}\NormalTok{ T, }\AttributeTok{prob=}\NormalTok{w)}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Anmerkung: Da die Fehlerzahl immer eine Zahl zwischen 0 und 5 ist, kann dies Argument weggelassen werden. Als Argumente bleiben die Stichprobengröße n und der Vektor w der Wahrscheinlichkeiten dieser Zahlen. z\_stpr\_w soll Zufallsstichprobe Wahrnehmung abkürzen.
-
-Nun die Funktion, die mit Hilfe einer Simulation die Wahrscheinlichkeit eines signifikanten Ergebnisses zu schätzen versucht:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{we\_t\_simul }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(N,n1,w1,n2,w2,}\AttributeTok{a =}\NormalTok{ .}\DecValTok{05}\NormalTok{)\{           }\CommentTok{\# (1)}
-\NormalTok{  df }\OtherTok{\textless{}{-}}\NormalTok{ n1 }\SpecialCharTok{+}\NormalTok{ n2 }\SpecialCharTok{{-}} \DecValTok{2}                                      \CommentTok{\# (2)}
-\NormalTok{  vf }\OtherTok{\textless{}{-}}\NormalTok{ (n1 }\SpecialCharTok{+}\NormalTok{ n2)}\SpecialCharTok{/}\NormalTok{(n1 }\SpecialCharTok{*}\NormalTok{ n2)}
-\NormalTok{  kw }\OtherTok{\textless{}{-}} \FunctionTok{qt}\NormalTok{(a,df)                                         }\CommentTok{\# (3)}
-\NormalTok{  z }\OtherTok{\textless{}{-}} \DecValTok{0}                                                 \CommentTok{\# (4)}
-  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq}\NormalTok{(N))\{                                      }\CommentTok{\# (5)}
-\NormalTok{    x1 }\OtherTok{\textless{}{-}} \FunctionTok{z\_stpr\_w}\NormalTok{(n1,w1)                                }\CommentTok{\# (6)}
-\NormalTok{    x2 }\OtherTok{\textless{}{-}} \FunctionTok{z\_stpr\_w}\NormalTok{(n2,w2)}
-    \ControlFlowTok{if}\NormalTok{(}\FunctionTok{my\_t\_test1}\NormalTok{(x1,x2,n1,n2,df,vf) }\SpecialCharTok{\textless{}=}\NormalTok{ kw) z }\OtherTok{\textless{}{-}}\NormalTok{ z }\SpecialCharTok{+} \DecValTok{1}   \CommentTok{\# (7)}
-\NormalTok{  \}}
-\NormalTok{  z}\SpecialCharTok{/}\NormalTok{N                                                    }\CommentTok{\# (8)}
-\NormalTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-Anmerkungen:
-
-\begin{enumerate}
-\def\labelenumi{(\arabic{enumi})}
-\item
-  Der Funktionsname steht für Wahrnehmungsexperiment-t-Test-Simulation. Die Argumente sind: Die Zahl N der Simulationen, der Umfang n1 der ersten Stichprobe (auf den Folien die Kontrollgruppe), die Verteilung w1 der möglichen Fehlerzahlen in der Kontrollgruppe, entsprechend n2 und w2 für die zweite Stichprobe (die Alkoholgruppe), außerdem das Signifikanzniveau a, standardmäßig .05.
-\item
-  Die Zahl der Freiheitsgrade wird ein für alle Mal bestimmt, ebenso in der nächsten Zeile der Vorfaktor. Das bringt hier zwar keinen merklichen Vorteil, ähnliches Vorgehen in anderen Zusammenhängen manchmal schon.
-\item
-  Der kritische Wert kw. Achtung: Im Gegensatz zu den Folien wird hier linksseitig getestet, da die Konventionen hier anders sind (Mittelwertdifferenz M1-M2 und nicht M2-M1).
-\item
-  Es wird wieder ein Zähler eingerichtet und auf 0 gesetzt.
-\item
-  Die Schleife der Simulation.
-\item
-  Die erste Stichprobe (Kontrollgruppe), nächste Zeile die zweite.
-\item
-  Der t-Test, wenn er linksseitig signifikant wird, wird der Zähler erhöht.
-\item
-  Ausgabe der relativen Häufigkeit signifikanter Ergebnisse.
-\end{enumerate}
-
-Es folgen einige Verteilungen aus den Folien:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{w1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(.}\DecValTok{1}\NormalTok{,.}\DecValTok{15}\NormalTok{,.}\DecValTok{35}\NormalTok{,.}\DecValTok{25}\NormalTok{,.}\DecValTok{1}\NormalTok{,.}\DecValTok{05}\NormalTok{)}
-\NormalTok{w2 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(.}\DecValTok{05}\NormalTok{,.}\DecValTok{1}\NormalTok{,.}\DecValTok{25}\NormalTok{,.}\DecValTok{3}\NormalTok{,.}\DecValTok{2}\NormalTok{,.}\DecValTok{1}\NormalTok{)}
-\NormalTok{w2a }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(.}\DecValTok{05}\NormalTok{,.}\DecValTok{05}\NormalTok{,.}\DecValTok{1}\NormalTok{,.}\DecValTok{15}\NormalTok{,.}\DecValTok{25}\NormalTok{,.}\DecValTok{4}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-Simulation Folie 79:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{we\_t\_simul}\NormalTok{(}\DecValTok{10000}\NormalTok{,}\DecValTok{20}\NormalTok{,w1,}\DecValTok{20}\NormalTok{,w1)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 0.0484
-\end{verbatim}
-
-Untersuchung von \(\beta\) (Folie 82):
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\DecValTok{1}\SpecialCharTok{{-}}\FunctionTok{we\_t\_simul}\NormalTok{(}\DecValTok{10000}\NormalTok{,}\DecValTok{20}\NormalTok{,w1,}\DecValTok{20}\NormalTok{,w2)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 0.6247
-\end{verbatim}
-
-Hier geht es um die nichtsignifikanten Ergebnisse, daher ``1-\ldots{}''
-
-Erstes Beispiel Folie 83:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\DecValTok{1}\SpecialCharTok{{-}}\FunctionTok{we\_t\_simul}\NormalTok{(}\DecValTok{10000}\NormalTok{,}\DecValTok{20}\NormalTok{,w1,}\DecValTok{20}\NormalTok{,w2,.}\DecValTok{1}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 0.4749
-\end{verbatim}
-
-Aufgabe: Überzeugen Sie sich, dass die weiteren Ergebnisse auf den Folien zur Untersuchung von \(\beta\) einigermaßen mit den Ergebnissen dieses Programms übereinstimmen!
-
-Interessant ist dann noch das Beispiel auf Folie 92, hier zunächst die Verteilungen:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{w1x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,.}\DecValTok{5}\NormalTok{,.}\DecValTok{5}\NormalTok{,}\DecValTok{0}\NormalTok{,.}\DecValTok{0}\NormalTok{)}
-\NormalTok{w2x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(.}\DecValTok{5}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,.}\DecValTok{5}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-Das Ergebnis bekommen Sie mit
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{we\_t\_simul}\NormalTok{(}\DecValTok{10000}\NormalTok{,}\DecValTok{20}\NormalTok{,w1x,}\DecValTok{5}\NormalTok{,w2x)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## [1] 0.1872
-\end{verbatim}
+Kontrollieren Sie Ihre Funktionen immer an kleinen Datensätzen, in denen Sie auch von Hand rechnen können, beispielsweise können Sie Aufgaben aus QM2 benutzen.
+Alternativ können Sie auch größere Datensätze nutzen und Ihre Funktion mit der bekannten t-Test Funktion vergleichen. Achten Sie dabei aber darauf, dass Sie im unabhängigen Fall \texttt{var.equal} auf \texttt{TRUE} setzen.
 
   \bibliography{book.bib}
 
