@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Experimente in Psychopy | Robustheit</title>
+  <meta name="description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Experimente in Psychopy | Robustheit" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Experimente in Psychopy | Robustheit" />
+  
+  <meta name="twitter:description" content="Seminar zur Vertiefung psychologischer Methodenlehre - Robustheit und Voraussetzungstests" />
+  
+
+<meta name="author" content="Max Brede und Johannes Andres" />
+
+
+<meta name="date" content="2021-12-13" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="simulations-und-programmierübungen-in-r.html"/>
+<link rel="next" href="literatur.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Robustheit und Voraussetzungstests</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Vorwort</a></li>
+<li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html"><i class="fa fa-check"></i>Lehrplan</a>
+<ul>
+<li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html#semesterplan"><i class="fa fa-check"></i>Semesterplan</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html"><i class="fa fa-check"></i>Programmieren in R</a></li>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html"><i class="fa fa-check"></i>Funktionen</a>
+<ul>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html#geschachtelte-funktionen"><i class="fa fa-check"></i>Geschachtelte Funktionen</a></li>
+<li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html#optionale-argumente"><i class="fa fa-check"></i>Optionale Argumente</a></li>
+</ul></li>
+<li><a href="if-statements.html#if-statements"><code>if</code>-Statements</a></li>
+<li class="chapter" data-level="" data-path="zufallswerte.html"><a href="zufallswerte.html"><i class="fa fa-check"></i>Zufallswerte</a></li>
+<li class="chapter" data-level="" data-path="schleifen.html"><a href="schleifen.html"><i class="fa fa-check"></i>Schleifen</a></li>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html"><i class="fa fa-check"></i>Listen</a>
+<ul>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html#listen-und-datensätze"><i class="fa fa-check"></i>Listen und Datensätze</a></li>
+<li class="chapter" data-level="" data-path="listen.html"><a href="listen.html#arbeiten-mit-listen"><i class="fa fa-check"></i>Arbeiten mit Listen</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="attribute.html"><a href="attribute.html"><i class="fa fa-check"></i>Attribute</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html"><i class="fa fa-check"></i>Functionals</a>
+<ul>
+<li><a href="functionals.html#purrrmap"><code>purrr::map</code></a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#exkurs-iteratoren-vergleich-und-microbenchmarking"><i class="fa fa-check"></i>Exkurs: Iteratoren-Vergleich und Microbenchmarking</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#eigene-functionals"><i class="fa fa-check"></i>Eigene Functionals</a></li>
+<li class="chapter" data-level="" data-path="functionals.html"><a href="functionals.html#argumente-durchreichen"><i class="fa fa-check"></i>Argumente durchreichen</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html"><i class="fa fa-check"></i>Simulations- und Programmierübungen in R</a>
+<ul>
+<li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html#pascalsches-dreieck"><i class="fa fa-check"></i>Pascalsches Dreieck</a></li>
+<li><a href="simulations-und-programmierübungen-in-r.html#matrizen-und-chi2">Matrizen und <span class="math inline">\(\chi^2\)</span></a></li>
+<li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html#t-test"><i class="fa fa-check"></i>t-Test</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="experimente-in-psychopy.html"><a href="experimente-in-psychopy.html"><i class="fa fa-check"></i>Experimente in Psychopy</a>
+<ul>
+<li class="chapter" data-level="" data-path="experimente-in-psychopy.html"><a href="experimente-in-psychopy.html#experiment"><i class="fa fa-check"></i>Experiment</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
+<li class="divider"></li>
+<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Robustheit</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="experimente-in-psychopy" class="section level1">
+<h1>Experimente in Psychopy</h1>
+<p>Psychopy ist ein auf der offenen Programmiersprache Python basiertes Open Source Tool zur Erstellung und Durchführung von Experimenten.
+Seit Version 3 ist außerdem Unterstützung für Pavlovia hinzugekommen, die den Code in Javascript umwandelt und damit Browser-basiert und vor allem online lauffähig macht.</p>
+<p>Das Tool kommt dabei mit einem “Builder” und einem “Coder” zum Erstellen von Experimenten und dem “Runner” zum Ausführen dieser.
+Die Drag-And-Drop Oberfläche des “Builders” (Abb. <a href="experimente-in-psychopy.html#fig:Builder1">1</a>) stellt das Experiment als Zeitstrahl dar, und ist das Tool, das wir hauptsächlich nutzen werden.</p>
+
+<div class="figure" style="text-align: center"><span id="fig:Builder1"></span>
+<img src="imgs/Builder.png" alt="Builder-Ansicht von Psychopy." width=".8\textwidth" />
+<p class="caption">
+Abb. 1: Builder-Ansicht von Psychopy.
+</p>
+</div>
+<p>Im Coder (Abb. <a href="experimente-in-psychopy.html#fig:Coder1">2</a>) kann das mit dem Builder per Drag-And-Drop erstellte Experiment dann mit direktem Python-Coding angepasst werden. Python ist zwar an vielen Stellen ziemlich ähnlich zu R, wir werden aber so weit möglich vermeiden die Skripte im Coder anzupassen, vor allem auch weil der Plan ist, die Experimente über Pavlovia gehostet durchzuführen. Das Umwandeln von Custom-Python-Code zu JS funktioniert zwar besser als man vielleicht denkt, aber nicht perfekt und wenn man sich sparen möchte, händisch Python in JS zu übersetzen, empfiehlt es sich, möglichst auf den Coder zu verzichten.</p>
+
+<div class="figure" style="text-align: center"><span id="fig:Coder1"></span>
+<img src="imgs/Coder.png" alt="Coder-Ansicht von Psychopy." width=".8\textwidth" />
+<p class="caption">
+Abb. 2: Coder-Ansicht von Psychopy.
+</p>
+</div>
+<p>Das letzte Fenster ist das “Runner”-Fenster (Abb. <a href="experimente-in-psychopy.html#fig:Runner1">3</a>), in dem Experimente gestartet werden können, dazu aber später mehr.</p>
+
+<div class="figure" style="text-align: center"><span id="fig:Runner1"></span>
+<img src="imgs/Screenshot_20211212_145801.png" alt="Runner-Ansicht von Psychopy. Die Fehlermeldung unten liegt an meinem Setup, stört uns aber nicht weiter." width=".8\textwidth" />
+<p class="caption">
+Abb. 3: Runner-Ansicht von Psychopy. Die Fehlermeldung unten liegt an meinem Setup, stört uns aber nicht weiter.
+</p>
+</div>
+<div id="experiment" class="section level2">
+<h2>Experiment</h2>
+<p>Wir wollen das folgende Experiment bauen und auf Pavlovia hosten:
+<frame src="https://run.pavlovia.org/M.Brede/ms_fov_stroop" noresize=""></frame></p>
+<p>Es handelt sich um eine abgewandelte Version der Stroop-Task. Die Probanden sollen also bei einem in einer Farbe dargestellten Schriftzug, der ein Farbwort angibt, per Tastendruck mitteilen, welche Farbe das Farbwort hat.</p>
+<div id="textelemente" class="section level3">
+<h3>Textelemente</h3>
+<p>Als ersten Schritt zu diesem Ziel erstellen wir das Farbwort und die zu drückenden Tasten als Text-Stimuli.</p>
+<p>Dazu erstellen wir einfach mit dem “Text”-Item im rechten Menü unter Stimuli vier Text-Stimuli im schon geöffneten Trial (Abb. <a href="experimente-in-psychopy.html#fig:Textstimuli">4</a>).</p>
+
+<div class="figure" style="text-align: center"><span id="fig:Textstimuli"></span>
+<img src="imgs/text_stimuli.gif" alt="Anlegen von 5 Text-Stimuli. Das spätere Stimulus-Item wird mit “Platzhalter” als Inhalt initiiert, die vier Hinweise für das Antwort-Format mit einer Zahl (der zu drückenden Taste) und dem entsprechenenden Farbwort darunter initiiert." width=".8\textwidth" />
+<p class="caption">
+Abb. 4: Anlegen von 5 Text-Stimuli. Das spätere Stimulus-Item wird mit “Platzhalter” als Inhalt initiiert, die vier Hinweise für das Antwort-Format mit einer Zahl (der zu drückenden Taste) und dem entsprechenenden Farbwort darunter initiiert.
+</p>
+</div>
+<p>Das Ergebnis ist erstmal nicht besodners schön. Wenn wir das Experiment laufen lassen (Mit Klick auf den “Run” Button: Abb. <a href="experimente-in-psychopy.html#fig:Run">5</a>), können wir uns den bisherigen Trial angucken.</p>
+
+<div class="figure" style="text-align: center"><span id="fig:Run"></span>
+<img src="imgs/Run.png" alt="Run-Button." width=".8\textwidth" />
+<p class="caption">
+Abb. 5: Run-Button.
+</p>
+</div>
+<p>Wie man in Abb. <a href="experimente-in-psychopy.html#fig:step1">6</a> sehen kann, ist das Experiment bis hierhin nicht besonders schön.</p>
+
+<div class="figure" style="text-align: center"><span id="fig:step1"></span>
+<img src="imgs/step1.png" alt="Experiment bis zu diesem Moment." width=".8\textwidth" />
+<p class="caption">
+Abb. 6: Experiment bis zu diesem Moment.
+</p>
+</div>
+<p>Als ersten Schritt um das zu verbessern, ändern wir Größe und Position der Tasten-Labels, so dass sie kleiner und am Bildschirmrand zu sehen sind. Die Positionen auf dem Bildschirm werden in Psychopy x- und y-Achse codiert, wobei (0,0) die Bildschirm-Mitte ist. Mit ein bisschen ausprobieren kann man richtige Positionen finden, für unser Experiment schieben wir die labels auf -.25 auf der y-Achse und -.45, -.15, .15 und .45 auf der x-Achse.
+In Abb. <a href="experimente-in-psychopy.html#fig:step2">7</a> wird exemplarisch das Label für “grün” im “Layout”-Tab nach links unten verschoben und im “Formatting”-Tab auf die Hälfte der Größe angepasst.</p>
+
+<div class="figure" style="text-align: center"><span id="fig:step2"></span>
+<img src="imgs/step2.gif" alt="Anpassung von Position und Größe eines Textelements." width=".8\textwidth" />
+<p class="caption">
+Abb. 7: Anpassung von Position und Größe eines Textelements.
+</p>
+</div>
+<p>Wie in Abb. <a href="experimente-in-psychopy.html#fig:step3">8</a> zu sehen ist, sieht das schon wesentlich besser aus.</p>
+
+<div class="figure" style="text-align: center"><span id="fig:step3"></span>
+<img src="imgs/step3.png" alt="Trial nach Änderung der Labels." width=".8\textwidth" />
+<p class="caption">
+Abb. 8: Trial nach Änderung der Labels.
+</p>
+</div>
+</div>
+<div id="input-und-zeitlimit" class="section level3">
+<h3>Input und Zeitlimit</h3>
+<p>Als weiteres Element für den Trial brauchen wir nur noch eine Tastatur-Eingabe, die die Antwort der Proband:innen ermöglicht.</p>
+<p>Dafür fügen wir einfach ein “Keyboard”-Element aus der “Responses”-Kategorie hinzu, der wir die vier Knöpfe erlauben. Außerdem setzen wir den Haken, dass der Trial beim Drücken einer der legalen Tasten beendet wird.</p>
+<p>Zuletzt entfernen wir die Duration von den Text-Stimuli, damit der Trial unbegrenzt bis zum Tastendruck läuft. Damit ist die Oberfläche und der Kontroll-Flow unseres Trials fertig (Abb. <a href="experimente-in-psychopy.html#fig:step4">9</a>).</p>
+
+<div class="figure" style="text-align: center"><span id="fig:step4"></span>
+<img src="imgs/step4.gif" alt="Hinzufügen einer Tasten-Antwort und Entfernung des Zeitlimits." width=".8\textwidth" />
+<p class="caption">
+Abb. 9: Hinzufügen einer Tasten-Antwort und Entfernung des Zeitlimits.
+</p>
+</div>
+</div>
+<div id="loops" class="section level3">
+<h3>Loops</h3>
+<p>Diesen Trial wollen wir jetzt nutzen um 32 Farbworte darzubieten.
+Diese Farbworte sollen die folgenden Kombinationen jeweils 2 mal in zufälliger Reihenfolge sein:</p>
+<table class=" lightable-classic lightable-classic" style="font-size: 15px; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Wort
+</th>
+<th style="text-align:left;">
+Farbe
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+blau
+</td>
+<td style="text-align:left;">
+blau
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+blau
+</td>
+<td style="text-align:left;">
+gelb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+blau
+</td>
+<td style="text-align:left;">
+grün
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+blau
+</td>
+<td style="text-align:left;">
+rot
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gelb
+</td>
+<td style="text-align:left;">
+blau
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gelb
+</td>
+<td style="text-align:left;">
+gelb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gelb
+</td>
+<td style="text-align:left;">
+grün
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+gelb
+</td>
+<td style="text-align:left;">
+rot
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+grün
+</td>
+<td style="text-align:left;">
+blau
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+grün
+</td>
+<td style="text-align:left;">
+gelb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+grün
+</td>
+<td style="text-align:left;">
+grün
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+grün
+</td>
+<td style="text-align:left;">
+rot
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rot
+</td>
+<td style="text-align:left;">
+blau
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rot
+</td>
+<td style="text-align:left;">
+gelb
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rot
+</td>
+<td style="text-align:left;">
+grün
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+rot
+</td>
+<td style="text-align:left;">
+rot
+</td>
+</tr>
+</tbody>
+</table>
+<p>Dafür exportieren wir als ersten Schritt unsere Trial-Parameter als Tabelle:</p>
+<p>Zuerst erstellen wir uns mit <code>gtools::permutations</code> die Kombinationen, verdoppeln die Einträge und ersetzen dann die Farben in der “Farbe”-Spalte durch rgb-Listen. Zuletzt sortieren wir die Zeilen zufällig um, um Pseudo-randomisiert die verschiedenen Bilder zu präsentieren, um das ganze dann als Semikolon-getrennte Textdatei zu exportieren.</p>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="experimente-in-psychopy.html#cb304-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="sc">~</span>gtools<span class="sc">::</span><span class="fu">permutations</span>(<span class="dv">4</span>,<span class="dv">2</span>,<span class="fu">c</span>(<span class="st">&#39;grün&#39;</span>, <span class="st">&#39;rot&#39;</span>,<span class="st">&#39;blau&#39;</span>,<span class="st">&#39;gelb&#39;</span>),<span class="at">repeats.allowed =</span> T) <span class="sc">%&gt;%</span> </span>
+<span id="cb304-2"><a href="experimente-in-psychopy.html#cb304-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb304-3"><a href="experimente-in-psychopy.html#cb304-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_names</span>(<span class="at">nm =</span> <span class="fu">c</span>(<span class="st">&#39;Wort&#39;</span>, <span class="st">&#39;Farbe&#39;</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb304-4"><a href="experimente-in-psychopy.html#cb304-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Farbe =</span> <span class="fu">recode</span>(Farbe,</span>
+<span id="cb304-5"><a href="experimente-in-psychopy.html#cb304-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;grün&#39;</span> <span class="ot">=</span> <span class="st">&#39;green&#39;</span>, </span>
+<span id="cb304-6"><a href="experimente-in-psychopy.html#cb304-6" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;rot&#39;</span> <span class="ot">=</span> <span class="st">&#39;red&#39;</span>,</span>
+<span id="cb304-7"><a href="experimente-in-psychopy.html#cb304-7" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;blau&#39;</span> <span class="ot">=</span> <span class="st">&#39;blue&#39;</span>,</span>
+<span id="cb304-8"><a href="experimente-in-psychopy.html#cb304-8" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;gelb&#39;</span> <span class="ot">=</span> <span class="st">&#39;yellow&#39;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb304-9"><a href="experimente-in-psychopy.html#cb304-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">sample</span>(<span class="fu">seq_along</span>(Farbe))) <span class="sc">%&gt;%</span> </span>
+<span id="cb304-10"><a href="experimente-in-psychopy.html#cb304-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_excel_csv</span>(<span class="st">&#39;psy_exps/conditions.csv&#39;</span>)</span></code></pre></div>
+<p>Dann fügen wir um unseren Trial einen “Loop” ein, der die Wiederholung regelt (Abb. <a href="experimente-in-psychopy.html#fig:step5">10</a>).
+Hier verweisen wir dann auch auf unsere Tabelle mit den Bedingungskombinationen.</p>
+
+<div class="figure" style="text-align: center"><span id="fig:step5"></span>
+<img src="imgs/step5.gif" alt="Hinzufügen eines Loops mit einer Wiederholung und festsetzen der Bedinungengen mit der erstellten csv." width=".8\textwidth" />
+<p class="caption">
+Abb. 10: Hinzufügen eines Loops mit einer Wiederholung und festsetzen der Bedinungengen mit der erstellten csv.
+</p>
+</div>
+<p>Wie im Dialog zu sehen sind die zwei Parameter “Wort” und “Farbe” erkannt worden.</p>
+</div>
+<div id="benutzen-von-parametern" class="section level3">
+<h3>Benutzen von Parametern</h3>
+<p>Diese Parameter können wir nun im Stimulus einsetzen, um die Farbworte und die Farben zu nutzen.</p>
+<p>Dafür setzen wir den Text auf “set every repeat” und den Wert “$Wort” und die “Foreground Color” unter “Appearance” auf “$Farbe” und “set every repeat”.</p>
+<p>Mit dem “$” wird festgelegt, dass der folgende Text als Variablenname genutzt werden soll, es wird also in jeder Loop-Iteration ein Wert für die beiden Spalten gewählt, der jetzt in den Text-Stimulus eingesetzt wird.</p>
+<p>Hierzu würde ich auch gern ein gif zeigen, auf Linux ist in der neuesten Version jedoch ein <a href="https://github.com/psychopy/psychopy/issues/4207">Bug</a>, der die Lösung nur mit Workaround nutzbar macht.</p>
+<p>Das Experiment sieht aber schon einmal ganz gut aus, wie in Abbildung <a href="experimente-in-psychopy.html#fig:step6">11</a> zu sehen ist:</p>
+
+<div class="figure" style="text-align: center"><span id="fig:step6"></span>
+<img src="imgs/step6.gif" alt="Experiment mit Loop." width=".8\textwidth" />
+<p class="caption">
+Abb. 11: Experiment mit Loop.
+</p>
+</div>
+</div>
+<div id="neue-abschnitte" class="section level3">
+<h3>Neue Abschnitte</h3>
+<p>Als letztes wollen wir ein Fixationskreuz am Beginn jedes Trials hinzufügen, damit die einzelnen Trials merkbar getrennt sind.</p>
+<p>Dafür fügen wir einfach eine weitere Routine an den Anfang von “trials” ein, die nur aus einer halben Sekunde mit einem Textbaustein mit dem konstanten Text “+” besteht (Abb <a href="experimente-in-psychopy.html#fig:step7">12</a>).</p>
+
+<div class="figure" style="text-align: center"><span id="fig:step7"></span>
+<img src="imgs/step7.gif" alt="Einfügen eines Fixationskreuzes" width=".8\textwidth" />
+<p class="caption">
+Abb. 12: Einfügen eines Fixationskreuzes
+</p>
+</div>
+</div>
+<div id="aufgabe-13" class="section level3">
+<h3>Aufgabe</h3>
+<p>Überlegt Euch, wie Ihr dieses Experiment verbessern könnt.
+Mögliche Ansätze wären zum Beispiel eine Seite mit Instruktionstext, andere Tasten zum Antworten, eine Rückmeldung nach Antworten, erst späteres Einblenden der Tastenbelegung und und und.</p>
+<p>Setzt Eure Ideen um.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="simulations-und-programmierübungen-in-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="literatur.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Robustheit.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

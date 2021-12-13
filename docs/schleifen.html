@@ -24,7 +24,7 @@
 <meta name="author" content="Max Brede und Johannes Andres" />
 
 
-<meta name="date" content="2021-12-01" />
+<meta name="date" content="2021-12-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -166,7 +166,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html#semesterplan"><i class="fa fa-check"></i>Semesterplan</a></li>
 </ul></li>
-<li class="part"><span><b>I Programmieren in R</b></span></li>
+<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html"><i class="fa fa-check"></i>Programmieren in R</a></li>
 <li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html"><i class="fa fa-check"></i>Funktionen</a>
 <ul>
 <li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html#geschachtelte-funktionen"><i class="fa fa-check"></i>Geschachtelte Funktionen</a></li>
@@ -193,6 +193,10 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html#pascalsches-dreieck"><i class="fa fa-check"></i>Pascalsches Dreieck</a></li>
 <li><a href="simulations-und-programmierübungen-in-r.html#matrizen-und-chi2">Matrizen und <span class="math inline">\(\chi^2\)</span></a></li>
 <li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html#t-test"><i class="fa fa-check"></i>t-Test</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="experimente-in-psychopy.html"><a href="experimente-in-psychopy.html"><i class="fa fa-check"></i>Experimente in Psychopy</a>
+<ul>
+<li class="chapter" data-level="" data-path="experimente-in-psychopy.html"><a href="experimente-in-psychopy.html#experiment"><i class="fa fa-check"></i>Experiment</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
 <li class="divider"></li>
@@ -301,9 +305,9 @@ In R gibt es davon drei Arten:</p>
 <span id="cb66-30"><a href="schleifen.html#cb66-30" aria-hidden="true" tabindex="-1"></a>runtime_no_alloc <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>() <span class="sc">-</span> start</span>
 <span id="cb66-31"><a href="schleifen.html#cb66-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb66-32"><a href="schleifen.html#cb66-32" aria-hidden="true" tabindex="-1"></a>runtime_alloc</span></code></pre></div>
-<pre><code>## Time difference of 0.04381037 secs</code></pre>
+<pre><code>## Time difference of 0.03963208 secs</code></pre>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="schleifen.html#cb68-1" aria-hidden="true" tabindex="-1"></a>runtime_no_alloc</span></code></pre></div>
-<pre><code>## Time difference of 0.06792665 secs</code></pre>
+<pre><code>## Time difference of 0.06627679 secs</code></pre>
 <p>Mehr als die Hälfte der Zeit geht für das Erstellen des neuen Vektors drauf!</p>
 <div id="aufgabe-4" class="section level3">
 <h3>Aufgabe</h3>
@@ -338,7 +342,7 @@ Antwort
 <span id="cb70-21"><a href="schleifen.html#cb70-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">1</span>,</span>
 <span id="cb70-22"><a href="schleifen.html#cb70-22" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">&#39;grey&#39;</span>,</span>
 <span id="cb70-23"><a href="schleifen.html#cb70-23" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&#39;white&#39;</span>)</span></code></pre></div>
-<img src="Robustheit_files/figure-html/unnamed-chunk-42-1.png" width="672" />
+<img src="Robustheit_files/figure-html/unnamed-chunk-45-1.png" width="672" />
 </details>
 </div>
 </div>

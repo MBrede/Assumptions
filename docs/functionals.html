@@ -24,7 +24,7 @@
 <meta name="author" content="Max Brede und Johannes Andres" />
 
 
-<meta name="date" content="2021-12-01" />
+<meta name="date" content="2021-12-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -166,7 +166,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="" data-path="lehrplan.html"><a href="lehrplan.html#semesterplan"><i class="fa fa-check"></i>Semesterplan</a></li>
 </ul></li>
-<li class="part"><span><b>I Programmieren in R</b></span></li>
+<li class="chapter" data-level="" data-path="programmieren-in-r.html"><a href="programmieren-in-r.html"><i class="fa fa-check"></i>Programmieren in R</a></li>
 <li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html"><i class="fa fa-check"></i>Funktionen</a>
 <ul>
 <li class="chapter" data-level="" data-path="funktionen.html"><a href="funktionen.html#geschachtelte-funktionen"><i class="fa fa-check"></i>Geschachtelte Funktionen</a></li>
@@ -193,6 +193,10 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html#pascalsches-dreieck"><i class="fa fa-check"></i>Pascalsches Dreieck</a></li>
 <li><a href="simulations-und-programmierübungen-in-r.html#matrizen-und-chi2">Matrizen und <span class="math inline">\(\chi^2\)</span></a></li>
 <li class="chapter" data-level="" data-path="simulations-und-programmierübungen-in-r.html"><a href="simulations-und-programmierübungen-in-r.html#t-test"><i class="fa fa-check"></i>t-Test</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="experimente-in-psychopy.html"><a href="experimente-in-psychopy.html"><i class="fa fa-check"></i>Experimente in Psychopy</a>
+<ul>
+<li class="chapter" data-level="" data-path="experimente-in-psychopy.html"><a href="experimente-in-psychopy.html#experiment"><i class="fa fa-check"></i>Experiment</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
 <li class="divider"></li>
@@ -426,7 +430,7 @@ Microbenchmarking heißt hier nichts anders, als dass wir die möglichen Impleme
 <span id="cb189-43"><a href="functionals.html#cb189-43" aria-hidden="true" tabindex="-1"></a>                          )</span>
 <span id="cb189-44"><a href="functionals.html#cb189-44" aria-hidden="true" tabindex="-1"></a>                        })</span></code></pre></div>
 <p>Die Ergebnisse dieses Testlaufs sehen so aus:</p>
-<p><img src="Robustheit_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
 <p>Dabei stellen die Linien die Median-Verläufe der jeweiligen Aufrufe dar. Vorsicht: Die Achsen sind logarithmisch skaliert. Ohne diese Skalierung sehen die Ergebnisse so aus:</p>
 <div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="functionals.html#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pmap_dfr</span>(<span class="fu">list</span>(sim_data<span class="sc">$</span>time,</span>
 <span id="cb190-2"><a href="functionals.html#cb190-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">names</span>(sim_data<span class="sc">$</span>expression),</span>
@@ -443,7 +447,7 @@ Microbenchmarking heißt hier nichts anders, als dass wir die möglichen Impleme
 <span id="cb190-13"><a href="functionals.html#cb190-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&#39;Zeit [s]&#39;</span>,</span>
 <span id="cb190-14"><a href="functionals.html#cb190-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&#39;Iterierte Werte&#39;</span>) <span class="sc">+</span></span>
 <span id="cb190-15"><a href="functionals.html#cb190-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">&#39;Dark2&#39;</span>)</span></code></pre></div>
-<p><img src="Robustheit_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
 <div id="aufgabe-10" class="section level3">
 <h3>Aufgabe</h3>
 <p>Benutzt <code>bench::mark</code> um die folgenden drei Mittelwerts-Funktionen zu vergleichen:</p>
@@ -474,7 +478,7 @@ Antwort
 <div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="functionals.html#cb193-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bench)</span>
 <span id="cb193-2"><a href="functionals.html#cb193-2" aria-hidden="true" tabindex="-1"></a>bmark <span class="sc">%&gt;%</span> </span>
 <span id="cb193-3"><a href="functionals.html#cb193-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">type =</span> <span class="st">&#39;violin&#39;</span>)</span></code></pre></div>
-<p><img src="Robustheit_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
 </details>
 </div>
 </div>

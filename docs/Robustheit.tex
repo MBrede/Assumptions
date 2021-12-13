@@ -173,7 +173,7 @@
 
 \title{Robustheit}
 \author{Max Brede und Johannes Andres}
-\date{2021-12-01}
+\date{2021-12-13}
 
 \begin{document}
 \maketitle
@@ -225,8 +225,8 @@ Sitzung & Datum & Sitzungstitel & Lernziele\\
 
 \normalsize
 
-\hypertarget{part-programmieren-in-r}{%
-\part{Programmieren in R}\label{part-programmieren-in-r}}
+\hypertarget{programmieren-in-r}{%
+\chapter{Programmieren in R}\label{programmieren-in-r}}
 
 \hypertarget{funktionen}{%
 \chapter{Funktionen}\label{funktionen}}
@@ -816,7 +816,7 @@ Mit diesen Funktionen können wir uns zum Beispiel jeweils 1000 zufällige Werte
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-35-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-38-1.pdf}
 
 \hypertarget{aufgabe-3}{%
 \subsection{Aufgabe}\label{aufgabe-3}}
@@ -989,7 +989,7 @@ Bei 10 Stellen ist der Unterschied noch nicht wirklich bemerkbar. Wenn wir jetzt
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 0.0363276 secs
+## Time difference of 0.03497458 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -999,7 +999,7 @@ Bei 10 Stellen ist der Unterschied noch nicht wirklich bemerkbar. Wenn wir jetzt
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 0.07765317 secs
+## Time difference of 0.07572579 secs
 \end{verbatim}
 
 Mehr als die Hälfte der Zeit geht für das Erstellen des neuen Vektors drauf!
@@ -1044,7 +1044,7 @@ Antwort
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-42-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-45-1.pdf}
 
 \hypertarget{listen}{%
 \chapter{Listen}\label{listen}}
@@ -2132,7 +2132,7 @@ Microbenchmarking heißt hier nichts anders, als dass wir die möglichen Impleme
 
 Die Ergebnisse dieses Testlaufs sehen so aus:
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-73-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-76-1.pdf}
 
 Dabei stellen die Linien die Median-Verläufe der jeweiligen Aufrufe dar. Vorsicht: Die Achsen sind logarithmisch skaliert. Ohne diese Skalierung sehen die Ergebnisse so aus:
 
@@ -2156,7 +2156,7 @@ Dabei stellen die Linien die Median-Verläufe der jeweiligen Aufrufe dar. Vorsic
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-74-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-77-1.pdf}
 
 \hypertarget{aufgabe-10}{%
 \subsection{Aufgabe}\label{aufgabe-10}}
@@ -2205,7 +2205,7 @@ Mit \texttt{autoplot(type\ =\ \textquotesingle{}violin\textquotesingle{})} lasse
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-78-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-81-1.pdf}
 
 \hypertarget{eigene-functionals}{%
 \section{Eigene Functionals}\label{eigene-functionals}}
@@ -2911,7 +2911,7 @@ Dazu bauen wir eine fast identische Funktion, die mit den Listen arbeitet und ge
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-98-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-101-1.pdf}
 
 Die Matritzen-Variante ist wesentlich schneller, probieren wir noch einmal wie sich das für verschieden große Matritzen verhält:
 
@@ -3039,7 +3039,7 @@ Antwort
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-103-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-106-1.pdf}
 
 Eine dieser Funktionen können wir nun benutzen, um den chi-Quadrat-Wert einer Kontingenztafel zu bestimmen.
 
@@ -3214,7 +3214,7 @@ Antwort
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-108-1.pdf}
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-111-1.pdf}
 
 Als letztes baue einen chi-Quadrat-Test auf Unabhängigkeit mit der \(\chi^2\)-Statistik aus unseren Funktionen durchführt und die Originalmatrix mit Randsummen, die Gesamtzahl an Beobachtungen, die Teststatistik, die Freiheitsgrade und das p\footnote{In unserem Fall müssen wir die Teststatistik mit der \(\chi^2_{(I-1)(J-1)}\)-Verteilung vergleichen, die R-Funktion für das Finden eines gegebenen \(\chi^2\)-Perzentils ist \texttt{pchisq()}} zurückgibt.
 
@@ -3733,6 +3733,270 @@ Antwort
 
 Kontrollieren Sie Ihre Funktionen immer an kleinen Datensätzen, in denen Sie auch von Hand rechnen können, beispielsweise können Sie Aufgaben aus QM2 benutzen.
 Alternativ können Sie auch größere Datensätze nutzen und Ihre Funktion mit der bekannten t-Test Funktion vergleichen. Achten Sie dabei aber darauf, dass Sie im unabhängigen Fall \texttt{var.equal} auf \texttt{TRUE} setzen.
+
+\hypertarget{experimente-in-psychopy}{%
+\chapter{Experimente in Psychopy}\label{experimente-in-psychopy}}
+
+Psychopy ist ein auf der offenen Programmiersprache Python basiertes Open Source Tool zur Erstellung und Durchführung von Experimenten.
+Seit Version 3 ist außerdem Unterstützung für Pavlovia hinzugekommen, die den Code in Javascript umwandelt und damit Browser-basiert und vor allem online lauffähig macht.
+
+Das Tool kommt dabei mit einem ``Builder'' und einem ``Coder'' zum Erstellen von Experimenten und dem ``Runner'' zum Ausführen dieser.
+Die Drag-And-Drop Oberfläche des ``Builders'' (Abb. \ref{fig:Builder1}) stellt das Experiment als Zeitstrahl dar, und ist das Tool, das wir hauptsächlich nutzen werden.
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/Builder} 
+
+}
+
+\caption{Builder-Ansicht von Psychopy.}\label{fig:Builder1}
+\end{figure}
+
+Im Coder (Abb. \ref{fig:Coder1}) kann das mit dem Builder per Drag-And-Drop erstellte Experiment dann mit direktem Python-Coding angepasst werden. Python ist zwar an vielen Stellen ziemlich ähnlich zu R, wir werden aber so weit möglich vermeiden die Skripte im Coder anzupassen, vor allem auch weil der Plan ist, die Experimente über Pavlovia gehostet durchzuführen. Das Umwandeln von Custom-Python-Code zu JS funktioniert zwar besser als man vielleicht denkt, aber nicht perfekt und wenn man sich sparen möchte, händisch Python in JS zu übersetzen, empfiehlt es sich, möglichst auf den Coder zu verzichten.
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/Coder} 
+
+}
+
+\caption{Coder-Ansicht von Psychopy.}\label{fig:Coder1}
+\end{figure}
+
+Das letzte Fenster ist das ``Runner''-Fenster (Abb. \ref{fig:Runner1}), in dem Experimente gestartet werden können, dazu aber später mehr.
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/Screenshot_20211212_145801} 
+
+}
+
+\caption{Runner-Ansicht von Psychopy. Die Fehlermeldung unten liegt an meinem Setup, stört uns aber nicht weiter.}\label{fig:Runner1}
+\end{figure}
+
+\hypertarget{experiment}{%
+\section{Experiment}\label{experiment}}
+
+Wir wollen das folgende Experiment bauen und auf Pavlovia hosten:
+
+Es handelt sich um eine abgewandelte Version der Stroop-Task. Die Probanden sollen also bei einem in einer Farbe dargestellten Schriftzug, der ein Farbwort angibt, per Tastendruck mitteilen, welche Farbe das Farbwort hat.
+
+\hypertarget{textelemente}{%
+\subsection{Textelemente}\label{textelemente}}
+
+Als ersten Schritt zu diesem Ziel erstellen wir das Farbwort und die zu drückenden Tasten als Text-Stimuli.
+
+Dazu erstellen wir einfach mit dem ``Text''-Item im rechten Menü unter Stimuli vier Text-Stimuli im schon geöffneten Trial (Abb. \ref{fig:Textstimuli}).
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/no_gif} 
+
+}
+
+\caption{Anlegen von 5 Text-Stimuli. Das spätere Stimulus-Item wird mit ``Platzhalter'' als Inhalt initiiert, die vier Hinweise für das Antwort-Format mit einer Zahl (der zu drückenden Taste) und dem entsprechenenden Farbwort darunter initiiert.}\label{fig:Textstimuli}
+\end{figure}
+
+Das Ergebnis ist erstmal nicht besodners schön. Wenn wir das Experiment laufen lassen (Mit Klick auf den ``Run'' Button: Abb. \ref{fig:Run}), können wir uns den bisherigen Trial angucken.
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/Run} 
+
+}
+
+\caption{Run-Button.}\label{fig:Run}
+\end{figure}
+
+Wie man in Abb. \ref{fig:step1} sehen kann, ist das Experiment bis hierhin nicht besonders schön.
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/step1} 
+
+}
+
+\caption{Experiment bis zu diesem Moment.}\label{fig:step1}
+\end{figure}
+
+Als ersten Schritt um das zu verbessern, ändern wir Größe und Position der Tasten-Labels, so dass sie kleiner und am Bildschirmrand zu sehen sind. Die Positionen auf dem Bildschirm werden in Psychopy x- und y-Achse codiert, wobei (0,0) die Bildschirm-Mitte ist. Mit ein bisschen ausprobieren kann man richtige Positionen finden, für unser Experiment schieben wir die labels auf -.25 auf der y-Achse und -.45, -.15, .15 und .45 auf der x-Achse.
+In Abb. \ref{fig:step2} wird exemplarisch das Label für ``grün'' im ``Layout''-Tab nach links unten verschoben und im ``Formatting''-Tab auf die Hälfte der Größe angepasst.
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/no_gif} 
+
+}
+
+\caption{Anpassung von Position und Größe eines Textelements.}\label{fig:step2}
+\end{figure}
+
+Wie in Abb. \ref{fig:step3} zu sehen ist, sieht das schon wesentlich besser aus.
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/step3} 
+
+}
+
+\caption{Trial nach Änderung der Labels.}\label{fig:step3}
+\end{figure}
+
+\hypertarget{input-und-zeitlimit}{%
+\subsection{Input und Zeitlimit}\label{input-und-zeitlimit}}
+
+Als weiteres Element für den Trial brauchen wir nur noch eine Tastatur-Eingabe, die die Antwort der Proband:innen ermöglicht.
+
+Dafür fügen wir einfach ein ``Keyboard''-Element aus der ``Responses''-Kategorie hinzu, der wir die vier Knöpfe erlauben. Außerdem setzen wir den Haken, dass der Trial beim Drücken einer der legalen Tasten beendet wird.
+
+Zuletzt entfernen wir die Duration von den Text-Stimuli, damit der Trial unbegrenzt bis zum Tastendruck läuft. Damit ist die Oberfläche und der Kontroll-Flow unseres Trials fertig (Abb. \ref{fig:step4}).
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/no_gif} 
+
+}
+
+\caption{Hinzufügen einer Tasten-Antwort und Entfernung des Zeitlimits.}\label{fig:step4}
+\end{figure}
+
+\hypertarget{loops}{%
+\subsection{Loops}\label{loops}}
+
+Diesen Trial wollen wir jetzt nutzen um 32 Farbworte darzubieten.
+Diese Farbworte sollen die folgenden Kombinationen jeweils 2 mal in zufälliger Reihenfolge sein:
+
+\begin{table}
+\centering
+\begin{tabular}[t]{ll}
+\toprule
+Wort & Farbe\\
+\midrule
+blau & blau\\
+blau & gelb\\
+blau & grün\\
+blau & rot\\
+gelb & blau\\
+\addlinespace
+gelb & gelb\\
+gelb & grün\\
+gelb & rot\\
+grün & blau\\
+grün & gelb\\
+\addlinespace
+grün & grün\\
+grün & rot\\
+rot & blau\\
+rot & gelb\\
+rot & grün\\
+\addlinespace
+rot & rot\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Dafür exportieren wir als ersten Schritt unsere Trial-Parameter als Tabelle:
+
+Zuerst erstellen wir uns mit \texttt{gtools::permutations} die Kombinationen, verdoppeln die Einträge und ersetzen dann die Farben in der ``Farbe''-Spalte durch rgb-Listen. Zuletzt sortieren wir die Zeilen zufällig um, um Pseudo-randomisiert die verschiedenen Bilder zu präsentieren, um das ganze dann als Semikolon-getrennte Textdatei zu exportieren.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{map\_dfr}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{, }\SpecialCharTok{\textasciitilde{}}\NormalTok{gtools}\SpecialCharTok{::}\FunctionTok{permutations}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{,}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}grün\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}rot\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}blau\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}gelb\textquotesingle{}}\NormalTok{),}\AttributeTok{repeats.allowed =}\NormalTok{ T) }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{as\_tibble}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{set\_names}\NormalTok{(}\AttributeTok{nm =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Wort\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Farbe\textquotesingle{}}\NormalTok{))) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Farbe =} \FunctionTok{recode}\NormalTok{(Farbe,}
+                        \StringTok{\textquotesingle{}grün\textquotesingle{}} \OtherTok{=} \StringTok{\textquotesingle{}green\textquotesingle{}}\NormalTok{, }
+                        \StringTok{\textquotesingle{}rot\textquotesingle{}} \OtherTok{=} \StringTok{\textquotesingle{}red\textquotesingle{}}\NormalTok{,}
+                        \StringTok{\textquotesingle{}blau\textquotesingle{}} \OtherTok{=} \StringTok{\textquotesingle{}blue\textquotesingle{}}\NormalTok{,}
+                        \StringTok{\textquotesingle{}gelb\textquotesingle{}} \OtherTok{=} \StringTok{\textquotesingle{}yellow\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{slice}\NormalTok{(}\FunctionTok{sample}\NormalTok{(}\FunctionTok{seq\_along}\NormalTok{(Farbe))) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{write\_excel\_csv}\NormalTok{(}\StringTok{\textquotesingle{}psy\_exps/conditions.csv\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Dann fügen wir um unseren Trial einen ``Loop'' ein, der die Wiederholung regelt (Abb. \ref{fig:step5}).
+Hier verweisen wir dann auch auf unsere Tabelle mit den Bedingungskombinationen.
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/no_gif} 
+
+}
+
+\caption{Hinzufügen eines Loops mit einer Wiederholung und festsetzen der Bedinungengen mit der erstellten csv.}\label{fig:step5}
+\end{figure}
+
+Wie im Dialog zu sehen sind die zwei Parameter ``Wort'' und ``Farbe'' erkannt worden.
+
+\hypertarget{benutzen-von-parametern}{%
+\subsection{Benutzen von Parametern}\label{benutzen-von-parametern}}
+
+Diese Parameter können wir nun im Stimulus einsetzen, um die Farbworte und die Farben zu nutzen.
+
+Dafür setzen wir den Text auf ``set every repeat'' und den Wert ``\$Wort'' und die ``Foreground Color'' unter ``Appearance'' auf ``\$Farbe'' und ``set every repeat''.
+
+Mit dem ``\$'' wird festgelegt, dass der folgende Text als Variablenname genutzt werden soll, es wird also in jeder Loop-Iteration ein Wert für die beiden Spalten gewählt, der jetzt in den Text-Stimulus eingesetzt wird.
+
+Hierzu würde ich auch gern ein gif zeigen, auf Linux ist in der neuesten Version jedoch ein \href{https://github.com/psychopy/psychopy/issues/4207}{Bug}, der die Lösung nur mit Workaround nutzbar macht.
+
+Das Experiment sieht aber schon einmal ganz gut aus, wie in Abbildung \ref{fig:step6} zu sehen ist:
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/no_gif} 
+
+}
+
+\caption{Experiment mit Loop.}\label{fig:step6}
+\end{figure}
+
+\hypertarget{neue-abschnitte}{%
+\subsection{Neue Abschnitte}\label{neue-abschnitte}}
+
+Als letztes wollen wir ein Fixationskreuz am Beginn jedes Trials hinzufügen, damit die einzelnen Trials merkbar getrennt sind.
+
+Dafür fügen wir einfach eine weitere Routine an den Anfang von ``trials'' ein, die nur aus einer halben Sekunde mit einem Textbaustein mit dem konstanten Text ``+'' besteht (Abb \ref{fig:step7}).
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/no_gif} 
+
+}
+
+\caption{Einfügen eines Fixationskreuzes}\label{fig:step7}
+\end{figure}
+
+\hypertarget{aufgabe-13}{%
+\subsection{Aufgabe}\label{aufgabe-13}}
+
+Überlegt Euch, wie Ihr dieses Experiment verbessern könnt.
+Mögliche Ansätze wären zum Beispiel eine Seite mit Instruktionstext, andere Tasten zum Antworten, eine Rückmeldung nach Antworten, erst späteres Einblenden der Tastenbelegung und und und.
+
+Setzt Eure Ideen um.
 
   \bibliography{book.bib}
 
