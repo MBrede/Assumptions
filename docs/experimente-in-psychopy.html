@@ -24,7 +24,7 @@
 <meta name="author" content="Max Brede und Johannes Andres" />
 
 
-<meta name="date" content="2021-12-13" />
+<meta name="date" content="2021-12-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -197,6 +197,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="experimente-in-psychopy.html"><a href="experimente-in-psychopy.html"><i class="fa fa-check"></i>Experimente in Psychopy</a>
 <ul>
 <li class="chapter" data-level="" data-path="experimente-in-psychopy.html"><a href="experimente-in-psychopy.html#stroop"><i class="fa fa-check"></i>Stroop</a></li>
+<li class="chapter" data-level="" data-path="experimente-in-psychopy.html"><a href="experimente-in-psychopy.html#stroop-mit-bildern"><i class="fa fa-check"></i>Stroop mit Bildern</a></li>
+<li class="chapter" data-level="" data-path="experimente-in-psychopy.html"><a href="experimente-in-psychopy.html#einlesen-von-mit-psychopy-gewonnenen-daten"><i class="fa fa-check"></i>Einlesen von mit Psychopy gewonnenen Daten</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="literatur.html"><a href="literatur.html"><i class="fa fa-check"></i>Literatur</a></li>
 <li class="divider"></li>
@@ -512,8 +514,658 @@ Abb. 12: Einfügen eines Fixationskreuzes
 <p>Überlegt Euch, wie Ihr dieses Experiment<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a> verbessern könnt.
 Mögliche Ansätze wären zum Beispiel eine Seite mit Instruktionstext, andere Tasten zum Antworten, eine Rückmeldung nach Antworten, erst späteres Einblenden der Tastenbelegung und und und.</p>
 <p>Setzt Eure Ideen um.</p>
-
 </div>
+</div>
+<div id="stroop-mit-bildern" class="section level2">
+<h2>Stroop mit Bildern</h2>
+<p>Um die Experimente so gut wie möglich vorzubereiten, wollen wir eine modifizierte Stroop-Task implementieren, in der Tabellen und Graphen dargestellt werden, die signifikante oder nicht signifikante Testergebnisse präsentieren.</p>
+<p>Dazu wird mit Sternchen und p-Wert(widersprüchlich oder nicht) angegeben, ob der Test signifikant geworden ist.</p>
+<p>Wir wollen wieder 32 Stimuli haben, dabei je 8 widersprüchliche und nicht widersprüchliche Angaben jeweils einmal in Tabellen-Format und einmal in Grafikformat. Die (nicht) widersprüchlichen Angaben sollen dabei je zur Hälfte signifikant und nicht signifikant sein.</p>
+<p>Das geplante Design könnte man also zum Beispiel wie in Abb. <a href="experimente-in-psychopy.html#fig:design">13</a> darstellen.</p>
+
+<div class="figure" style="text-align: center"><span id="fig:design"></span>
+<img src="imgs/design.png" alt="Design-Schema für unser modifiziertes Stroop-Experiment." width=".8\textwidth" />
+<p class="caption">
+Abb. 13: Design-Schema für unser modifiziertes Stroop-Experiment.
+</p>
+</div>
+<p>Um zu diesen 32 Bildern zu gelangen, müssen wir zuerst je acht signifikante und nicht signifikante Testergebnisse generieren. Diese werden dann jeweils in Tabelle und Grafik dargestellt, wobei jeweils die Hälfte falsch gekennzeichnet wird.</p>
+<p>Die Testergebnisse können wir einfach mit einem Loop generieren, der über 16 Zahlen iteriert und zum Beispiel bei jeder geraden Zahl einen Erwartungswertunterschied und bei jeder ungeraden keinen simuliert. Die simulierten Daten legen wir dann alle in einer Liste ab.
+Außerdem können wir auch schon für jeden Datensatz einen t-Test berechnen und ablegen, da wir eh Tabellen generiern wollen und für die Grafiken nur p brauchen, können wir auch gleich die von <code>broom::tidy</code> formatierten Ergebnisse ablegen.</p>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="experimente-in-psychopy.html#cb305-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb305-2"><a href="experimente-in-psychopy.html#cb305-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="dv">16</span>)) {</span>
+<span id="cb305-3"><a href="experimente-in-psychopy.html#cb305-3" aria-hidden="true" tabindex="-1"></a>  out[[i]] <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">data =</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">100</span>, <span class="dv">15</span>),</span>
+<span id="cb305-4"><a href="experimente-in-psychopy.html#cb305-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">110</span>)[i <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span>], <span class="dv">15</span>)))</span>
+<span id="cb305-5"><a href="experimente-in-psychopy.html#cb305-5" aria-hidden="true" tabindex="-1"></a>  out[[i]]<span class="sc">$</span>test <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(<span class="fu">with</span>(out[[i]]<span class="sc">$</span>data,<span class="fu">t.test</span>(x,y)))</span>
+<span id="cb305-6"><a href="experimente-in-psychopy.html#cb305-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb305-7"><a href="experimente-in-psychopy.html#cb305-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb305-8"><a href="experimente-in-psychopy.html#cb305-8" aria-hidden="true" tabindex="-1"></a>out[[<span class="dv">1</span>]]</span></code></pre></div>
+<pre><code>## $data
+## # A tibble: 100 × 2
+##        x     y
+##    &lt;dbl&gt; &lt;dbl&gt;
+##  1  93.2 100. 
+##  2  78.9  81.0
+##  3  96.5  99.2
+##  4  94.8 116. 
+##  5 102.  103. 
+##  6 104.  113. 
+##  7 122.  139. 
+##  8  99.8 106. 
+##  9 109.  113. 
+## 10 103.  118. 
+## # … with 90 more rows
+## 
+## $test
+## # A tibble: 1 × 10
+##   estimate estimate1 estimate2 statistic    p.value parameter conf.low conf.high
+##      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1    -9.86      101.      110.     -4.63 0.00000665      193.    -14.1     -5.66
+## # … with 2 more variables: method &lt;chr&gt;, alternative &lt;chr&gt;</code></pre>
+<p>Für die widersprüchliche und nicht-widersprüchliche Signifikanzaussage fügen wir den ersten 8 Werten jetzt noch falsche, den letzten 8 richtige Signifikanzsternchen hinzu:</p>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="experimente-in-psychopy.html#cb307-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(out)){</span>
+<span id="cb307-2"><a href="experimente-in-psychopy.html#cb307-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(i <span class="sc">&lt;=</span> <span class="dv">8</span>){</span>
+<span id="cb307-3"><a href="experimente-in-psychopy.html#cb307-3" aria-hidden="true" tabindex="-1"></a>    out[[i]]<span class="sc">$</span>test<span class="sc">$</span>signif <span class="ot">&lt;-</span> <span class="fu">case_when</span>(out[[i]]<span class="sc">$</span>test<span class="sc">$</span>p.value <span class="sc">&gt;</span> .<span class="dv">05</span> <span class="sc">~</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&#39;*&#39;</span>,<span class="st">&#39;**&#39;</span>,<span class="st">&#39;***&#39;</span>),<span class="dv">1</span>),</span>
+<span id="cb307-4"><a href="experimente-in-psychopy.html#cb307-4" aria-hidden="true" tabindex="-1"></a>                                      T <span class="sc">~</span> <span class="st">&#39;n.s.&#39;</span>)</span>
+<span id="cb307-5"><a href="experimente-in-psychopy.html#cb307-5" aria-hidden="true" tabindex="-1"></a>  }<span class="cf">else</span>{</span>
+<span id="cb307-6"><a href="experimente-in-psychopy.html#cb307-6" aria-hidden="true" tabindex="-1"></a>     out[[i]]<span class="sc">$</span>test<span class="sc">$</span>signif <span class="ot">&lt;-</span> <span class="fu">case_when</span>(out[[i]]<span class="sc">$</span>test<span class="sc">$</span>p.value <span class="sc">&lt;</span> .<span class="dv">001</span> <span class="sc">~</span> <span class="st">&#39;***&#39;</span>,</span>
+<span id="cb307-7"><a href="experimente-in-psychopy.html#cb307-7" aria-hidden="true" tabindex="-1"></a>                                      out[[i]]<span class="sc">$</span>test<span class="sc">$</span>p.value <span class="sc">&lt;</span> .<span class="dv">01</span> <span class="sc">~</span> <span class="st">&#39;**&#39;</span>,</span>
+<span id="cb307-8"><a href="experimente-in-psychopy.html#cb307-8" aria-hidden="true" tabindex="-1"></a>                                      out[[i]]<span class="sc">$</span>test<span class="sc">$</span>p.value <span class="sc">&lt;</span> .<span class="dv">05</span> <span class="sc">~</span> <span class="st">&#39;*&#39;</span>,</span>
+<span id="cb307-9"><a href="experimente-in-psychopy.html#cb307-9" aria-hidden="true" tabindex="-1"></a>                                      T <span class="sc">~</span> <span class="st">&#39;n.s.&#39;</span>)</span>
+<span id="cb307-10"><a href="experimente-in-psychopy.html#cb307-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb307-11"><a href="experimente-in-psychopy.html#cb307-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb307-12"><a href="experimente-in-psychopy.html#cb307-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb307-13"><a href="experimente-in-psychopy.html#cb307-13" aria-hidden="true" tabindex="-1"></a>out[[<span class="dv">1</span>]]</span></code></pre></div>
+<pre><code>## $data
+## # A tibble: 100 × 2
+##        x     y
+##    &lt;dbl&gt; &lt;dbl&gt;
+##  1  93.2 100. 
+##  2  78.9  81.0
+##  3  96.5  99.2
+##  4  94.8 116. 
+##  5 102.  103. 
+##  6 104.  113. 
+##  7 122.  139. 
+##  8  99.8 106. 
+##  9 109.  113. 
+## 10 103.  118. 
+## # … with 90 more rows
+## 
+## $test
+## # A tibble: 1 × 11
+##   estimate estimate1 estimate2 statistic    p.value parameter conf.low conf.high
+##      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1    -9.86      101.      110.     -4.63 0.00000665      193.    -14.1     -5.66
+## # … with 3 more variables: method &lt;chr&gt;, alternative &lt;chr&gt;, signif &lt;chr&gt;</code></pre>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="experimente-in-psychopy.html#cb309-1" aria-hidden="true" tabindex="-1"></a>out[[<span class="dv">9</span>]]</span></code></pre></div>
+<pre><code>## $data
+## # A tibble: 100 × 2
+##        x     y
+##    &lt;dbl&gt; &lt;dbl&gt;
+##  1 106.  130. 
+##  2 106.   82.7
+##  3 112.  111. 
+##  4  85.9  80.0
+##  5  84.8  95.1
+##  6 112.  113. 
+##  7  59.7  95.8
+##  8  93.8  91.4
+##  9  97.8  85.7
+## 10  74.7 118. 
+## # … with 90 more rows
+## 
+## $test
+## # A tibble: 1 × 11
+##   estimate estimate1 estimate2 statistic    p.value parameter conf.low conf.high
+##      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1    -10.8      100.      111.     -4.75 0.00000390      198.    -15.3     -6.32
+## # … with 3 more variables: method &lt;chr&gt;, alternative &lt;chr&gt;, signif &lt;chr&gt;</code></pre>
+<p>Jetzt brauchen wir noch ein sinnvolles Format für unsere Tabellen und Grafiken.</p>
+<p>Für die Grafiken bietet das <code>kableExtra</code>-Paket sehr praktische Funktionen zum Erstellen und formatieren von Tabellen. Mit dem folgenden Code-Schnipsel können wir zum Beispiel eine APA-formatierte Tabelle aus unserem Testergebnis erstellen:</p>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="experimente-in-psychopy.html#cb311-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb311-2"><a href="experimente-in-psychopy.html#cb311-2" aria-hidden="true" tabindex="-1"></a>out[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> </span>
+<span id="cb311-3"><a href="experimente-in-psychopy.html#cb311-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nth</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb311-4"><a href="experimente-in-psychopy.html#cb311-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">$t$</span><span class="st">`</span> <span class="ot">=</span> statistic,</span>
+<span id="cb311-5"><a href="experimente-in-psychopy.html#cb311-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">$p$</span><span class="st">`</span> <span class="ot">=</span> p.value,</span>
+<span id="cb311-6"><a href="experimente-in-psychopy.html#cb311-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"> </span><span class="st">`</span> <span class="ot">=</span> signif) <span class="sc">%&gt;%</span> </span>
+<span id="cb311-7"><a href="experimente-in-psychopy.html#cb311-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb311-8"><a href="experimente-in-psychopy.html#cb311-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>()</span></code></pre></div>
+<table class=" lightable-classic lightable-classic" style="font-size: 15px; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+<span class="math inline">\(t\)</span>
+</th>
+<th style="text-align:right;">
+<span class="math inline">\(p\)</span>
+</th>
+<th style="text-align:left;">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+-4.631611
+</td>
+<td style="text-align:right;">
+6.6e-06
+</td>
+<td style="text-align:left;">
+n.s.
+</td>
+</tr>
+</tbody>
+</table>
+<p>Diese Tabelle können wir dann mit der <code>kableExtra::save_kable()</code>-Funktion in ein Bild exportieren, das man dann in Psychopy importieren kann.</p>
+<p>Für die Grafiken können wir einfach Boxplots mit ggplot generieren und mit <code>annotate</code> eine Signifikanzaussage einfügen. Außerdem können wir noch eine Signifikanzklammer einfügen, zum Beispiel mit einfachem ggplot über <code>geom_segment</code>. Mit <code>ggpubr</code> und <code>ggsignif</code> gäbe es zwar Pakete, die das Problem einfachen lösen, da wir aber eh immer nur eine Klammer einzeichnen ist das ein bisschen overkill.</p>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="experimente-in-psychopy.html#cb312-1" aria-hidden="true" tabindex="-1"></a>line_segments <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>),</span>
+<span id="cb312-2"><a href="experimente-in-psychopy.html#cb312-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">xend =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>),</span>
+<span id="cb312-3"><a href="experimente-in-psychopy.html#cb312-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">y =</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">c</span>(.<span class="dv">025</span>,.<span class="dv">05</span>,.<span class="dv">05</span>)) <span class="sc">*</span> <span class="fu">max</span>(<span class="fu">unlist</span>(out[[<span class="dv">1</span>]]<span class="sc">$</span>data)),</span>
+<span id="cb312-4"><a href="experimente-in-psychopy.html#cb312-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">yend =</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">c</span>(.<span class="dv">05</span>,.<span class="dv">05</span>,.<span class="dv">025</span>)) <span class="sc">*</span> <span class="fu">max</span>(<span class="fu">unlist</span>(out[[<span class="dv">1</span>]]<span class="sc">$</span>data)))</span>
+<span id="cb312-5"><a href="experimente-in-psychopy.html#cb312-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb312-6"><a href="experimente-in-psychopy.html#cb312-6" aria-hidden="true" tabindex="-1"></a>out[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> </span>
+<span id="cb312-7"><a href="experimente-in-psychopy.html#cb312-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">first</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb312-8"><a href="experimente-in-psychopy.html#cb312-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(),</span>
+<span id="cb312-9"><a href="experimente-in-psychopy.html#cb312-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&#39;group&#39;</span>,</span>
+<span id="cb312-10"><a href="experimente-in-psychopy.html#cb312-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&#39;IQ&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb312-11"><a href="experimente-in-psychopy.html#cb312-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> group,</span>
+<span id="cb312-12"><a href="experimente-in-psychopy.html#cb312-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> IQ)) <span class="sc">+</span></span>
+<span id="cb312-13"><a href="experimente-in-psychopy.html#cb312-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb312-14"><a href="experimente-in-psychopy.html#cb312-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>() <span class="sc">+</span></span>
+<span id="cb312-15"><a href="experimente-in-psychopy.html#cb312-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span>  <span class="st">&#39;IQ [M +/- SEM]&#39;</span>) <span class="sc">+</span></span>
+<span id="cb312-16"><a href="experimente-in-psychopy.html#cb312-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb312-17"><a href="experimente-in-psychopy.html#cb312-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="at">geom =</span> <span class="st">&#39;text&#39;</span>,</span>
+<span id="cb312-18"><a href="experimente-in-psychopy.html#cb312-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">1.5</span>, </span>
+<span id="cb312-19"><a href="experimente-in-psychopy.html#cb312-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">1.06</span> <span class="sc">*</span> <span class="fu">max</span>(<span class="fu">unlist</span>(out[[<span class="dv">1</span>]]<span class="sc">$</span>data)),</span>
+<span id="cb312-20"><a href="experimente-in-psychopy.html#cb312-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&#39;p = {round(out[[1]]$test$p.value,5)} {out[[1]]$test$signif}&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb312-21"><a href="experimente-in-psychopy.html#cb312-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data =</span> line_segments,</span>
+<span id="cb312-22"><a href="experimente-in-psychopy.html#cb312-22" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x =</span> x,</span>
+<span id="cb312-23"><a href="experimente-in-psychopy.html#cb312-23" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y =</span> y,</span>
+<span id="cb312-24"><a href="experimente-in-psychopy.html#cb312-24" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xend =</span> xend,</span>
+<span id="cb312-25"><a href="experimente-in-psychopy.html#cb312-25" aria-hidden="true" tabindex="-1"></a>                   <span class="at">yend =</span> yend))</span></code></pre></div>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-128-1.png" width="672" /></p>
+<p>Diese Grafik können wir einfach wie immer mit <code>ggsave</code> exportieren.</p>
+<p>Was jetzt nur noch bleibt ist die Liste einmal durchzulaufen und für jeden Eintrag eine Grafik und eine Tabelle zu erstellen.
+Dabei ergibt es Sinn, die Exports mit einem String zu benennen, der klar die Bedingungen einteilt, die wir erstellt haben.
+Wie dieser String aussieht ist egal, man muss sich nur merken, welche Information in welchem Teil codiert ist.
+Ein Beispiel ist in Abb. <a href="experimente-in-psychopy.html#fig:fileName">14</a> zu sehen.</p>
+
+<div class="figure" style="text-align: center"><span id="fig:fileName"></span>
+<img src="imgs/file_name.png" alt="Mögliches Format zur Benennung der Dateien." width=".8\textwidth" />
+<p class="caption">
+Abb. 14: Mögliches Format zur Benennung der Dateien.
+</p>
+</div>
+<p>Diese Unterpunkte könnte man zum Beispiel mit <code>paste</code> und <code>glue</code> wie folgt zusammenfügen:</p>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="experimente-in-psychopy.html#cb314-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(out)){</span>
+<span id="cb314-2"><a href="experimente-in-psychopy.html#cb314-2" aria-hidden="true" tabindex="-1"></a>  back_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">ifelse</span>(i <span class="sc">&lt;=</span> <span class="dv">8</span>, <span class="st">&#39;wid&#39;</span>,<span class="st">&#39;nwid&#39;</span>),</span>
+<span id="cb314-3"><a href="experimente-in-psychopy.html#cb314-3" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">ifelse</span>(i <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&#39;nsign&#39;</span>,<span class="st">&#39;sign&#39;</span>),</span>
+<span id="cb314-4"><a href="experimente-in-psychopy.html#cb314-4" aria-hidden="true" tabindex="-1"></a>                     i,<span class="at">sep =</span> <span class="st">&#39;_&#39;</span>)</span>
+<span id="cb314-5"><a href="experimente-in-psychopy.html#cb314-5" aria-hidden="true" tabindex="-1"></a>  table_name <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&#39;table_{back_name}.png&#39;</span>)</span>
+<span id="cb314-6"><a href="experimente-in-psychopy.html#cb314-6" aria-hidden="true" tabindex="-1"></a>  graph_name <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&#39;box_{back_name}.png&#39;</span>)</span>
+<span id="cb314-7"><a href="experimente-in-psychopy.html#cb314-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb314-8"><a href="experimente-in-psychopy.html#cb314-8" aria-hidden="true" tabindex="-1"></a>table_name</span></code></pre></div>
+<pre><code>## table_nwid_nsign_16.png</code></pre>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="experimente-in-psychopy.html#cb316-1" aria-hidden="true" tabindex="-1"></a>graph_name</span></code></pre></div>
+<pre><code>## box_nwid_nsign_16.png</code></pre>
+<p>Jetzt müssen wir nurnoch den Code einsetzen, den wir eben zur Erstellung der Tabellen und Grafiken genutzt haben, und schon haben wir unsere Stimuli. Da wir aber nicht den ganzen Code in einer Schleife haben wollen, verpacken wir die Tabellen und Grafiken noch jeweils in Funktionen, die den Pfad und eine Liste <code>sim_res</code> mit <code>data</code> und <code>test</code> erwarten:</p>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="experimente-in-psychopy.html#cb318-1" aria-hidden="true" tabindex="-1"></a>tab_wrapper <span class="ot">&lt;-</span> <span class="cf">function</span>(path, sim_res){</span>
+<span id="cb318-2"><a href="experimente-in-psychopy.html#cb318-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span>
+<span id="cb318-3"><a href="experimente-in-psychopy.html#cb318-3" aria-hidden="true" tabindex="-1"></a>  sim_res <span class="sc">%&gt;%</span> </span>
+<span id="cb318-4"><a href="experimente-in-psychopy.html#cb318-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nth</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb318-5"><a href="experimente-in-psychopy.html#cb318-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">t</span><span class="st">`</span> <span class="ot">=</span> statistic,</span>
+<span id="cb318-6"><a href="experimente-in-psychopy.html#cb318-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">p</span><span class="st">`</span> <span class="ot">=</span> p.value,</span>
+<span id="cb318-7"><a href="experimente-in-psychopy.html#cb318-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at"> </span><span class="st">`</span> <span class="ot">=</span> signif) <span class="sc">%&gt;%</span> </span>
+<span id="cb318-8"><a href="experimente-in-psychopy.html#cb318-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="st">&#39;html&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb318-9"><a href="experimente-in-psychopy.html#cb318-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb318-10"><a href="experimente-in-psychopy.html#cb318-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_kable</span>(<span class="at">file =</span> path,</span>
+<span id="cb318-11"><a href="experimente-in-psychopy.html#cb318-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">delay =</span> .<span class="dv">2</span>)</span>
+<span id="cb318-12"><a href="experimente-in-psychopy.html#cb318-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">options</span>(<span class="at">scipen =</span> <span class="cn">NULL</span>)</span>
+<span id="cb318-13"><a href="experimente-in-psychopy.html#cb318-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb318-14"><a href="experimente-in-psychopy.html#cb318-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb318-15"><a href="experimente-in-psychopy.html#cb318-15" aria-hidden="true" tabindex="-1"></a>box_wrapper <span class="ot">&lt;-</span> <span class="cf">function</span>(path, sim_res) {</span>
+<span id="cb318-16"><a href="experimente-in-psychopy.html#cb318-16" aria-hidden="true" tabindex="-1"></a>  line_segments <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb318-17"><a href="experimente-in-psychopy.html#cb318-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb318-18"><a href="experimente-in-psychopy.html#cb318-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb318-19"><a href="experimente-in-psychopy.html#cb318-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">c</span>(.<span class="dv">025</span>, .<span class="dv">05</span>, .<span class="dv">05</span>)) <span class="sc">*</span> <span class="fu">max</span>(<span class="fu">unlist</span>(sim_res<span class="sc">$</span>data)),</span>
+<span id="cb318-20"><a href="experimente-in-psychopy.html#cb318-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">c</span>(.<span class="dv">05</span>, .<span class="dv">05</span>, .<span class="dv">025</span>)) <span class="sc">*</span> <span class="fu">max</span>(<span class="fu">unlist</span>(sim_res<span class="sc">$</span>data))</span>
+<span id="cb318-21"><a href="experimente-in-psychopy.html#cb318-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb318-22"><a href="experimente-in-psychopy.html#cb318-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb318-23"><a href="experimente-in-psychopy.html#cb318-23" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> sim_res <span class="sc">%&gt;%</span></span>
+<span id="cb318-24"><a href="experimente-in-psychopy.html#cb318-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">first</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb318-25"><a href="experimente-in-psychopy.html#cb318-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(),</span>
+<span id="cb318-26"><a href="experimente-in-psychopy.html#cb318-26" aria-hidden="true" tabindex="-1"></a>                 <span class="at">names_to =</span> <span class="st">&#39;group&#39;</span>,</span>
+<span id="cb318-27"><a href="experimente-in-psychopy.html#cb318-27" aria-hidden="true" tabindex="-1"></a>                 <span class="at">values_to =</span> <span class="st">&#39;IQ&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb318-28"><a href="experimente-in-psychopy.html#cb318-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> group,</span>
+<span id="cb318-29"><a href="experimente-in-psychopy.html#cb318-29" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> IQ)) <span class="sc">+</span></span>
+<span id="cb318-30"><a href="experimente-in-psychopy.html#cb318-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb318-31"><a href="experimente-in-psychopy.html#cb318-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_summary</span>() <span class="sc">+</span></span>
+<span id="cb318-32"><a href="experimente-in-psychopy.html#cb318-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y =</span>  <span class="st">&#39;IQ [M +/- SEM]&#39;</span>) <span class="sc">+</span></span>
+<span id="cb318-33"><a href="experimente-in-psychopy.html#cb318-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb318-34"><a href="experimente-in-psychopy.html#cb318-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(</span>
+<span id="cb318-35"><a href="experimente-in-psychopy.html#cb318-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">geom =</span> <span class="st">&#39;text&#39;</span>,</span>
+<span id="cb318-36"><a href="experimente-in-psychopy.html#cb318-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fl">1.5</span>,</span>
+<span id="cb318-37"><a href="experimente-in-psychopy.html#cb318-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">1.06</span> <span class="sc">*</span> <span class="fu">max</span>(<span class="fu">unlist</span>(sim_res<span class="sc">$</span>data)),</span>
+<span id="cb318-38"><a href="experimente-in-psychopy.html#cb318-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&#39;p = {round(sim_res$test$p.value,5)} {sim_res$test$signif}&#39;</span>)</span>
+<span id="cb318-39"><a href="experimente-in-psychopy.html#cb318-39" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb318-40"><a href="experimente-in-psychopy.html#cb318-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_segment</span>(<span class="at">data =</span> line_segments,</span>
+<span id="cb318-41"><a href="experimente-in-psychopy.html#cb318-41" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">aes</span>(</span>
+<span id="cb318-42"><a href="experimente-in-psychopy.html#cb318-42" aria-hidden="true" tabindex="-1"></a>                   <span class="at">x =</span> x,</span>
+<span id="cb318-43"><a href="experimente-in-psychopy.html#cb318-43" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y =</span> y,</span>
+<span id="cb318-44"><a href="experimente-in-psychopy.html#cb318-44" aria-hidden="true" tabindex="-1"></a>                   <span class="at">xend =</span> xend,</span>
+<span id="cb318-45"><a href="experimente-in-psychopy.html#cb318-45" aria-hidden="true" tabindex="-1"></a>                   <span class="at">yend =</span> yend</span>
+<span id="cb318-46"><a href="experimente-in-psychopy.html#cb318-46" aria-hidden="true" tabindex="-1"></a>                 ))</span>
+<span id="cb318-47"><a href="experimente-in-psychopy.html#cb318-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(path, p, <span class="at">bg =</span> <span class="st">&#39;white&#39;</span>)</span>
+<span id="cb318-48"><a href="experimente-in-psychopy.html#cb318-48" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Das brauchen wir nur noch in die Schleife einzusetzen und schon haben wir unsere Stimuli:</p>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="experimente-in-psychopy.html#cb319-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(out)){</span>
+<span id="cb319-2"><a href="experimente-in-psychopy.html#cb319-2" aria-hidden="true" tabindex="-1"></a>  back_name <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">ifelse</span>(i <span class="sc">&lt;=</span> <span class="dv">8</span>, <span class="st">&#39;wid&#39;</span>,<span class="st">&#39;nwid&#39;</span>),</span>
+<span id="cb319-3"><a href="experimente-in-psychopy.html#cb319-3" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">ifelse</span>(i <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&#39;nsign&#39;</span>,<span class="st">&#39;sign&#39;</span>),</span>
+<span id="cb319-4"><a href="experimente-in-psychopy.html#cb319-4" aria-hidden="true" tabindex="-1"></a>                     i,<span class="at">sep =</span> <span class="st">&#39;_&#39;</span>)</span>
+<span id="cb319-5"><a href="experimente-in-psychopy.html#cb319-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb319-6"><a href="experimente-in-psychopy.html#cb319-6" aria-hidden="true" tabindex="-1"></a>  table_name <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&#39;stimuli/table_{back_name}.png&#39;</span>)</span>
+<span id="cb319-7"><a href="experimente-in-psychopy.html#cb319-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_wrapper</span>(table_name, out[[i]])</span>
+<span id="cb319-8"><a href="experimente-in-psychopy.html#cb319-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb319-9"><a href="experimente-in-psychopy.html#cb319-9" aria-hidden="true" tabindex="-1"></a>  graph_name <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&#39;stimuli/box_{back_name}.png&#39;</span>)</span>
+<span id="cb319-10"><a href="experimente-in-psychopy.html#cb319-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">box_wrapper</span>(graph_name, out[[i]])</span>
+<span id="cb319-11"><a href="experimente-in-psychopy.html#cb319-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Die erstellten Pfade könnten wir entweder direkt in der Schleife mitschreiben, oder wir benutzen einfach <code>list.files</code>, um uns den Inhalt der <code>stimuli</code>-Directory ausgeben zu lassen.</p>
+<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="experimente-in-psychopy.html#cb320-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">&#39;stimuli/&#39;</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;box_nwid_nsign_10.png&quot;   &quot;box_nwid_nsign_12.png&quot;  
+##  [3] &quot;box_nwid_nsign_14.png&quot;   &quot;box_nwid_nsign_16.png&quot;  
+##  [5] &quot;box_nwid_sign_11.png&quot;    &quot;box_nwid_sign_13.png&quot;   
+##  [7] &quot;box_nwid_sign_15.png&quot;    &quot;box_nwid_sign_9.png&quot;    
+##  [9] &quot;box_wid_nsign_2.png&quot;     &quot;box_wid_nsign_4.png&quot;    
+## [11] &quot;box_wid_nsign_6.png&quot;     &quot;box_wid_nsign_8.png&quot;    
+## [13] &quot;box_wid_sign_1.png&quot;      &quot;box_wid_sign_3.png&quot;     
+## [15] &quot;box_wid_sign_5.png&quot;      &quot;box_wid_sign_7.png&quot;     
+## [17] &quot;table_nwid_nsign_10.png&quot; &quot;table_nwid_nsign_12.png&quot;
+## [19] &quot;table_nwid_nsign_14.png&quot; &quot;table_nwid_nsign_16.png&quot;
+## [21] &quot;table_nwid_sign_11.png&quot;  &quot;table_nwid_sign_13.png&quot; 
+## [23] &quot;table_nwid_sign_15.png&quot;  &quot;table_nwid_sign_9.png&quot;  
+## [25] &quot;table_wid_nsign_2.png&quot;   &quot;table_wid_nsign_4.png&quot;  
+## [27] &quot;table_wid_nsign_6.png&quot;   &quot;table_wid_nsign_8.png&quot;  
+## [29] &quot;table_wid_sign_1.png&quot;    &quot;table_wid_sign_3.png&quot;   
+## [31] &quot;table_wid_sign_5.png&quot;    &quot;table_wid_sign_7.png&quot;</code></pre>
+<p>Mit dem <code>full.names</code>-Argument dazu können wir die ganzen Pfade generieren und dann zum Beispiel mit <code>write_csv</code> in eine csv schreiben, die wir dann in Psychopy einbinden können:</p>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="experimente-in-psychopy.html#cb322-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">path =</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">&#39;stimuli/&#39;</span>, <span class="at">full.names =</span> T)) <span class="sc">%&gt;%</span> </span>
+<span id="cb322-2"><a href="experimente-in-psychopy.html#cb322-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(<span class="st">&#39;psy_exps/paths.csv&#39;</span>)</span></code></pre></div>
+<div id="aufgabe-14" class="section level3">
+<h3>Aufgabe</h3>
+<p>Ladet Euch die Bilder aus dem Olat herunter, solltet Ihr sie nicht selbst erstellt haben.
+Generiert dann auf jeden Fall die csv mit den Datei-Pfaden, sonst funktioniert es nicht.</p>
+<p>Passt das dann Psychopy-Skript aus der letzten Sitzung so an, dass es für unsere Bilder funktioniert. Die Proband:innen sollen dabei nur noch zwei Auswahlmöglichkeiten (signifikant/nicht signifikant) haben.</p>
+<p>Fügt eine “Rückmeldung” zur Gedrückten Antwort hinzu (Einrahmung der Antwortalternative).</p>
+<p>Zusatz:
+Wie könnte man den Proband:innen nach gedrückter Taste direkt anzeigen lassen, ob die Antwort richtig oder falsch war? Als Tipp: Mit <code>.split('_')</code> kann man in Python einen String in durch Unterstriche geteilte Abschnitte aufteilen, die sich dann mit <code>[]</code> indizieren lassn. Dabei ist aber wichtig, dass die erste Stelle in Python mit der 0 indiziert wird:</p>
+<div class="sourceCode" id="cb323"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb323-1"><a href="experimente-in-psychopy.html#cb323-1" aria-hidden="true" tabindex="-1"></a>string <span class="op">=</span> <span class="st">&#39;just_a_string&#39;</span></span>
+<span id="cb323-2"><a href="experimente-in-psychopy.html#cb323-2" aria-hidden="true" tabindex="-1"></a>string.split(<span class="st">&#39;_&#39;</span>)</span></code></pre></div>
+<pre><code>## [&#39;just&#39;, &#39;a&#39;, &#39;string&#39;]</code></pre>
+<div class="sourceCode" id="cb325"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb325-1"><a href="experimente-in-psychopy.html#cb325-1" aria-hidden="true" tabindex="-1"></a>string.split(<span class="st">&#39;_&#39;</span>)[<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## &#39;string&#39;</code></pre>
+</div>
+</div>
+<div id="einlesen-von-mit-psychopy-gewonnenen-daten" class="section level2">
+<h2>Einlesen von mit Psychopy gewonnenen Daten</h2>
+<p>In der Standardeinstellung sehen die mit Psychopy generierten Daten wie folgt aus:</p>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="experimente-in-psychopy.html#cb327-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">&#39;psy_exps/data/_sitzung_2021_Dez_17_1144.csv&#39;</span>)</span></code></pre></div>
+<pre><code>## New names:
+## * `` -&gt; ...41</code></pre>
+<pre><code>## Rows: 5 Columns: 41</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (19): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (20): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...41</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## # A tibble: 5 × 41
+##   Wort  Farbe trials.thisRepN trials.thisTrialN trials.thisN trials.thisIndex
+##   &lt;chr&gt; &lt;chr&gt;           &lt;dbl&gt;             &lt;dbl&gt;        &lt;dbl&gt;            &lt;dbl&gt;
+## 1 gelb  green               0                 0            0                0
+## 2 grün  green               0                 1            1                1
+## 3 rot   green               0                 2            2                2
+## 4 gelb  red                 0                 3            3                3
+## 5 &lt;NA&gt;  &lt;NA&gt;               NA                NA           NA               NA
+## # … with 35 more variables: text.started &lt;dbl&gt;, text.stopped &lt;chr&gt;,
+## #   textStim.started &lt;dbl&gt;, textStim.stopped &lt;chr&gt;, gruen.started &lt;dbl&gt;,
+## #   gruen.stopped &lt;chr&gt;, rot.started &lt;dbl&gt;, rot.stopped &lt;chr&gt;,
+## #   gelb.started &lt;dbl&gt;, gelb.stopped &lt;chr&gt;, blau.started &lt;dbl&gt;,
+## #   blau.stopped &lt;chr&gt;, key_resp.keys &lt;dbl&gt;, key_resp.rt &lt;dbl&gt;,
+## #   key_resp.started &lt;dbl&gt;, key_resp.stopped &lt;chr&gt;, textStim_2.started &lt;dbl&gt;,
+## #   textStim_2.stopped &lt;chr&gt;, gruen_2.started &lt;dbl&gt;, gruen_2.stopped &lt;chr&gt;,
+## #   rot_2.started &lt;dbl&gt;, rot_2.stopped &lt;chr&gt;, gelb_2.started &lt;dbl&gt;,
+## #   gelb_2.stopped &lt;chr&gt;, blau_2.started &lt;dbl&gt;, blau_2.stopped &lt;chr&gt;,
+## #   polygon.started &lt;dbl&gt;, polygon.stopped &lt;chr&gt;, participant &lt;lgl&gt;,
+## #   session &lt;chr&gt;, date &lt;chr&gt;, expName &lt;chr&gt;, psychopyVersion &lt;chr&gt;,
+## #   frameRate &lt;dbl&gt;, ...41 &lt;lgl&gt;</code></pre>
+<p>Dabei wird für jede:n Proband:in eine Datei in diesem Format generiert.</p>
+<p>Um die Dateien in Stapelverarbeitung einzulesen und zusammenzufügen können wir die uns schon bekannten Funktionen <code>list.files</code> und <code>map_dfr</code> nutzen. Da in den Dateien schon eine <code>participant</code>-Spalte ist, müssen wir uns nicht mal mehr darum kümmern, eine Indexspalte hinzuzufügen.</p>
+<p>Da Psychopy aber bei jeder Durchführung eine Reihe von Dateien abspeichert, müssen wir noch mit <code>pattern</code> angeben, wie die Dateien die uns interessieren denn benannt sind.</p>
+<p>In unserem Fall sagen wir einfach, dass <code>sitzung</code> im Namen vorkommen muss, also der Name des Experiments, das wir auswerten wollen. Außerdem müssen wir angeben, dass die Datei in <code>.csv</code> enden soll, da sonst auch die log-Dateien eingelesen werden. Dazu schreiben wir in das <code>pattern</code>-Argument einfach, dass der Platzhalter <code>.</code> beliebig oft wiederholt werden darf (<code>+</code>) und der Name in <code>csv</code> endet.</p>
+<p>Mit <code>map_dfr</code> können wir die Pfade dann einfach durchlaufen und mit read_csv einzulesen versuchen:</p>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="experimente-in-psychopy.html#cb333-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(<span class="st">&#39;psy_exps/data/&#39;</span>,</span>
+<span id="cb333-2"><a href="experimente-in-psychopy.html#cb333-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">pattern =</span> <span class="st">&#39;sitzung.*csv&#39;</span>,</span>
+<span id="cb333-3"><a href="experimente-in-psychopy.html#cb333-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">full.names =</span> T) <span class="sc">%&gt;%</span> </span>
+<span id="cb333-4"><a href="experimente-in-psychopy.html#cb333-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(read_csv)</span></code></pre></div>
+<pre><code>## New names:
+## * `` -&gt; ...9</code></pre>
+<pre><code>## Rows: 1 Columns: 9</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (1): textStim.stopped
+## dbl (1): textStim.started
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...9</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...15</code></pre>
+<pre><code>## Rows: 1 Columns: 15</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (4): textStim.stopped, gruen.stopped, rot.stopped, gelb.stopped
+## dbl (4): textStim.started, gruen.started, rot.started, gelb.started
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...15</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...17</code></pre>
+<pre><code>## Rows: 1 Columns: 17</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (5): textStim.stopped, gruen.stopped, rot.stopped, gelb.stopped, blau.st...
+## dbl (5): textStim.started, gruen.started, rot.started, gelb.started, blau.st...
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...17</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...17</code></pre>
+<pre><code>## Rows: 1 Columns: 17</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (5): textStim.stopped, gruen.stopped, rot.stopped, gelb.stopped, blau.st...
+## dbl (5): textStim.started, gruen.started, rot.started, gelb.started, blau.st...
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...17</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...17</code></pre>
+<pre><code>## Rows: 1 Columns: 17</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (5): textStim.stopped, gruen.stopped, rot.stopped, gelb.stopped, blau.st...
+## dbl (5): textStim.started, gruen.started, rot.started, gelb.started, blau.st...
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...17</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...17</code></pre>
+<pre><code>## Rows: 1 Columns: 17</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (5): textStim.stopped, gruen.stopped, rot.stopped, gelb.stopped, blau.st...
+## dbl (5): textStim.started, gruen.started, rot.started, gelb.started, blau.st...
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...17</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...17</code></pre>
+<pre><code>## Rows: 1 Columns: 17</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (5): textStim.stopped, gruen.stopped, rot.stopped, gelb.stopped, blau.st...
+## dbl (5): textStim.started, gruen.started, rot.started, gelb.started, blau.st...
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...17</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...23</code></pre>
+<pre><code>## Rows: 19 Columns: 23</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (11): Wort, Farbe, textStim.stopped, gruen.stopped, rot.stopped, gelb.st...
+## dbl (10): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...23</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...27</code></pre>
+<pre><code>## Rows: 9 Columns: 27</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (12): Wort, Farbe, textStim.stopped, gruen.stopped, rot.stopped, gelb.st...
+## dbl (13): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...27</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...29</code></pre>
+<pre><code>## Rows: 5 Columns: 29</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (13): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (14): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...29</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...7</code></pre>
+<pre><code>## Rows: 0 Columns: 7</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (7): participant, session, date, expName, psychopyVersion, frameRate, ...7</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...7</code></pre>
+<pre><code>## Rows: 0 Columns: 7</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (7): participant, session, date, expName, psychopyVersion, frameRate, ...7</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...29</code></pre>
+<pre><code>## Rows: 1 Columns: 29</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (7): text.stopped, textStim.stopped, gruen.stopped, rot.stopped, gelb.s...
+## dbl  (9): text.started, textStim.started, gruen.started, rot.started, gelb.s...
+## lgl (13): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...7</code></pre>
+<pre><code>## Rows: 0 Columns: 7</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (7): participant, session, date, expName, psychopyVersion, frameRate, ...7</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...41</code></pre>
+<pre><code>## Rows: 3 Columns: 41</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (19): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (20): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...41</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...41</code></pre>
+<pre><code>## Rows: 5 Columns: 41</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (19): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (20): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...41</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...41</code></pre>
+<pre><code>## Rows: 4 Columns: 41</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (19): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (20): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...41</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...15</code></pre>
+<pre><code>## Rows: 1 Columns: 15</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (1): text.stopped
+## dbl  (1): text.started
+## lgl (13): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...41</code></pre>
+<pre><code>## Rows: 7 Columns: 41</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (19): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (20): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...41</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...41</code></pre>
+<pre><code>## Rows: 5 Columns: 41</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (19): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (20): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...41</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## Error: Can&#39;t combine `frameRate` &lt;double&gt; and `frameRate` &lt;character&gt;.</code></pre>
+<p>Der Fehler entsteht, da Datensätze mit nicht genug Einträgen vorliegen, die dadurch das Datenformat durcheinanderbringen.
+Mit der Formelschreibweise können wir <code>read_csv</code> jetzt noch so ergänzen, dass standardmäßig <code>character</code>-Spalten erwartet werden. Sollte dann was anderes vorliegen, können wir nachträglich noch Typen-Änderungen durchführen:</p>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="experimente-in-psychopy.html#cb415-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&#39;psy_exps/data/&#39;</span>,</span>
+<span id="cb415-2"><a href="experimente-in-psychopy.html#cb415-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">pattern =</span> <span class="st">&#39;sitzung.*csv&#39;</span>,</span>
+<span id="cb415-3"><a href="experimente-in-psychopy.html#cb415-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">full.names =</span> T) <span class="sc">%&gt;%</span> </span>
+<span id="cb415-4"><a href="experimente-in-psychopy.html#cb415-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(<span class="sc">~</span><span class="fu">read_csv</span>(.,<span class="at">col_types =</span> <span class="fu">cols</span>(<span class="at">.default =</span> <span class="st">&#39;c&#39;</span>)))</span></code></pre></div>
+<pre><code>## New names:
+## * `` -&gt; ...9</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...15</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...17
+## New names:
+## * `` -&gt; ...17
+## New names:
+## * `` -&gt; ...17
+## New names:
+## * `` -&gt; ...17
+## New names:
+## * `` -&gt; ...17</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...23</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...27</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...29</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...7
+## New names:
+## * `` -&gt; ...7</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...29</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...7</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...41
+## New names:
+## * `` -&gt; ...41
+## New names:
+## * `` -&gt; ...41</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...15</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...41
+## New names:
+## * `` -&gt; ...41</code></pre>
+<p>Den fertigen Datensatz können wir dann zum Beispiel nutzen, um Reaktionszeiten bei richtigen und falschen Reaktionen zu vergleichen.</p>
+<p>Dazu entfernen wir zuerst die Spalten die wir nicht brauchen:</p>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb428-1"><a href="experimente-in-psychopy.html#cb428-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb428-2"><a href="experimente-in-psychopy.html#cb428-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Wort, Farbe, key_resp.rt, key_resp.keys)</span>
+<span id="cb428-3"><a href="experimente-in-psychopy.html#cb428-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df)</span></code></pre></div>
+<pre><code>## Rows: 66
+## Columns: 4
+## $ Wort          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, &quot;gelb&quot;, &quot;grün&quot;, &quot;rot&quot;, &quot;gelb…
+## $ Farbe         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, &quot;green&quot;, &quot;green&quot;, &quot;green&quot;, &quot;…
+## $ key_resp.rt   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ key_resp.keys &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …</code></pre>
+<p>Und entfernen die Zeilen, in denen keine Antwort gegeben wurde:</p>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="experimente-in-psychopy.html#cb430-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb430-2"><a href="experimente-in-psychopy.html#cb430-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(key_resp.rt))</span>
+<span id="cb430-3"><a href="experimente-in-psychopy.html#cb430-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df)</span></code></pre></div>
+<pre><code>## Rows: 34
+## Columns: 4
+## $ Wort          &lt;chr&gt; &quot;gelb&quot;, &quot;grün&quot;, &quot;rot&quot;, &quot;gelb&quot;, &quot;blau&quot;, &quot;gelb&quot;, &quot;rot&quot;, &quot;g…
+## $ Farbe         &lt;chr&gt; &quot;green&quot;, &quot;green&quot;, &quot;green&quot;, &quot;red&quot;, &quot;red&quot;, &quot;yellow&quot;, &quot;yell…
+## $ key_resp.rt   &lt;chr&gt; &quot;5.563401937484741&quot;, &quot;1.2030880451202393&quot;, &quot;0.7033100128…
+## $ key_resp.keys &lt;chr&gt; &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;2&quot;, &quot;2&quot;, &quot;3&quot;, &quot;3&quot;, &quot;4&quot;, &quot;2&quot;, &quot;2&quot;, &quot;1&quot;, &quot;…</code></pre>
+<p>Jetzt müssen wir nur noch die gedrückten Tasten in richtig oder falsch übersetzen und können uns die Ergebnisse angucken. Zusätzlich können wir noch die Farbe übersetzen, damit spätere Auswertungen einfachen werden.
+Außerdem müssen wir noch die Reaktionszeiten in Zahlen umwandeln.</p>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb432-1"><a href="experimente-in-psychopy.html#cb432-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb432-2"><a href="experimente-in-psychopy.html#cb432-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">key_resp.rt =</span> <span class="fu">as.numeric</span>(key_resp.rt),</span>
+<span id="cb432-3"><a href="experimente-in-psychopy.html#cb432-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">key_resp.keys =</span> <span class="fu">recode</span>(key_resp.keys,</span>
+<span id="cb432-4"><a href="experimente-in-psychopy.html#cb432-4" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&#39;1&#39;</span> <span class="ot">=</span> <span class="st">&#39;grün&#39;</span>,</span>
+<span id="cb432-5"><a href="experimente-in-psychopy.html#cb432-5" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&#39;2&#39;</span> <span class="ot">=</span> <span class="st">&#39;rot&#39;</span>,</span>
+<span id="cb432-6"><a href="experimente-in-psychopy.html#cb432-6" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&#39;3&#39;</span> <span class="ot">=</span> <span class="st">&#39;gelb&#39;</span>,</span>
+<span id="cb432-7"><a href="experimente-in-psychopy.html#cb432-7" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&#39;4&#39;</span> <span class="ot">=</span> <span class="st">&#39;blau&#39;</span>),</span>
+<span id="cb432-8"><a href="experimente-in-psychopy.html#cb432-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">Farbe =</span> <span class="fu">recode</span>(Farbe,</span>
+<span id="cb432-9"><a href="experimente-in-psychopy.html#cb432-9" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;green&#39;</span> <span class="ot">=</span> <span class="st">&#39;grün&#39;</span>,</span>
+<span id="cb432-10"><a href="experimente-in-psychopy.html#cb432-10" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;red&#39;</span> <span class="ot">=</span> <span class="st">&#39;rot&#39;</span>,</span>
+<span id="cb432-11"><a href="experimente-in-psychopy.html#cb432-11" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;yellow&#39;</span> <span class="ot">=</span> <span class="st">&#39;gelb&#39;</span>,</span>
+<span id="cb432-12"><a href="experimente-in-psychopy.html#cb432-12" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;blue&#39;</span> <span class="ot">=</span> <span class="st">&#39;blau&#39;</span>),</span>
+<span id="cb432-13"><a href="experimente-in-psychopy.html#cb432-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">correct_answer =</span> Farbe <span class="sc">==</span> key_resp.keys,</span>
+<span id="cb432-14"><a href="experimente-in-psychopy.html#cb432-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">word_color_same =</span> Wort <span class="sc">==</span> Farbe)</span></code></pre></div>
+<p>Diesen Datensatz können wir jetzt zum Beispiel nutzen um richtige und falsche Reaktionszeiten in den Bedingungen zu betrachten:</p>
+<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="experimente-in-psychopy.html#cb433-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb433-2"><a href="experimente-in-psychopy.html#cb433-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_missing</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb433-3"><a href="experimente-in-psychopy.html#cb433-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Farbe,</span>
+<span id="cb433-4"><a href="experimente-in-psychopy.html#cb433-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> correct_answer,</span>
+<span id="cb433-5"><a href="experimente-in-psychopy.html#cb433-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> key_resp.rt)) <span class="sc">+</span></span>
+<span id="cb433-6"><a href="experimente-in-psychopy.html#cb433-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb433-7"><a href="experimente-in-psychopy.html#cb433-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> .<span class="dv">75</span>),</span>
+<span id="cb433-8"><a href="experimente-in-psychopy.html#cb433-8" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">color =</span> correct_answer)) <span class="sc">+</span></span>
+<span id="cb433-9"><a href="experimente-in-psychopy.html#cb433-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> word_color_same,<span class="at">nrow =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## Warning: Removed 1 rows containing missing values.</code></pre>
+<pre><code>## No summary function supplied, defaulting to `mean_se()`
+## No summary function supplied, defaulting to `mean_se()`</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_segment).</code></pre>
+<p><img src="Robustheit_files/figure-html/unnamed-chunk-141-1.png" width="672" /></p>
+
 </div>
 </div>
 <div class="footnotes">

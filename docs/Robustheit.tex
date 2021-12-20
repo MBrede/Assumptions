@@ -173,7 +173,7 @@
 
 \title{Robustheit}
 \author{Max Brede und Johannes Andres}
-\date{2021-12-13}
+\date{2021-12-20}
 
 \begin{document}
 \maketitle
@@ -989,7 +989,7 @@ Bei 10 Stellen ist der Unterschied noch nicht wirklich bemerkbar. Wenn wir jetzt
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 0.0356617 secs
+## Time difference of 0.03690791 secs
 \end{verbatim}
 
 \begin{Shaded}
@@ -999,7 +999,7 @@ Bei 10 Stellen ist der Unterschied noch nicht wirklich bemerkbar. Wenn wir jetzt
 \end{Shaded}
 
 \begin{verbatim}
-## Time difference of 0.08751488 secs
+## Time difference of 0.07891178 secs
 \end{verbatim}
 
 Mehr als die Hälfte der Zeit geht für das Erstellen des neuen Vektors drauf!
@@ -3998,6 +3998,1120 @@ Dafür fügen wir einfach eine weitere Routine an den Anfang von ``trials'' ein,
 Mögliche Ansätze wären zum Beispiel eine Seite mit Instruktionstext, andere Tasten zum Antworten, eine Rückmeldung nach Antworten, erst späteres Einblenden der Tastenbelegung und und und.
 
 Setzt Eure Ideen um.
+
+\hypertarget{stroop-mit-bildern}{%
+\section{Stroop mit Bildern}\label{stroop-mit-bildern}}
+
+Um die Experimente so gut wie möglich vorzubereiten, wollen wir eine modifizierte Stroop-Task implementieren, in der Tabellen und Graphen dargestellt werden, die signifikante oder nicht signifikante Testergebnisse präsentieren.
+
+Dazu wird mit Sternchen und p-Wert(widersprüchlich oder nicht) angegeben, ob der Test signifikant geworden ist.
+
+Wir wollen wieder 32 Stimuli haben, dabei je 8 widersprüchliche und nicht widersprüchliche Angaben jeweils einmal in Tabellen-Format und einmal in Grafikformat. Die (nicht) widersprüchlichen Angaben sollen dabei je zur Hälfte signifikant und nicht signifikant sein.
+
+Das geplante Design könnte man also zum Beispiel wie in Abb. \ref{fig:design} darstellen.
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/design} 
+
+}
+
+\caption{Design-Schema für unser modifiziertes Stroop-Experiment.}\label{fig:design}
+\end{figure}
+
+Um zu diesen 32 Bildern zu gelangen, müssen wir zuerst je acht signifikante und nicht signifikante Testergebnisse generieren. Diese werden dann jeweils in Tabelle und Grafik dargestellt, wobei jeweils die Hälfte falsch gekennzeichnet wird.
+
+Die Testergebnisse können wir einfach mit einem Loop generieren, der über 16 Zahlen iteriert und zum Beispiel bei jeder geraden Zahl einen Erwartungswertunterschied und bei jeder ungeraden keinen simuliert. Die simulierten Daten legen wir dann alle in einer Liste ab.
+Außerdem können wir auch schon für jeden Datensatz einen t-Test berechnen und ablegen, da wir eh Tabellen generiern wollen und für die Grafiken nur p brauchen, können wir auch gleich die von \texttt{broom::tidy} formatierten Ergebnisse ablegen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{out }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_len}\NormalTok{(}\DecValTok{16}\NormalTok{)) \{}
+\NormalTok{  out[[i]] }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{data =} \FunctionTok{tibble}\NormalTok{(}\AttributeTok{x =} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{, }\DecValTok{100}\NormalTok{, }\DecValTok{15}\NormalTok{),}
+                                 \AttributeTok{y =} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\DecValTok{100}\NormalTok{, }\DecValTok{110}\NormalTok{)[i }\SpecialCharTok{\%\%} \DecValTok{2} \SpecialCharTok{+} \DecValTok{1}\NormalTok{], }\DecValTok{15}\NormalTok{)))}
+\NormalTok{  out[[i]]}\SpecialCharTok{$}\NormalTok{test }\OtherTok{\textless{}{-}}\NormalTok{ broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{(}\FunctionTok{with}\NormalTok{(out[[i]]}\SpecialCharTok{$}\NormalTok{data,}\FunctionTok{t.test}\NormalTok{(x,y)))}
+\NormalTok{\}}
+
+\NormalTok{out[[}\DecValTok{1}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $data
+## # A tibble: 100 x 2
+##        x     y
+##    <dbl> <dbl>
+##  1  93.2 100. 
+##  2  78.9  81.0
+##  3  96.5  99.2
+##  4  94.8 116. 
+##  5 102.  103. 
+##  6 104.  113. 
+##  7 122.  139. 
+##  8  99.8 106. 
+##  9 109.  113. 
+## 10 103.  118. 
+## # ... with 90 more rows
+## 
+## $test
+## # A tibble: 1 x 10
+##   estimate estimate1 estimate2 statistic    p.value parameter conf.low conf.high
+##      <dbl>     <dbl>     <dbl>     <dbl>      <dbl>     <dbl>    <dbl>     <dbl>
+## 1    -9.86      101.      110.     -4.63 0.00000665      193.    -14.1     -5.66
+## # ... with 2 more variables: method <chr>, alternative <chr>
+\end{verbatim}
+
+Für die widersprüchliche und nicht-widersprüchliche Signifikanzaussage fügen wir den ersten 8 Werten jetzt noch falsche, den letzten 8 richtige Signifikanzsternchen hinzu:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(out))\{}
+  \ControlFlowTok{if}\NormalTok{(i }\SpecialCharTok{\textless{}=} \DecValTok{8}\NormalTok{)\{}
+\NormalTok{    out[[i]]}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{signif }\OtherTok{\textless{}{-}} \FunctionTok{case\_when}\NormalTok{(out[[i]]}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{p.value }\SpecialCharTok{\textgreater{}}\NormalTok{ .}\DecValTok{05} \SpecialCharTok{\textasciitilde{}} \FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}*\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}**\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}***\textquotesingle{}}\NormalTok{),}\DecValTok{1}\NormalTok{),}
+\NormalTok{                                      T }\SpecialCharTok{\textasciitilde{}} \StringTok{\textquotesingle{}n.s.\textquotesingle{}}\NormalTok{)}
+\NormalTok{  \}}\ControlFlowTok{else}\NormalTok{\{}
+\NormalTok{     out[[i]]}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{signif }\OtherTok{\textless{}{-}} \FunctionTok{case\_when}\NormalTok{(out[[i]]}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{p.value }\SpecialCharTok{\textless{}}\NormalTok{ .}\DecValTok{001} \SpecialCharTok{\textasciitilde{}} \StringTok{\textquotesingle{}***\textquotesingle{}}\NormalTok{,}
+\NormalTok{                                      out[[i]]}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{p.value }\SpecialCharTok{\textless{}}\NormalTok{ .}\DecValTok{01} \SpecialCharTok{\textasciitilde{}} \StringTok{\textquotesingle{}**\textquotesingle{}}\NormalTok{,}
+\NormalTok{                                      out[[i]]}\SpecialCharTok{$}\NormalTok{test}\SpecialCharTok{$}\NormalTok{p.value }\SpecialCharTok{\textless{}}\NormalTok{ .}\DecValTok{05} \SpecialCharTok{\textasciitilde{}} \StringTok{\textquotesingle{}*\textquotesingle{}}\NormalTok{,}
+\NormalTok{                                      T }\SpecialCharTok{\textasciitilde{}} \StringTok{\textquotesingle{}n.s.\textquotesingle{}}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\NormalTok{out[[}\DecValTok{1}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $data
+## # A tibble: 100 x 2
+##        x     y
+##    <dbl> <dbl>
+##  1  93.2 100. 
+##  2  78.9  81.0
+##  3  96.5  99.2
+##  4  94.8 116. 
+##  5 102.  103. 
+##  6 104.  113. 
+##  7 122.  139. 
+##  8  99.8 106. 
+##  9 109.  113. 
+## 10 103.  118. 
+## # ... with 90 more rows
+## 
+## $test
+## # A tibble: 1 x 11
+##   estimate estimate1 estimate2 statistic    p.value parameter conf.low conf.high
+##      <dbl>     <dbl>     <dbl>     <dbl>      <dbl>     <dbl>    <dbl>     <dbl>
+## 1    -9.86      101.      110.     -4.63 0.00000665      193.    -14.1     -5.66
+## # ... with 3 more variables: method <chr>, alternative <chr>, signif <chr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{out[[}\DecValTok{9}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $data
+## # A tibble: 100 x 2
+##        x     y
+##    <dbl> <dbl>
+##  1 106.  130. 
+##  2 106.   82.7
+##  3 112.  111. 
+##  4  85.9  80.0
+##  5  84.8  95.1
+##  6 112.  113. 
+##  7  59.7  95.8
+##  8  93.8  91.4
+##  9  97.8  85.7
+## 10  74.7 118. 
+## # ... with 90 more rows
+## 
+## $test
+## # A tibble: 1 x 11
+##   estimate estimate1 estimate2 statistic    p.value parameter conf.low conf.high
+##      <dbl>     <dbl>     <dbl>     <dbl>      <dbl>     <dbl>    <dbl>     <dbl>
+## 1    -10.8      100.      111.     -4.75 0.00000390      198.    -15.3     -6.32
+## # ... with 3 more variables: method <chr>, alternative <chr>, signif <chr>
+\end{verbatim}
+
+Jetzt brauchen wir noch ein sinnvolles Format für unsere Tabellen und Grafiken.
+
+Für die Grafiken bietet das \texttt{kableExtra}-Paket sehr praktische Funktionen zum Erstellen und formatieren von Tabellen. Mit dem folgenden Code-Schnipsel können wir zum Beispiel eine APA-formatierte Tabelle aus unserem Testergebnis erstellen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(kableExtra)}
+\NormalTok{out[[}\DecValTok{1}\NormalTok{]] }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{nth}\NormalTok{(}\DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{$t$}\StringTok{\textasciigrave{}} \OtherTok{=}\NormalTok{ statistic,}
+         \StringTok{\textasciigrave{}}\AttributeTok{$p$}\StringTok{\textasciigrave{}} \OtherTok{=}\NormalTok{ p.value,}
+         \StringTok{\textasciigrave{}}\AttributeTok{ }\StringTok{\textasciigrave{}} \OtherTok{=}\NormalTok{ signif) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{kbl}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{kable\_classic}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{rrl}
+\toprule
+\$t\$ & \$p\$ &  \\
+\midrule
+-4.631611 & 6.6e-06 & n.s.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Diese Tabelle können wir dann mit der \texttt{kableExtra::save\_kable()}-Funktion in ein Bild exportieren, das man dann in Psychopy importieren kann.
+
+Für die Grafiken können wir einfach Boxplots mit ggplot generieren und mit \texttt{annotate} eine Signifikanzaussage einfügen. Außerdem können wir noch eine Signifikanzklammer einfügen, zum Beispiel mit einfachem ggplot über \texttt{geom\_segment}. Mit \texttt{ggpubr} und \texttt{ggsignif} gäbe es zwar Pakete, die das Problem einfachen lösen, da wir aber eh immer nur eine Klammer einzeichnen ist das ein bisschen overkill.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{line\_segments }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}\AttributeTok{x =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{),}
+                        \AttributeTok{xend =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{),}
+                        \AttributeTok{y =}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{c}\NormalTok{(.}\DecValTok{025}\NormalTok{,.}\DecValTok{05}\NormalTok{,.}\DecValTok{05}\NormalTok{)) }\SpecialCharTok{*} \FunctionTok{max}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(out[[}\DecValTok{1}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{data)),}
+                        \AttributeTok{yend =}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{c}\NormalTok{(.}\DecValTok{05}\NormalTok{,.}\DecValTok{05}\NormalTok{,.}\DecValTok{025}\NormalTok{)) }\SpecialCharTok{*} \FunctionTok{max}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(out[[}\DecValTok{1}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{data)))}
+
+\NormalTok{out[[}\DecValTok{1}\NormalTok{]] }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{first}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{pivot\_longer}\NormalTok{(}\FunctionTok{everything}\NormalTok{(),}
+               \AttributeTok{names\_to =} \StringTok{\textquotesingle{}group\textquotesingle{}}\NormalTok{,}
+               \AttributeTok{values\_to =} \StringTok{\textquotesingle{}IQ\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ group,}
+             \AttributeTok{y =}\NormalTok{ IQ)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{stat\_summary}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{y =}  \StringTok{\textquotesingle{}IQ [M +/{-} SEM]\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{annotate}\NormalTok{(}\AttributeTok{geom =} \StringTok{\textquotesingle{}text\textquotesingle{}}\NormalTok{,}
+           \AttributeTok{x =} \FloatTok{1.5}\NormalTok{, }
+           \AttributeTok{y =} \FloatTok{1.06} \SpecialCharTok{*} \FunctionTok{max}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(out[[}\DecValTok{1}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{data)),}
+           \AttributeTok{label =}\NormalTok{ glue}\SpecialCharTok{::}\FunctionTok{glue}\NormalTok{(}\StringTok{\textquotesingle{}p = \{round(out[[1]]$test$p.value,5)\} \{out[[1]]$test$signif\}\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_segment}\NormalTok{(}\AttributeTok{data =}\NormalTok{ line\_segments,}
+               \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x,}
+                   \AttributeTok{y =}\NormalTok{ y,}
+                   \AttributeTok{xend =}\NormalTok{ xend,}
+                   \AttributeTok{yend =}\NormalTok{ yend))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## No summary function supplied, defaulting to `mean_se()`
+\end{verbatim}
+
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-128-1.pdf}
+
+Diese Grafik können wir einfach wie immer mit \texttt{ggsave} exportieren.
+
+Was jetzt nur noch bleibt ist die Liste einmal durchzulaufen und für jeden Eintrag eine Grafik und eine Tabelle zu erstellen.
+Dabei ergibt es Sinn, die Exports mit einem String zu benennen, der klar die Bedingungen einteilt, die wir erstellt haben.
+Wie dieser String aussieht ist egal, man muss sich nur merken, welche Information in welchem Teil codiert ist.
+Ein Beispiel ist in Abb. \ref{fig:fileName} zu sehen.
+
+
+
+\begin{figure}
+
+{\centering \includegraphics[width=.8\textwidth]{imgs/file_name} 
+
+}
+
+\caption{Mögliches Format zur Benennung der Dateien.}\label{fig:fileName}
+\end{figure}
+
+Diese Unterpunkte könnte man zum Beispiel mit \texttt{paste} und \texttt{glue} wie folgt zusammenfügen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(out))\{}
+\NormalTok{  back\_name }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(}\FunctionTok{ifelse}\NormalTok{(i }\SpecialCharTok{\textless{}=} \DecValTok{8}\NormalTok{, }\StringTok{\textquotesingle{}wid\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}nwid\textquotesingle{}}\NormalTok{),}
+                     \FunctionTok{ifelse}\NormalTok{(i }\SpecialCharTok{\%\%} \DecValTok{2} \SpecialCharTok{==} \DecValTok{0}\NormalTok{, }\StringTok{\textquotesingle{}nsign\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}sign\textquotesingle{}}\NormalTok{),}
+\NormalTok{                     i,}\AttributeTok{sep =} \StringTok{\textquotesingle{}\_\textquotesingle{}}\NormalTok{)}
+\NormalTok{  table\_name }\OtherTok{\textless{}{-}}\NormalTok{ glue}\SpecialCharTok{::}\FunctionTok{glue}\NormalTok{(}\StringTok{\textquotesingle{}table\_\{back\_name\}.png\textquotesingle{}}\NormalTok{)}
+\NormalTok{  graph\_name }\OtherTok{\textless{}{-}}\NormalTok{ glue}\SpecialCharTok{::}\FunctionTok{glue}\NormalTok{(}\StringTok{\textquotesingle{}box\_\{back\_name\}.png\textquotesingle{}}\NormalTok{)}
+\NormalTok{\}}
+\NormalTok{table\_name}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## table_nwid_nsign_16.png
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{graph\_name}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## box_nwid_nsign_16.png
+\end{verbatim}
+
+Jetzt müssen wir nurnoch den Code einsetzen, den wir eben zur Erstellung der Tabellen und Grafiken genutzt haben, und schon haben wir unsere Stimuli. Da wir aber nicht den ganzen Code in einer Schleife haben wollen, verpacken wir die Tabellen und Grafiken noch jeweils in Funktionen, die den Pfad und eine Liste \texttt{sim\_res} mit \texttt{data} und \texttt{test} erwarten:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tab\_wrapper }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(path, sim\_res)\{}
+  \FunctionTok{options}\NormalTok{(}\AttributeTok{scipen =} \DecValTok{999}\NormalTok{)}
+\NormalTok{  sim\_res }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{nth}\NormalTok{(}\DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{t}\StringTok{\textasciigrave{}} \OtherTok{=}\NormalTok{ statistic,}
+         \StringTok{\textasciigrave{}}\AttributeTok{p}\StringTok{\textasciigrave{}} \OtherTok{=}\NormalTok{ p.value,}
+         \StringTok{\textasciigrave{}}\AttributeTok{ }\StringTok{\textasciigrave{}} \OtherTok{=}\NormalTok{ signif) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{kbl}\NormalTok{(}\StringTok{\textquotesingle{}html\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{kable\_classic}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{save\_kable}\NormalTok{(}\AttributeTok{file =}\NormalTok{ path,}
+               \AttributeTok{delay =}\NormalTok{ .}\DecValTok{2}\NormalTok{)}
+  \FunctionTok{options}\NormalTok{(}\AttributeTok{scipen =} \ConstantTok{NULL}\NormalTok{)}
+\NormalTok{\}}
+
+\NormalTok{box\_wrapper }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(path, sim\_res) \{}
+\NormalTok{  line\_segments }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}
+    \AttributeTok{x =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{xend =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{y =}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{c}\NormalTok{(.}\DecValTok{025}\NormalTok{, .}\DecValTok{05}\NormalTok{, .}\DecValTok{05}\NormalTok{)) }\SpecialCharTok{*} \FunctionTok{max}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(sim\_res}\SpecialCharTok{$}\NormalTok{data)),}
+    \AttributeTok{yend =}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{c}\NormalTok{(.}\DecValTok{05}\NormalTok{, .}\DecValTok{05}\NormalTok{, .}\DecValTok{025}\NormalTok{)) }\SpecialCharTok{*} \FunctionTok{max}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(sim\_res}\SpecialCharTok{$}\NormalTok{data))}
+\NormalTok{  )}
+  
+\NormalTok{  p }\OtherTok{\textless{}{-}}\NormalTok{ sim\_res }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{first}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{pivot\_longer}\NormalTok{(}\FunctionTok{everything}\NormalTok{(),}
+                 \AttributeTok{names\_to =} \StringTok{\textquotesingle{}group\textquotesingle{}}\NormalTok{,}
+                 \AttributeTok{values\_to =} \StringTok{\textquotesingle{}IQ\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ group,}
+               \AttributeTok{y =}\NormalTok{ IQ)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{stat\_summary}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}\AttributeTok{y =}  \StringTok{\textquotesingle{}IQ [M +/{-} SEM]\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{annotate}\NormalTok{(}
+      \AttributeTok{geom =} \StringTok{\textquotesingle{}text\textquotesingle{}}\NormalTok{,}
+      \AttributeTok{x =} \FloatTok{1.5}\NormalTok{,}
+      \AttributeTok{y =} \FloatTok{1.06} \SpecialCharTok{*} \FunctionTok{max}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(sim\_res}\SpecialCharTok{$}\NormalTok{data)),}
+      \AttributeTok{label =}\NormalTok{ glue}\SpecialCharTok{::}\FunctionTok{glue}\NormalTok{(}\StringTok{\textquotesingle{}p = \{round(sim\_res$test$p.value,5)\} \{sim\_res$test$signif\}\textquotesingle{}}\NormalTok{)}
+\NormalTok{    ) }\SpecialCharTok{+}
+    \FunctionTok{geom\_segment}\NormalTok{(}\AttributeTok{data =}\NormalTok{ line\_segments,}
+                 \FunctionTok{aes}\NormalTok{(}
+                   \AttributeTok{x =}\NormalTok{ x,}
+                   \AttributeTok{y =}\NormalTok{ y,}
+                   \AttributeTok{xend =}\NormalTok{ xend,}
+                   \AttributeTok{yend =}\NormalTok{ yend}
+\NormalTok{                 ))}
+  \FunctionTok{ggsave}\NormalTok{(path, p, }\AttributeTok{bg =} \StringTok{\textquotesingle{}white\textquotesingle{}}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Das brauchen wir nur noch in die Schleife einzusetzen und schon haben wir unsere Stimuli:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(out))\{}
+\NormalTok{  back\_name }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(}\FunctionTok{ifelse}\NormalTok{(i }\SpecialCharTok{\textless{}=} \DecValTok{8}\NormalTok{, }\StringTok{\textquotesingle{}wid\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}nwid\textquotesingle{}}\NormalTok{),}
+                     \FunctionTok{ifelse}\NormalTok{(i }\SpecialCharTok{\%\%} \DecValTok{2} \SpecialCharTok{==} \DecValTok{0}\NormalTok{, }\StringTok{\textquotesingle{}nsign\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}sign\textquotesingle{}}\NormalTok{),}
+\NormalTok{                     i,}\AttributeTok{sep =} \StringTok{\textquotesingle{}\_\textquotesingle{}}\NormalTok{)}
+  
+\NormalTok{  table\_name }\OtherTok{\textless{}{-}}\NormalTok{ glue}\SpecialCharTok{::}\FunctionTok{glue}\NormalTok{(}\StringTok{\textquotesingle{}stimuli/table\_\{back\_name\}.png\textquotesingle{}}\NormalTok{)}
+  \FunctionTok{tab\_wrapper}\NormalTok{(table\_name, out[[i]])}
+  
+\NormalTok{  graph\_name }\OtherTok{\textless{}{-}}\NormalTok{ glue}\SpecialCharTok{::}\FunctionTok{glue}\NormalTok{(}\StringTok{\textquotesingle{}stimuli/box\_\{back\_name\}.png\textquotesingle{}}\NormalTok{)}
+  \FunctionTok{box\_wrapper}\NormalTok{(graph\_name, out[[i]])}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Die erstellten Pfade könnten wir entweder direkt in der Schleife mitschreiben, oder wir benutzen einfach \texttt{list.files}, um uns den Inhalt der \texttt{stimuli}-Directory ausgeben zu lassen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{list.files}\NormalTok{(}\StringTok{\textquotesingle{}stimuli/\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "box_nwid_nsign_10.png"   "box_nwid_nsign_12.png"  
+##  [3] "box_nwid_nsign_14.png"   "box_nwid_nsign_16.png"  
+##  [5] "box_nwid_sign_11.png"    "box_nwid_sign_13.png"   
+##  [7] "box_nwid_sign_15.png"    "box_nwid_sign_9.png"    
+##  [9] "box_wid_nsign_2.png"     "box_wid_nsign_4.png"    
+## [11] "box_wid_nsign_6.png"     "box_wid_nsign_8.png"    
+## [13] "box_wid_sign_1.png"      "box_wid_sign_3.png"     
+## [15] "box_wid_sign_5.png"      "box_wid_sign_7.png"     
+## [17] "table_nwid_nsign_10.png" "table_nwid_nsign_12.png"
+## [19] "table_nwid_nsign_14.png" "table_nwid_nsign_16.png"
+## [21] "table_nwid_sign_11.png"  "table_nwid_sign_13.png" 
+## [23] "table_nwid_sign_15.png"  "table_nwid_sign_9.png"  
+## [25] "table_wid_nsign_2.png"   "table_wid_nsign_4.png"  
+## [27] "table_wid_nsign_6.png"   "table_wid_nsign_8.png"  
+## [29] "table_wid_sign_1.png"    "table_wid_sign_3.png"   
+## [31] "table_wid_sign_5.png"    "table_wid_sign_7.png"
+\end{verbatim}
+
+Mit dem \texttt{full.names}-Argument dazu können wir die ganzen Pfade generieren und dann zum Beispiel mit \texttt{write\_csv} in eine csv schreiben, die wir dann in Psychopy einbinden können:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tibble}\NormalTok{(}\AttributeTok{path =} \FunctionTok{list.files}\NormalTok{(}\AttributeTok{path =} \StringTok{\textquotesingle{}stimuli/\textquotesingle{}}\NormalTok{, }\AttributeTok{full.names =}\NormalTok{ T)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{write\_csv}\NormalTok{(}\StringTok{\textquotesingle{}psy\_exps/paths.csv\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{aufgabe-14}{%
+\subsection{Aufgabe}\label{aufgabe-14}}
+
+Ladet Euch die Bilder aus dem Olat herunter, solltet Ihr sie nicht selbst erstellt haben.
+Generiert dann auf jeden Fall die csv mit den Datei-Pfaden, sonst funktioniert es nicht.
+
+Passt das dann Psychopy-Skript aus der letzten Sitzung so an, dass es für unsere Bilder funktioniert. Die Proband:innen sollen dabei nur noch zwei Auswahlmöglichkeiten (signifikant/nicht signifikant) haben.
+
+Fügt eine ``Rückmeldung'' zur Gedrückten Antwort hinzu (Einrahmung der Antwortalternative).
+
+Zusatz:
+Wie könnte man den Proband:innen nach gedrückter Taste direkt anzeigen lassen, ob die Antwort richtig oder falsch war? Als Tipp: Mit \texttt{.split(\textquotesingle{}\_\textquotesingle{})} kann man in Python einen String in durch Unterstriche geteilte Abschnitte aufteilen, die sich dann mit \texttt{{[}{]}} indizieren lassn. Dabei ist aber wichtig, dass die erste Stelle in Python mit der 0 indiziert wird:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{string }\OperatorTok{=} \StringTok{\textquotesingle{}just\_a\_string\textquotesingle{}}
+\NormalTok{string.split(}\StringTok{\textquotesingle{}\_\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ['just', 'a', 'string']
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{string.split(}\StringTok{\textquotesingle{}\_\textquotesingle{}}\NormalTok{)[}\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'string'
+\end{verbatim}
+
+\hypertarget{einlesen-von-mit-psychopy-gewonnenen-daten}{%
+\section{Einlesen von mit Psychopy gewonnenen Daten}\label{einlesen-von-mit-psychopy-gewonnenen-daten}}
+
+In der Standardeinstellung sehen die mit Psychopy generierten Daten wie folgt aus:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{read\_csv}\NormalTok{(}\StringTok{\textquotesingle{}psy\_exps/data/\_sitzung\_2021\_Dez\_17\_1144.csv\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...41
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 5 Columns: 41
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (19): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (20): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...41
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## # A tibble: 5 x 41
+##   Wort  Farbe trials.thisRepN trials.thisTrialN trials.thisN trials.thisIndex
+##   <chr> <chr>           <dbl>             <dbl>        <dbl>            <dbl>
+## 1 gelb  green               0                 0            0                0
+## 2 grün  green               0                 1            1                1
+## 3 rot   green               0                 2            2                2
+## 4 gelb  red                 0                 3            3                3
+## 5 <NA>  <NA>               NA                NA           NA               NA
+## # ... with 35 more variables: text.started <dbl>, text.stopped <chr>,
+## #   textStim.started <dbl>, textStim.stopped <chr>, gruen.started <dbl>,
+## #   gruen.stopped <chr>, rot.started <dbl>, rot.stopped <chr>,
+## #   gelb.started <dbl>, gelb.stopped <chr>, blau.started <dbl>,
+## #   blau.stopped <chr>, key_resp.keys <dbl>, key_resp.rt <dbl>,
+## #   key_resp.started <dbl>, key_resp.stopped <chr>, textStim_2.started <dbl>,
+## #   textStim_2.stopped <chr>, gruen_2.started <dbl>, gruen_2.stopped <chr>,
+## #   rot_2.started <dbl>, rot_2.stopped <chr>, gelb_2.started <dbl>,
+## #   gelb_2.stopped <chr>, blau_2.started <dbl>, blau_2.stopped <chr>,
+## #   polygon.started <dbl>, polygon.stopped <chr>, participant <lgl>,
+## #   session <chr>, date <chr>, expName <chr>, psychopyVersion <chr>,
+## #   frameRate <dbl>, ...41 <lgl>
+\end{verbatim}
+
+Dabei wird für jede:n Proband:in eine Datei in diesem Format generiert.
+
+Um die Dateien in Stapelverarbeitung einzulesen und zusammenzufügen können wir die uns schon bekannten Funktionen \texttt{list.files} und \texttt{map\_dfr} nutzen. Da in den Dateien schon eine \texttt{participant}-Spalte ist, müssen wir uns nicht mal mehr darum kümmern, eine Indexspalte hinzuzufügen.
+
+Da Psychopy aber bei jeder Durchführung eine Reihe von Dateien abspeichert, müssen wir noch mit \texttt{pattern} angeben, wie die Dateien die uns interessieren denn benannt sind.
+
+In unserem Fall sagen wir einfach, dass \texttt{sitzung} im Namen vorkommen muss, also der Name des Experiments, das wir auswerten wollen. Außerdem müssen wir angeben, dass die Datei in \texttt{.csv} enden soll, da sonst auch die log-Dateien eingelesen werden. Dazu schreiben wir in das \texttt{pattern}-Argument einfach, dass der Platzhalter \texttt{.} beliebig oft wiederholt werden darf (\texttt{+}) und der Name in \texttt{csv} endet.
+
+Mit \texttt{map\_dfr} können wir die Pfade dann einfach durchlaufen und mit read\_csv einzulesen versuchen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{list.files}\NormalTok{(}\StringTok{\textquotesingle{}psy\_exps/data/\textquotesingle{}}\NormalTok{,}
+           \AttributeTok{pattern =} \StringTok{\textquotesingle{}sitzung.*csv\textquotesingle{}}\NormalTok{,}
+           \AttributeTok{full.names =}\NormalTok{ T) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{map\_dfr}\NormalTok{(read\_csv)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...9
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 1 Columns: 9
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (1): textStim.stopped
+## dbl (1): textStim.started
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...9
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...15
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 1 Columns: 15
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (4): textStim.stopped, gruen.stopped, rot.stopped, gelb.stopped
+## dbl (4): textStim.started, gruen.started, rot.started, gelb.started
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...15
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...17
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 1 Columns: 17
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (5): textStim.stopped, gruen.stopped, rot.stopped, gelb.stopped, blau.st...
+## dbl (5): textStim.started, gruen.started, rot.started, gelb.started, blau.st...
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...17
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...17
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 1 Columns: 17
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (5): textStim.stopped, gruen.stopped, rot.stopped, gelb.stopped, blau.st...
+## dbl (5): textStim.started, gruen.started, rot.started, gelb.started, blau.st...
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...17
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...17
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 1 Columns: 17
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (5): textStim.stopped, gruen.stopped, rot.stopped, gelb.stopped, blau.st...
+## dbl (5): textStim.started, gruen.started, rot.started, gelb.started, blau.st...
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...17
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...17
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 1 Columns: 17
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (5): textStim.stopped, gruen.stopped, rot.stopped, gelb.stopped, blau.st...
+## dbl (5): textStim.started, gruen.started, rot.started, gelb.started, blau.st...
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...17
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...17
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 1 Columns: 17
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (5): textStim.stopped, gruen.stopped, rot.stopped, gelb.stopped, blau.st...
+## dbl (5): textStim.started, gruen.started, rot.started, gelb.started, blau.st...
+## lgl (7): participant, session, date, expName, psychopyVersion, frameRate, ...17
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...23
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 19 Columns: 23
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (11): Wort, Farbe, textStim.stopped, gruen.stopped, rot.stopped, gelb.st...
+## dbl (10): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...23
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...27
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 9 Columns: 27
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (12): Wort, Farbe, textStim.stopped, gruen.stopped, rot.stopped, gelb.st...
+## dbl (13): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...27
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...29
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 5 Columns: 29
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (13): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (14): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...29
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...7
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 0 Columns: 7
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (7): participant, session, date, expName, psychopyVersion, frameRate, ...7
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...7
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 0 Columns: 7
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (7): participant, session, date, expName, psychopyVersion, frameRate, ...7
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...29
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 1 Columns: 29
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr  (7): text.stopped, textStim.stopped, gruen.stopped, rot.stopped, gelb.s...
+## dbl  (9): text.started, textStim.started, gruen.started, rot.started, gelb.s...
+## lgl (13): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...7
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 0 Columns: 7
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (7): participant, session, date, expName, psychopyVersion, frameRate, ...7
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...41
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 3 Columns: 41
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (19): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (20): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...41
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...41
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 5 Columns: 41
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (19): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (20): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...41
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...41
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 4 Columns: 41
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (19): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (20): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...41
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...15
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 1 Columns: 15
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr  (1): text.stopped
+## dbl  (1): text.started
+## lgl (13): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...41
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 7 Columns: 41
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (19): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (20): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...41
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...41
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 5 Columns: 41
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (19): Wort, Farbe, text.stopped, textStim.stopped, gruen.stopped, rot.st...
+## dbl (20): trials.thisRepN, trials.thisTrialN, trials.thisN, trials.thisIndex...
+## lgl  (2): participant, ...41
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## Error: Can't combine `frameRate` <double> and `frameRate` <character>.
+\end{verbatim}
+
+Der Fehler entsteht, da Datensätze mit nicht genug Einträgen vorliegen, die dadurch das Datenformat durcheinanderbringen.
+Mit der Formelschreibweise können wir \texttt{read\_csv} jetzt noch so ergänzen, dass standardmäßig \texttt{character}-Spalten erwartet werden. Sollte dann was anderes vorliegen, können wir nachträglich noch Typen-Änderungen durchführen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{list.files}\NormalTok{(}\StringTok{\textquotesingle{}psy\_exps/data/\textquotesingle{}}\NormalTok{,}
+           \AttributeTok{pattern =} \StringTok{\textquotesingle{}sitzung.*csv\textquotesingle{}}\NormalTok{,}
+           \AttributeTok{full.names =}\NormalTok{ T) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{map\_dfr}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\FunctionTok{read\_csv}\NormalTok{(.,}\AttributeTok{col\_types =} \FunctionTok{cols}\NormalTok{(}\AttributeTok{.default =} \StringTok{\textquotesingle{}c\textquotesingle{}}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...9
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...15
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...17
+## New names:
+## * `` -> ...17
+## New names:
+## * `` -> ...17
+## New names:
+## * `` -> ...17
+## New names:
+## * `` -> ...17
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...23
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...27
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...29
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...7
+## New names:
+## * `` -> ...7
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...29
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...7
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...41
+## New names:
+## * `` -> ...41
+## New names:
+## * `` -> ...41
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...15
+\end{verbatim}
+
+\begin{verbatim}
+## New names:
+## * `` -> ...41
+## New names:
+## * `` -> ...41
+\end{verbatim}
+
+Den fertigen Datensatz können wir dann zum Beispiel nutzen, um Reaktionszeiten bei richtigen und falschen Reaktionen zu vergleichen.
+
+Dazu entfernen wir zuerst die Spalten die wir nicht brauchen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(Wort, Farbe, key\_resp.rt, key\_resp.keys)}
+\FunctionTok{glimpse}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 66
+## Columns: 4
+## $ Wort          <chr> NA, NA, NA, NA, NA, NA, NA, "gelb", "grün", "rot", "gelb~
+## $ Farbe         <chr> NA, NA, NA, NA, NA, NA, NA, "green", "green", "green", "~
+## $ key_resp.rt   <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ~
+## $ key_resp.keys <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ~
+\end{verbatim}
+
+Und entfernen die Zeilen, in denen keine Antwort gegeben wurde:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(key\_resp.rt))}
+\FunctionTok{glimpse}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 34
+## Columns: 4
+## $ Wort          <chr> "gelb", "grün", "rot", "gelb", "blau", "gelb", "rot", "g~
+## $ Farbe         <chr> "green", "green", "green", "red", "red", "yellow", "yell~
+## $ key_resp.rt   <chr> "5.563401937484741", "1.2030880451202393", "0.7033100128~
+## $ key_resp.keys <chr> "1", "1", "1", "2", "2", "3", "3", "4", "2", "2", "1", "~
+\end{verbatim}
+
+Jetzt müssen wir nur noch die gedrückten Tasten in richtig oder falsch übersetzen und können uns die Ergebnisse angucken. Zusätzlich können wir noch die Farbe übersetzen, damit spätere Auswertungen einfachen werden.
+Außerdem müssen wir noch die Reaktionszeiten in Zahlen umwandeln.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{key\_resp.rt =} \FunctionTok{as.numeric}\NormalTok{(key\_resp.rt),}
+         \AttributeTok{key\_resp.keys =} \FunctionTok{recode}\NormalTok{(key\_resp.keys,}
+                                \StringTok{\textquotesingle{}1\textquotesingle{}} \OtherTok{=} \StringTok{\textquotesingle{}grün\textquotesingle{}}\NormalTok{,}
+                                \StringTok{\textquotesingle{}2\textquotesingle{}} \OtherTok{=} \StringTok{\textquotesingle{}rot\textquotesingle{}}\NormalTok{,}
+                                \StringTok{\textquotesingle{}3\textquotesingle{}} \OtherTok{=} \StringTok{\textquotesingle{}gelb\textquotesingle{}}\NormalTok{,}
+                                \StringTok{\textquotesingle{}4\textquotesingle{}} \OtherTok{=} \StringTok{\textquotesingle{}blau\textquotesingle{}}\NormalTok{),}
+         \AttributeTok{Farbe =} \FunctionTok{recode}\NormalTok{(Farbe,}
+                        \StringTok{\textquotesingle{}green\textquotesingle{}} \OtherTok{=} \StringTok{\textquotesingle{}grün\textquotesingle{}}\NormalTok{,}
+                        \StringTok{\textquotesingle{}red\textquotesingle{}} \OtherTok{=} \StringTok{\textquotesingle{}rot\textquotesingle{}}\NormalTok{,}
+                        \StringTok{\textquotesingle{}yellow\textquotesingle{}} \OtherTok{=} \StringTok{\textquotesingle{}gelb\textquotesingle{}}\NormalTok{,}
+                        \StringTok{\textquotesingle{}blue\textquotesingle{}} \OtherTok{=} \StringTok{\textquotesingle{}blau\textquotesingle{}}\NormalTok{),}
+         \AttributeTok{correct\_answer =}\NormalTok{ Farbe }\SpecialCharTok{==}\NormalTok{ key\_resp.keys,}
+         \AttributeTok{word\_color\_same =}\NormalTok{ Wort }\SpecialCharTok{==}\NormalTok{ Farbe)}
+\end{Highlighting}
+\end{Shaded}
+
+Diesen Datensatz können wir jetzt zum Beispiel nutzen um richtige und falsche Reaktionszeiten in den Bedingungen zu betrachten:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{remove\_missing}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Farbe,}
+             \AttributeTok{fill =}\NormalTok{ correct\_answer,}
+             \AttributeTok{y =}\NormalTok{ key\_resp.rt)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{alpha =}\NormalTok{ .}\DecValTok{5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{stat\_summary}\NormalTok{(}\AttributeTok{position =} \FunctionTok{position\_dodge}\NormalTok{(}\AttributeTok{width =}\NormalTok{ .}\DecValTok{75}\NormalTok{),}
+               \FunctionTok{aes}\NormalTok{(}\AttributeTok{color =}\NormalTok{ correct\_answer)) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{( }\SpecialCharTok{\textasciitilde{}}\NormalTok{ word\_color\_same,}\AttributeTok{nrow =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 1 rows containing missing values.
+\end{verbatim}
+
+\begin{verbatim}
+## No summary function supplied, defaulting to `mean_se()`
+## No summary function supplied, defaulting to `mean_se()`
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 2 rows containing missing values (geom_segment).
+\end{verbatim}
+
+\includegraphics{Robustheit_files/figure-latex/unnamed-chunk-141-1.pdf}
 
   \bibliography{book.bib}
 
